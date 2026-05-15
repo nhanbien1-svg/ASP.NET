@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "CMS.Backend/1.0.0": {
+        "dependencies": {
+          "CMS.DATA": "1.0.0"
+        },
+        "runtime": {
+          "CMS.Backend.dll": {}
+        }
+      },
+      "CMS.DATA/1.0.0": {
+        "runtime": {
+          "CMS.DATA.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "CMS.Backend/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CMS.DATA/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

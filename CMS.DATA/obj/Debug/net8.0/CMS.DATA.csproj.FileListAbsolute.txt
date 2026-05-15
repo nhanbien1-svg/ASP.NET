@@ -1,0 +1,11 @@
+C:\Users\Admin\source\repos\Nhan_solution\CMS.DATA\obj\Debug\net8.0\CMS.DATA.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\source\repos\Nhan_solution\CMS.DATA\obj\Debug\net8.0\CMS.DATA.AssemblyInfoInputs.cache
+C:\Users\Admin\source\repos\Nhan_solution\CMS.DATA\obj\Debug\net8.0\CMS.DATA.AssemblyInfo.cs
+C:\Users\Admin\source\repos\Nhan_solution\CMS.DATA\obj\Debug\net8.0\CMS.DATA.csproj.CoreCompileInputs.cache
+C:\Users\Admin\source\repos\Nhan_solution\CMS.DATA\bin\Debug\net8.0\CMS.DATA.deps.json
+C:\Users\Admin\source\repos\Nhan_solution\CMS.DATA\bin\Debug\net8.0\CMS.DATA.dll
+C:\Users\Admin\source\repos\Nhan_solution\CMS.DATA\bin\Debug\net8.0\CMS.DATA.pdb
+C:\Users\Admin\source\repos\Nhan_solution\CMS.DATA\obj\Debug\net8.0\CMS.DATA.dll
+C:\Users\Admin\source\repos\Nhan_solution\CMS.DATA\obj\Debug\net8.0\refint\CMS.DATA.dll
+C:\Users\Admin\source\repos\Nhan_solution\CMS.DATA\obj\Debug\net8.0\CMS.DATA.pdb
+C:\Users\Admin\source\repos\Nhan_solution\CMS.DATA\obj\Debug\net8.0\ref\CMS.DATA.dll
