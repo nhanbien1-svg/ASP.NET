@@ -3,12 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{77467F54-A4AA-4416-BE18-CDB4840D7CAC}|CMS.DATA\\CMS.DATA.csproj|c:\\users\\admin\\source\\repos\\nhan_solution\\cms.data\\entities\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{77467F54-A4AA-4416-BE18-CDB4840D7CAC}|CMS.DATA\\CMS.DATA.csproj|solutionrelative:cms.data\\entities\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|c:\\users\\admin\\source\\repos\\nhan_solution\\cms.backend\\views\\category\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\views\\category\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|c:\\users\\admin\\source\\repos\\nhan_solution\\cms.backend\\controllers\\categorycontroller.cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\controllers\\categorycontroller.cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|c:\\users\\admin\\source\\repos\\nhan_solution\\cms.backend\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|c:\\users\\admin\\source\\repos\\nhan_solution\\cms.backend\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{77467F54-A4AA-4416-BE18-CDB4840D7CAC}|CMS.DATA\\CMS.DATA.csproj|c:\\users\\admin\\source\\repos\\nhan_solution\\cms.data\\entities\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77467F54-A4AA-4416-BE18-CDB4840D7CAC}|CMS.DATA\\CMS.DATA.csproj|solutionrelative:cms.data\\entities\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{77467F54-A4AA-4416-BE18-CDB4840D7CAC}|CMS.DATA\\CMS.DATA.csproj|c:\\users\\admin\\source\\repos\\nhan_solution\\cms.data\\entities\\categoryproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{77467F54-A4AA-4416-BE18-CDB4840D7CAC}|CMS.DATA\\CMS.DATA.csproj|solutionrelative:cms.data\\entities\\categoryproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{77467F54-A4AA-4416-BE18-CDB4840D7CAC}|CMS.DATA\\CMS.DATA.csproj|c:\\users\\admin\\source\\repos\\nhan_solution\\cms.data\\entities\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77467F54-A4AA-4416-BE18-CDB4840D7CAC}|CMS.DATA\\CMS.DATA.csproj|solutionrelative:cms.data\\entities\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|c:\\users\\admin\\source\\repos\\nhan_solution\\cms.backend\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -17,10 +37,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|c:\\users\\admin\\source\\repos\\nhan_solution\\cms.backend\\views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|c:\\users\\admin\\source\\repos\\nhan_solution\\cms.backend\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\OrderDetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -47,14 +63,6 @@
       "RelativeMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\models\\errorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|c:\\users\\admin\\source\\repos\\nhan_solution\\cms.backend\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{77467F54-A4AA-4416-BE18-CDB4840D7CAC}|CMS.DATA\\CMS.DATA.csproj|c:\\users\\admin\\source\\repos\\nhan_solution\\cms.data\\entities\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{77467F54-A4AA-4416-BE18-CDB4840D7CAC}|CMS.DATA\\CMS.DATA.csproj|solutionrelative:cms.data\\entities\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{77467F54-A4AA-4416-BE18-CDB4840D7CAC}|CMS.DATA\\CMS.DATA.csproj|c:\\users\\admin\\source\\repos\\nhan_solution\\cms.data\\cms.data.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{77467F54-A4AA-4416-BE18-CDB4840D7CAC}|CMS.DATA\\CMS.DATA.csproj|solutionrelative:cms.data\\cms.data.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
@@ -66,48 +74,63 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Order.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Order.cs",
-              "RelativeDocumentMoniker": "CMS.DATA\\Entities\\Order.cs",
-              "ToolTip": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Order.cs",
-              "RelativeToolTip": "CMS.DATA\\Entities\\Order.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAA3AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-15T08:05:46.442Z"
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.Backend\\Views\\Category\\Index.cshtml",
+              "RelativeDocumentMoniker": "CMS.Backend\\Views\\Category\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.Backend\\Views\\Category\\Index.cshtml*",
+              "RelativeToolTip": "CMS.Backend\\Views\\Category\\Index.cshtml*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACoAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-15T09:07:16.477Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
+              "Title": "CategoryController.cs.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.Backend\\Controllers\\CategoryController.cs.cs",
+              "RelativeDocumentMoniker": "CMS.Backend\\Controllers\\CategoryController.cs.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.Backend\\Controllers\\CategoryController.cs.cs",
+              "RelativeToolTip": "CMS.Backend\\Controllers\\CategoryController.cs.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T08:55:33.247Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "Customer.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Customer.cs",
               "RelativeDocumentMoniker": "CMS.DATA\\Entities\\Customer.cs",
               "ToolTip": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Customer.cs",
               "RelativeToolTip": "CMS.DATA\\Entities\\Customer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAApAAAAAAAAAA==",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAxwBEAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-15T08:04:57.541Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Product.cs.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Product.cs.cs",
-              "RelativeDocumentMoniker": "CMS.DATA\\Entities\\Product.cs.cs",
-              "ToolTip": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Product.cs.cs",
-              "RelativeToolTip": "CMS.DATA\\Entities\\Product.cs.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAqwB4AAAAAAAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "Category.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Category.cs",
+              "RelativeDocumentMoniker": "CMS.DATA\\Entities\\Category.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Category.cs",
+              "RelativeToolTip": "CMS.DATA\\Entities\\Category.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABYAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-15T08:04:20.428Z"
+              "WhenOpened": "2026-05-15T06:11:31.711Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "CategoryProduct.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\CategoryProduct.cs",
               "RelativeDocumentMoniker": "CMS.DATA\\Entities\\CategoryProduct.cs",
@@ -120,31 +143,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Post.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Post.cs",
-              "RelativeDocumentMoniker": "CMS.DATA\\Entities\\Post.cs",
-              "ToolTip": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Post.cs",
-              "RelativeToolTip": "CMS.DATA\\Entities\\Post.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-15T08:01:08.19Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\User.cs",
-              "RelativeDocumentMoniker": "CMS.DATA\\Entities\\User.cs",
-              "ToolTip": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\User.cs",
-              "RelativeToolTip": "CMS.DATA\\Entities\\User.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-15T08:00:21.691Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.Backend\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "CMS.Backend\\Views\\Shared\\_Layout.cshtml",
@@ -157,7 +156,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 8,
               "Title": "Privacy.cshtml",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.Backend\\Views\\Home\\Privacy.cshtml",
               "RelativeDocumentMoniker": "CMS.Backend\\Views\\Home\\Privacy.cshtml",
@@ -170,7 +169,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.Backend\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "CMS.Backend\\Views\\Home\\Index.cshtml",
@@ -183,7 +182,44 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 2,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.Backend\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "CMS.Backend\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.Backend\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "CMS.Backend\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T06:47:17.401Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\User.cs",
+              "RelativeDocumentMoniker": "CMS.DATA\\Entities\\User.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\User.cs",
+              "RelativeToolTip": "CMS.DATA\\Entities\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T08:00:21.691Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Post.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Post.cs",
+              "RelativeDocumentMoniker": "CMS.DATA\\Entities\\Post.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Post.cs",
+              "RelativeToolTip": "CMS.DATA\\Entities\\Post.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T08:01:08.19Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "OrderDetail.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\OrderDetail.cs",
               "RelativeDocumentMoniker": "CMS.DATA\\Entities\\OrderDetail.cs",
@@ -196,7 +232,31 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Product.cs.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Product.cs.cs",
+              "RelativeDocumentMoniker": "CMS.DATA\\Entities\\Product.cs.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Product.cs.cs",
+              "RelativeToolTip": "CMS.DATA\\Entities\\Product.cs.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAqwB4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T08:04:20.428Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 10,
+              "Title": "Order.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Order.cs",
+              "RelativeDocumentMoniker": "CMS.DATA\\Entities\\Order.cs",
+              "ToolTip": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Order.cs",
+              "RelativeToolTip": "CMS.DATA\\Entities\\Order.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T08:05:46.442Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "ErrorViewModel.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.Backend\\Models\\ErrorViewModel.cs",
               "RelativeDocumentMoniker": "CMS.Backend\\Models\\ErrorViewModel.cs",
@@ -208,31 +268,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.Backend\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "CMS.Backend\\Controllers\\HomeController.cs",
-              "ToolTip": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.Backend\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "CMS.Backend\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-15T06:47:17.401Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Category.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Category.cs",
-              "RelativeDocumentMoniker": "CMS.DATA\\Entities\\Category.cs",
-              "ToolTip": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\Entities\\Category.cs",
-              "RelativeToolTip": "CMS.DATA\\Entities\\Category.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAAmwCAAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-15T06:11:31.711Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 15,
               "Title": "CMS.DATA.csproj",
               "DocumentMoniker": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\CMS.DATA.csproj",
               "RelativeDocumentMoniker": "CMS.DATA\\CMS.DATA.csproj",
