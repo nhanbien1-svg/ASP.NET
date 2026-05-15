@@ -1,10 +1,10 @@
 ﻿/*
- * Sinh vien
- * Ma sinh vien:
- * Lop ccq2311E
- * Ngay tao:
- * Mo ta
- * Damh muc
+ * Sinh viên: Biện Văn Nhân
+ * Mã sinh viên:2123110177
+ * Lớp CCQ2311E
+ * Ngày tạo:15/05/2026
+ * Mô tả:
+ * Danh mục:
  
  
  
