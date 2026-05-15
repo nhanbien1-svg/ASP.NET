@@ -36,3 +36,4 @@ C:\Users\Admin\source\repos\Nhan_solution\CMS.Backend\obj\Debug\net8.0\refint\CM
 C:\Users\Admin\source\repos\Nhan_solution\CMS.Backend\obj\Debug\net8.0\CMS.Backend.pdb
 C:\Users\Admin\source\repos\Nhan_solution\CMS.Backend\obj\Debug\net8.0\CMS.Backend.genruntimeconfig.cache
 C:\Users\Admin\source\repos\Nhan_solution\CMS.Backend\obj\Debug\net8.0\ref\CMS.Backend.dll
+C:\Users\Admin\source\repos\Nhan_solution\CMS.Backend\obj\Debug\net8.0\CMS.Backend.sourcelink.json

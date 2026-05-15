@@ -9,3 +9,4 @@ C:\Users\Admin\source\repos\Nhan_solution\CMS.DATA\obj\Debug\net8.0\CMS.DATA.dll
 C:\Users\Admin\source\repos\Nhan_solution\CMS.DATA\obj\Debug\net8.0\refint\CMS.DATA.dll
 C:\Users\Admin\source\repos\Nhan_solution\CMS.DATA\obj\Debug\net8.0\CMS.DATA.pdb
 C:\Users\Admin\source\repos\Nhan_solution\CMS.DATA\obj\Debug\net8.0\ref\CMS.DATA.dll
+C:\Users\Admin\source\repos\Nhan_solution\CMS.DATA\obj\Debug\net8.0\CMS.DATA.sourcelink.json
