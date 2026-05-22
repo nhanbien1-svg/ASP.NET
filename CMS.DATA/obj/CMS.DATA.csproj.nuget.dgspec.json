@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\CMS.DATA.csproj": {}
+    "D:\\BienVanNhan\\ASP.NET\\CMS.DATA\\CMS.DATA.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\CMS.DATA.csproj": {
+    "D:\\BienVanNhan\\ASP.NET\\CMS.DATA\\CMS.DATA.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\CMS.DATA.csproj",
+        "projectUniqueName": "D:\\BienVanNhan\\ASP.NET\\CMS.DATA\\CMS.DATA.csproj",
         "projectName": "CMS.DATA",
-        "projectPath": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\CMS.DATA.csproj",
+        "projectPath": "D:\\BienVanNhan\\ASP.NET\\CMS.DATA\\CMS.DATA.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\source\\repos\\Nhan_solution\\CMS.DATA\\obj\\",
+        "outputPath": "D:\\BienVanNhan\\ASP.NET\\CMS.DATA\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -49,6 +49,24 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.23, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

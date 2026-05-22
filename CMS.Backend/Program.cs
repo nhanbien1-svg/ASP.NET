@@ -1,9 +1,16 @@
+﻿using Microsoft.EntityFrameworkCore;
+using CMS.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 var app = builder.Build();
+// Đăng ký DbContext vào hệ thống
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
