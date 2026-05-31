@@ -17,45 +17,45 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = CMS.Backend
 build_property.RootNamespace = CMS.Backend
-build_property.ProjectDir = D:\BienVanNhan\ASP.NET\CMS.Backend\
+build_property.ProjectDir = D:\asp\nhanbien1-svg\ASP.NET\CMS.Backend\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\BienVanNhan\ASP.NET\CMS.Backend
+build_property.MSBuildProjectDirectory = D:\asp\nhanbien1-svg\ASP.NET\CMS.Backend
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/BienVanNhan/ASP.NET/CMS.Backend/Views/Category/Index.cshtml]
+[D:/asp/nhanbien1-svg/ASP.NET/CMS.Backend/Views/Category/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/BienVanNhan/ASP.NET/CMS.Backend/Views/Home/Index.cshtml]
+[D:/asp/nhanbien1-svg/ASP.NET/CMS.Backend/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/BienVanNhan/ASP.NET/CMS.Backend/Views/Home/Privacy.cshtml]
+[D:/asp/nhanbien1-svg/ASP.NET/CMS.Backend/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/BienVanNhan/ASP.NET/CMS.Backend/Views/Shared/Error.cshtml]
+[D:/asp/nhanbien1-svg/ASP.NET/CMS.Backend/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/BienVanNhan/ASP.NET/CMS.Backend/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/asp/nhanbien1-svg/ASP.NET/CMS.Backend/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/BienVanNhan/ASP.NET/CMS.Backend/Views/_ViewImports.cshtml]
+[D:/asp/nhanbien1-svg/ASP.NET/CMS.Backend/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/BienVanNhan/ASP.NET/CMS.Backend/Views/_ViewStart.cshtml]
+[D:/asp/nhanbien1-svg/ASP.NET/CMS.Backend/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/BienVanNhan/ASP.NET/CMS.Backend/Views/Shared/_Layout.cshtml]
+[D:/asp/nhanbien1-svg/ASP.NET/CMS.Backend/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-6xux1byctq
