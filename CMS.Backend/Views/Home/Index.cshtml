@@ -1,8 +1,56 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<CMS.Data.Entities.Post>
+
+@{
+    ViewData["Title"] = "Trang Chủ - Cập Nhật Tin Tức";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome_Biện Văn Nhân_Buổi 01 Thực hành</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mb-5 mt-3">
+    <h1 class="display-4 fw-bold text-primary">Welcome_Biện Văn Nhân_Buổi 01 Thực hành</h1>
+    <p class="fs-5 text-muted">Learn about <a href="https://learn.microsoft.com/aspnet/core" class="text-decoration-none">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4 text-danger fw-bold">🔥 TIN TỨC MỚI NHẤT</h2>
+    <hr style="width: 100px; margin: 0 auto 40px auto; border-top: 3px solid red;" />
+
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            // Vòng lặp duyệt qua đúng 3 bài viết lấy từ Controller
+            foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm h-100 border-0">
+                        <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://via.placeholder.com/350x200?text=No+Image" : item.ImageUrl)"
+                             class="card-img-top" alt="Thumbnail" style="height: 200px; object-fit: cover;">
+
+                        <div class="card-body">
+                            <span class="badge bg-primary mb-2">@item.Category?.Name</span>
+
+                            <h5 class="card-title fw-bold text-dark" style="-webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; white-space: normal;">
+                                @item.Title
+                            </h5>
+
+                            <p class="card-text text-muted" style="-webkit-line-clamp: 3; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; white-space: normal;">
+                                @item.Content
+                            </p>
+
+                            <a href="/Post/Details/@item.Id" class="btn btn-outline-danger btn-sm mt-2">Đọc tiếp</a>
+                        </div>
+
+                        <div class="card-footer bg-transparent text-muted small border-0 pt-0">
+                            <hr class="mt-0 mb-2">
+                            <i class="bi bi-calendar3"></i> Ngày đăng: @item.CreatedDate.ToString("dd/MM/yyyy")
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center text-muted fs-5">
+                <p>Hiện tại hệ thống chưa có bài viết nào được đăng tải.</p>
+            </div>
+        }
+    </div>
 </div>

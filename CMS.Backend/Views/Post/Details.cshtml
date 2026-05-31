@@ -1,0 +1,42 @@
+﻿@model CMS.Data.Entities.Post
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container mt-4" style="max-width: 800px;">
+    <div class="mb-4">
+        <a href="@Url.Action("Index", "Post", new { id = Model.CategoryId })" class="btn btn-outline-secondary btn-sm shadow-sm">
+            ← Quay lại danh mục: <strong>@Model.Category?.Name</strong>
+        </a>
+    </div>
+
+    <article class="blog-post">
+        <h1 class="display-5 fw-bold text-dark mb-3">@Model.Title</h1>
+
+        <div class="d-flex align-items-center text-muted small mb-4 pb-3 border-bottom">
+            <span class="me-3">
+                📅 Lên bài: <strong>@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</strong>
+            </span>
+            <span>
+                📁 Chuyên mục: <span class="badge bg-primary text-wrap">@Model.Category?.Name</span>
+            </span>
+        </div>
+
+        <div class="post-content lh-lg fs-5 text-secondary justify-content-center">
+            @* Trường hợp 1: Nếu nội dung trong DB của bạn là chữ thuần túy (Plain Text) *@
+            @Model.Content
+
+            @* Trường hợp 2: Nếu sau này bạn dùng CKEditor/TinyMCE để viết bài có ảnh, định dạng đậm nhạt (HTML Rich Text) 
+               thì hãy xóa dòng @Model.Content ở trên đi và mở bỏ dấu chú thích của dòng dưới này ra nhé:
+            *@
+            @* @Html.Raw(Model.Content) *@
+        </div>
+    </article>
+
+    <div class="mt-5 pt-4 border-top text-center">
+        <a href="@Url.Action("Index", "Post")" class="btn btn-secondary shadow-sm">
+            Xem tất cả bài viết khác
+        </a>
+    </div>
+</div>

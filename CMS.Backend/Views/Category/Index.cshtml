@@ -1,43 +1,56 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h1>Index</h1>
-@using CMS.DATA.Entities
+﻿@using CMS.Data.Entities
 @model IEnumerable<Category>
 
 @{
     ViewData["Title"] = "Danh sách danh mục";
 }
 
-<h2 class="text-primary">DANH SÁCH DANH MỤC (DỮ LIỆU MẪU)</h2>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="text-primary m-0">DANH SÁCH DANH MỤC</h2>
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr class="table-dark">
-            <th>ID</th>
-            <th>Tên danh mục</th>
-            <th>Mô tả</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null && Model.Any())
-        {
-            foreach (var item in Model)
+        <a asp-action="Create" class="btn btn-success">
+            <i class="purple-plus-icon"></i> Tải/Thêm danh mục mới
+        </a>
+    </div>
+
+    <table class="table table-bordered table-striped align-middle">
+        <thead>
+            <tr class="table-dark text-center">
+                <th style="width: 10%;">ID</th>
+                <th style="width: 30%;">Tên danh mục</th>
+                <th style="width: 40%;">Mô tả</th>
+                <th style="width: 20%;">Chức năng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">@item.Id</td>
+                        <td>@item.Name</td>
+                        <td>@item.Description</td>
+                        <td class="text-center">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm me-2">
+                                Sửa
+                            </a>
+
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm"
+                               onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục &quot;@item.Name&quot; không?');">
+                                Xóa
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
             {
                 <tr>
-                    <td>@item.Id</td>
-                    <td>@item.Name</td>
-                    <td>@item.Description</td>
+                    <td colspan="4" class="text-center text-muted">Không có dữ liệu hiển thị</td>
                 </tr>
             }
-        }
-        else
-        {
-            <tr>
-                <td colspan="3" class="text-center">Không có dữ liệu hiển thị</td>
-            </tr>
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
