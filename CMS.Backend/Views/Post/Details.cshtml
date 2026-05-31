@@ -1,42 +1,61 @@
 ﻿@model CMS.Data.Entities.Post
 
 @{
+    Layout = "_LayoutAdmin";
     ViewData["Title"] = Model.Title;
 }
 
-<div class="container mt-4" style="max-width: 800px;">
-    <div class="mb-4">
-        <a href="@Url.Action("Index", "Post", new { id = Model.CategoryId })" class="btn btn-outline-secondary btn-sm shadow-sm">
-            ← Quay lại danh mục: <strong>@Model.Category?.Name</strong>
+<div class="container mt-4" style="max-width: 900px;">
+    <div class="mb-4 d-flex justify-content-between align-items-center">
+        <a asp-action="Index" asp-route-id="@Model.CategoryId" class="btn btn-outline-secondary btn-sm shadow-sm">
+            <i class="bi bi-arrow-left"></i> Quay lại danh mục: <strong>@(Model.Category?.Name ?? "Chưa phân loại")</strong>
         </a>
     </div>
 
-    <article class="blog-post">
+    <article class="bg-white p-4 p-md-5 rounded shadow-sm border">
         <h1 class="display-5 fw-bold text-dark mb-3">@Model.Title</h1>
 
         <div class="d-flex align-items-center text-muted small mb-4 pb-3 border-bottom">
-            <span class="me-3">
-                📅 Lên bài: <strong>@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</strong>
+            <span class="me-4">
+                <i class="bi bi-calendar3"></i> Đăng ngày: <strong>@Model.CreatedDate.ToString("dd/MM/yyyy")</strong>
             </span>
             <span>
-                📁 Chuyên mục: <span class="badge bg-primary text-wrap">@Model.Category?.Name</span>
+                <i class="bi bi-folder-fill"></i> Chuyên mục:
+                <span class="badge bg-primary rounded-pill px-3">@(Model.Category?.Name ?? "Chưa phân loại")</span>
             </span>
         </div>
 
-        <div class="post-content lh-lg fs-5 text-secondary justify-content-center">
-            @* Trường hợp 1: Nếu nội dung trong DB của bạn là chữ thuần túy (Plain Text) *@
-            @Model.Content
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <div class="mb-4 text-center">
+                <img src="@Model.ImageUrl" class="img-fluid rounded shadow-sm" alt="@Model.Title" style="max-height: 450px; width: 100%; object-fit: cover;">
+            </div>
+        }
 
-            @* Trường hợp 2: Nếu sau này bạn dùng CKEditor/TinyMCE để viết bài có ảnh, định dạng đậm nhạt (HTML Rich Text) 
-               thì hãy xóa dòng @Model.Content ở trên đi và mở bỏ dấu chú thích của dòng dưới này ra nhé:
+        <div class="post-content lh-lg fs-5 text-secondary">
+            @* CHÚ Ý: 
+                - Dùng @Model.Content nếu bạn nhập văn bản thô.
+                - Dùng @Html.Raw(Model.Content) nếu bạn dùng trình soạn thảo văn bản HTML (CKEditor/TinyMCE).
+                Mình để sẵn HTML.Raw vì đây là tiêu chuẩn cho hệ thống CMS.
             *@
-            @* @Html.Raw(Model.Content) *@
+            @Html.Raw(Model.Content?.Replace("\n", "<br/>"))
         </div>
     </article>
 
     <div class="mt-5 pt-4 border-top text-center">
-        <a href="@Url.Action("Index", "Post")" class="btn btn-secondary shadow-sm">
-            Xem tất cả bài viết khác
+        <a asp-action="Index" class="btn btn-primary px-4 shadow-sm">
+            <i class="bi bi-grid-3x3-gap-fill"></i> Xem tất cả bài viết khác
         </a>
     </div>
 </div>
+
+<style>
+    .post-content {
+        word-wrap: break-word;
+        color: #4a4a4a;
+    }
+
+        .post-content p {
+            margin-bottom: 1.5rem;
+        }
+</style>
