@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CMS.Data; // Đảm bảo namespace chứa ApplicationDbContext
-using CMS.DATA.Entities; // Namespace chứa thực thể User của bạn
-using Microsoft.AspNetCore.Identity; // Cần thiết để sử dụng PasswordHasher
+using CMS.Data;
+using CMS.DATA.Entities;
+using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,55 +12,87 @@ namespace CMS.Backend.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        // Tiêm (Inject) DbContext vào Controller
         public UserController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // 1. DANH SÁCH (Index)
+        // 1. GET: Danh sách thành viên
         public async Task<IActionResult> Index()
         {
-            // Lấy dữ liệu thật từ Database
-            var users = await _context.Users.ToListAsync();
-            return View(users);
+            return View(await _context.Users.ToListAsync());
         }
 
-        // 2. FORM THÊM MỚI (GET)
-        [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
-        }
+        // 2. GET: Form tạo mới
+        public IActionResult Create() => View();
 
-        // 3. XỬ LÝ LƯU DỮ LIỆU (POST)
+        // 3. POST: Xử lý lưu thành viên mới
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(User user)
         {
             if (ModelState.IsValid)
             {
-                // Kiểm tra trùng lặp UserName (tránh lỗi khóa chính hoặc logic)
-                if (_context.Users.Any(u => u.UserName == user.UserName))
+                if (await _context.Users.AnyAsync(u => u.UserName == user.UserName))
                 {
                     ModelState.AddModelError("UserName", "Tên đăng nhập này đã tồn tại!");
                     return View(user);
                 }
 
-                // MÃ HÓA MẬT KHẨU (Bắt buộc để bảo mật)
-                // PasswordHasher sẽ chuyển mật khẩu dạng text thành chuỗi mã hóa an toàn
                 var hasher = new PasswordHasher<User>();
                 user.PasswordHash = hasher.HashPassword(user, user.PasswordHash);
 
-                // Lưu vào Database
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction(nameof(Index));
             }
-
-            // Nếu model không hợp lệ, trả về form kèm lỗi
             return View(user);
+        }
+
+        // 4. GET: Form sửa thông tin
+        public async Task<IActionResult> Edit(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null) return NotFound();
+            return View(user);
+        }
+
+        // 5. POST: Xử lý cập nhật thông tin
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(User model, string NewPassword)
+        {
+            var existingUser = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == model.Id);
+
+            if (existingUser == null) return NotFound();
+
+            if (!string.IsNullOrEmpty(NewPassword))
+            {
+                var hasher = new PasswordHasher<User>();
+                model.PasswordHash = hasher.HashPassword(model, NewPassword);
+            }
+            else
+            {
+                model.PasswordHash = existingUser.PasswordHash;
+            }
+
+            _context.Users.Update(model);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // 6. POST: Xóa thành viên (Bắt buộc dùng POST để bảo mật)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

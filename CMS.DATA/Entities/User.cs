@@ -1,13 +1,14 @@
-﻿
-namespace CMS.DATA.Entities
+﻿namespace CMS.DATA.Entities
 {
     public class User
     {
         public int Id { get; set; }
         public string UserName { get; set; }
-        public string Password { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
-        public string Role { get; set; } // Quản trị viên hoặc biên tập viên
+        public string Role { get; set; }
+
+        // Thay thế 'Password' bằng 'PasswordHash'
+        public string PasswordHash { get; set; }
     }
 }

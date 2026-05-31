@@ -65,10 +65,12 @@
                                     <i class="bi bi-pencil-square"></i> Sửa
                                 </a>
 
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1" title="Xóa thành viên"
-                                   onclick="return confirm('Bạn có chắc chắn muốn xóa thành viên &quot;@item.UserName&quot; không?');">
-                                    <i class="bi bi-trash"></i> Xóa
-                                </a>
+                                <form asp-action="Delete" asp-route-id="@item.Id" method="post"
+                                      onsubmit="return confirm('Bạn có chắc chắn muốn xóa thành viên &quot;@item.UserName&quot; không?');">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1" title="Xóa thành viên">
+                                        <i class="bi bi-trash"></i> Xóa
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>
