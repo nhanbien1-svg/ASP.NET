@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\BienVanNhan\\ASP.NET\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|d:\\bienvannhan\\asp.net\\cms.backend\\controllers\\categorycontroller.cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\controllers\\categorycontroller.cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\BienVanNhan\\ASP.NET\\CMS.DATA\\Migrations\\20260522071331_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:CMS.DATA\\Migrations\\20260522071331_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -29,10 +33,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|d:\\bienvannhan\\asp.net\\cms.backend\\views\\category\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\views\\category\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|d:\\bienvannhan\\asp.net\\cms.backend\\controllers\\categorycontroller.cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\controllers\\categorycontroller.cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|d:\\bienvannhan\\asp.net\\cms.backend\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -94,11 +94,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "20260522071331_InitialCreate.cs",
               "DocumentMoniker": "D:\\BienVanNhan\\ASP.NET\\CMS.DATA\\Migrations\\20260522071331_InitialCreate.cs",
               "RelativeDocumentMoniker": "CMS.DATA\\Migrations\\20260522071331_InitialCreate.cs",
@@ -111,7 +111,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\BienVanNhan\\ASP.NET\\CMS.Backend\\Program.cs",
               "RelativeDocumentMoniker": "CMS.Backend\\Program.cs",
@@ -124,7 +124,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\BienVanNhan\\ASP.NET\\CMS.Backend\\appsettings.json",
               "RelativeDocumentMoniker": "CMS.Backend\\appsettings.json",
@@ -137,7 +137,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "D:\\BienVanNhan\\ASP.NET\\CMS.DATA\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "CMS.DATA\\ApplicationDbContext.cs",
@@ -150,7 +150,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "CMS.Backend",
               "DocumentMoniker": "D:\\BienVanNhan\\ASP.NET\\CMS.Backend\\CMS.Backend.csproj",
               "RelativeDocumentMoniker": "CMS.Backend\\CMS.Backend.csproj",
@@ -163,13 +163,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 0,
               "Title": "CategoryController.cs.cs",
               "DocumentMoniker": "D:\\BienVanNhan\\ASP.NET\\CMS.Backend\\Controllers\\CategoryController.cs.cs",
               "RelativeDocumentMoniker": "CMS.Backend\\Controllers\\CategoryController.cs.cs",
               "ToolTip": "D:\\BienVanNhan\\ASP.NET\\CMS.Backend\\Controllers\\CategoryController.cs.cs",
               "RelativeToolTip": "CMS.Backend\\Controllers\\CategoryController.cs.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-15T08:55:33.247Z",
               "EditorCaption": ""
@@ -254,7 +254,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "CMS.DATA.csproj",
               "DocumentMoniker": "D:\\BienVanNhan\\ASP.NET\\CMS.DATA\\CMS.DATA.csproj",
               "RelativeDocumentMoniker": "CMS.DATA\\CMS.DATA.csproj",
@@ -267,7 +267,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\BienVanNhan\\ASP.NET\\CMS.Backend\\Views\\Category\\Index.cshtml",
               "RelativeDocumentMoniker": "CMS.Backend\\Views\\Category\\Index.cshtml",
