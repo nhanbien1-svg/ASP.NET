@@ -3961,11 +3961,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\asp\\nhanbien1-svg\\ASP.NET\\CMS.DATA\\CMS.DATA.csproj",
+      "projectUniqueName": "D:\\asp\\ASP.NET\\CMS.DATA\\CMS.DATA.csproj",
       "projectName": "CMS.DATA",
-      "projectPath": "D:\\asp\\nhanbien1-svg\\ASP.NET\\CMS.DATA\\CMS.DATA.csproj",
+      "projectPath": "D:\\asp\\ASP.NET\\CMS.DATA\\CMS.DATA.csproj",
       "packagesPath": "C:\\Users\\NHAN\\.nuget\\packages\\",
-      "outputPath": "D:\\asp\\nhanbien1-svg\\ASP.NET\\CMS.DATA\\obj\\",
+      "outputPath": "D:\\asp\\ASP.NET\\CMS.DATA\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4040,5 +4040,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file D:\\asp\\ASP.NET\\CMS.DATA\\obj\\project.nuget.cache : '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0."
+    }
+  ]
 }

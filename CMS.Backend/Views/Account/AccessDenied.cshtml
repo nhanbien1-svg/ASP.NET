@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Từ chối truy cập";
+}
+
+<div class="container mt-5 text-center">
+    <div class="card p-5 shadow border-0">
+        <h1 class="text-danger"><i class="bi bi-shield-lock-fill"></i> 403 - KHÔNG CÓ QUYỀN TRUY CẬP</h1>
+        <p class="lead mt-3">Bạn không có đủ quyền hạn để xem trang này. Vui lòng liên hệ quản trị viên.</p>
+        <div class="mt-4">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Quay lại Bảng điều khiển</a>
+        </div>
+    </div>
+</div>

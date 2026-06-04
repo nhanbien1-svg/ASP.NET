@@ -45,17 +45,18 @@
                         </td>
 
                         <td class="text-center">
-                            @if (!string.IsNullOrEmpty(item.Role) && item.Role.Contains("Quản trị"))
+                            @* ĐÃ SỬA LỖI: So sánh khớp với value "Admin" và "Editor" từ CSDL *@
+                            @if (!string.IsNullOrEmpty(item.Role) && item.Role == "Admin")
                             {
-                                <span class="badge bg-danger-subtle text-danger px-2.5 py-1.5 rounded border border-danger-subtle">Quản trị viên</span>
+                                <span class="badge bg-danger text-white px-2 py-1 rounded">Quản trị viên</span>
                             }
-                            else if (!string.IsNullOrEmpty(item.Role) && item.Role.Contains("biên tập"))
+                            else if (!string.IsNullOrEmpty(item.Role) && item.Role == "Editor")
                             {
-                                <span class="badge bg-warning-subtle text-warning px-2.5 py-1.5 rounded border border-warning-subtle">Biên tập viên</span>
+                                <span class="badge bg-warning text-dark px-2 py-1 rounded">Biên tập viên</span>
                             }
                             else
                             {
-                                <span class="badge bg-primary-subtle text-primary px-2.5 py-1.5 rounded border border-primary-subtle">@item.Role</span>
+                                <span class="badge bg-secondary text-white px-2 py-1 rounded">@item.Role</span>
                             }
                         </td>
 

@@ -12,7 +12,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f8f9fa;
         }
-        /* Tối ưu Sidebar phong cách Dark-Mode hiện đại */
+
         .sidebar {
             min-height: 100vh;
             background-color: #1e2229;
@@ -37,7 +37,6 @@
                     border-left-color: #0d6efd;
                 }
 
-                /* Định dạng cho mục đang được chọn */
                 .sidebar a.active {
                     background-color: #0d6efd;
                     color: white;
@@ -45,7 +44,6 @@
                     font-weight: 500;
                 }
 
-        /* Nhóm tiêu đề menu */
         .menu-header {
             font-size: 0.75rem;
             text-transform: uppercase;
@@ -57,7 +55,7 @@
 
         .main-content {
             background-color: #ffffff;
-            min-height: 92vh;
+            min-height: 85vh;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.02);
         }
@@ -65,7 +63,6 @@
 </head>
 <body>
     @{
-        // Lấy tên Controller hiện tại để xử lý sáng đèn Menu tương ứng
         var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
     }
 
@@ -75,12 +72,10 @@
                 <div class="p-3 text-center border-bottom border-secondary bg-dark">
                     <h5 class="text-white mb-0 fw-bold"><i class="bi bi-cpu-fill text-info"></i> ThaiCMS Admin</h5>
                 </div>
-
                 <div class="mt-2">
                     <a asp-controller="Home" asp-action="Index" class="@(currentController == "Home" ? "active" : "")">
                         <i class="bi bi-speedometer2 text-warning"></i> Bảng điều khiển
                     </a>
-
                     <div class="menu-header">Nội dung (CMS)</div>
                     <a asp-controller="Category" asp-action="Index" class="@(currentController == "Category" ? "active" : "")">
                         <i class="bi bi-grid-1x2 text-success"></i> Danh mục tin tức
@@ -88,7 +83,6 @@
                     <a asp-controller="Post" asp-action="Index" class="@(currentController == "Post" ? "active" : "")">
                         <i class="bi bi-file-earmark-post text-info"></i> Bài viết tin tức
                     </a>
-
                     <div class="menu-header">Kinh doanh (E-Com)</div>
                     <a asp-controller="ProductCategory" asp-action="Index" class="@(currentController == "ProductCategory" ? "active" : "")">
                         <i class="bi bi-tags text-primary"></i> Danh mục sản phẩm
@@ -105,7 +99,6 @@
                     <a asp-controller="OrderDetail" asp-action="Index" class="@(currentController == "OrderDetail" ? "active" : "")">
                         <i class="bi bi-list-check text-secondary"></i> Chi tiết đơn hàng
                     </a>
-
                     <div class="menu-header">Hệ thống</div>
                     <a asp-controller="User" asp-action="Index" class="@(currentController == "User" ? "active" : "")">
                         <i class="bi bi-people-fill text-light"></i> Quản lý Thành viên
@@ -114,6 +107,23 @@
             </nav>
 
             <main class="col-md-9 col-lg-10 ms-sm-auto px-md-4 py-4">
+                <header class="d-flex justify-content-end align-items-center mb-4 bg-white p-3 shadow-sm rounded">
+                    <ul class="navbar-nav d-flex flex-row gap-3">
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link text-dark">
+                                    Chào, <strong>@User.FindFirst("FullName")?.Value</strong>
+                                    <span class="badge bg-secondary">@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</span>
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-outline-danger btn-sm mt-1" asp-controller="Account" asp-action="Logout">Đăng xuất</a>
+                            </li>
+                        }
+                    </ul>
+                </header>
+
                 <div class="p-4 main-content">
                     @RenderBody()
                 </div>

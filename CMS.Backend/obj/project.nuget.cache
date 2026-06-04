@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "yxwM7xtAHto=",
+  "dgSpecHash": "mjGwPS5tx9w=",
   "success": true,
-  "projectFilePath": "D:\\asp\\nhanbien1-svg\\ASP.NET\\CMS.Backend\\CMS.Backend.csproj",
+  "projectFilePath": "D:\\asp\\ASP.NET\\CMS.Backend\\CMS.Backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\NHAN\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\NHAN\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
@@ -157,5 +157,15 @@
     "C:\\Users\\NHAN\\.nuget\\packages\\system.threading.channels\\7.0.0\\system.threading.channels.7.0.0.nupkg.sha512",
     "C:\\Users\\NHAN\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "message": "Problem reading the cache file D:\\asp\\ASP.NET\\CMS.Backend\\obj\\project.nuget.cache : '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0.",
+      "projectPath": "D:\\asp\\ASP.NET\\CMS.Backend\\CMS.Backend.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\asp\\ASP.NET\\CMS.Backend\\CMS.Backend.csproj",
+      "targetGraphs": []
+    }
+  ]
 }

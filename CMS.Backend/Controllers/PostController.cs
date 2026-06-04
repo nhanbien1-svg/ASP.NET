@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization; // 1. THƯ VIỆN BẢO MẬT
 using CMS.Data;
 using CMS.Data.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CMS.Controllers
 {
+    [Authorize] // 2. KHÓA TOÀN BỘ CONTROLLER: Bắt buộc đăng nhập mới truy cập được
     public class PostController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -37,7 +39,7 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] // 3. CHỐNG TẤN CÔNG GIẢ MẠO
         public async Task<IActionResult> Create(Post model, IFormFile? uploadImage)
         {
             ModelState.Remove("ImageUrl");
@@ -78,16 +80,13 @@ namespace CMS.Controllers
                 return View(model);
             }
 
-            // Lấy ra bài viết hiện tại trong database
             var existingPost = await _context.Posts.FirstOrDefaultAsync(p => p.Id == model.Id);
             if (existingPost == null) return NotFound();
 
-            // Cập nhật các trường dữ liệu
             existingPost.Title = model.Title;
             existingPost.Content = model.Content;
             existingPost.CategoryId = model.CategoryId;
 
-            // Xử lý ảnh
             if (uploadImage != null && uploadImage.Length > 0)
             {
                 DeleteFile(existingPost.ImageUrl);
@@ -108,9 +107,10 @@ namespace CMS.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // 5. XÓA
+        // 5. XÓA (PHÂN QUYỀN ADMIN)
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")] // 4. PHÂN QUYỀN: Chỉ Admin mới có quyền xóa
         public async Task<IActionResult> Delete(int id)
         {
             var post = await _context.Posts.FindAsync(id);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization; // 1. BẮT BUỘC CÓ ĐỂ DÙNG BẢO MẬT
 using CMS.Data;
 using CMS.DATA.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace CMS.Backend.Controllers
 {
+    [Authorize] // 2. KHÓA TOÀN BỘ CONTROLLER: Chỉ người đã đăng nhập mới truy cập được
     public class UserController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -28,24 +30,40 @@ namespace CMS.Backend.Controllers
 
         // 3. POST: Xử lý lưu thành viên mới
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(User user)
+        [ValidateAntiForgeryToken] // Chống tấn công giả mạo (CSRF)
+        public async Task<IActionResult> Create(User user, string Password)
         {
+            if (await _context.Users.AnyAsync(u => u.UserName == user.UserName))
+            {
+                ViewBag.Error = "Tên đăng nhập này đã tồn tại!";
+                return View(user);
+            }
+
+            if (await _context.Users.AnyAsync(u => u.Email == user.Email))
+            {
+                ViewBag.Error = "Địa chỉ Email này đã được sử dụng!";
+                return View(user);
+            }
+
+            if (string.IsNullOrEmpty(Password))
+            {
+                ViewBag.Error = "Vui lòng nhập mật khẩu!";
+                return View(user);
+            }
+
+            ModelState.Remove("PasswordHash");
+
             if (ModelState.IsValid)
             {
-                if (await _context.Users.AnyAsync(u => u.UserName == user.UserName))
-                {
-                    ModelState.AddModelError("UserName", "Tên đăng nhập này đã tồn tại!");
-                    return View(user);
-                }
-
                 var hasher = new PasswordHasher<User>();
-                user.PasswordHash = hasher.HashPassword(user, user.PasswordHash);
+                user.PasswordHash = hasher.HashPassword(user, Password);
 
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Error = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
             return View(user);
         }
 
@@ -62,28 +80,37 @@ namespace CMS.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(User model, string NewPassword)
         {
-            var existingUser = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == model.Id);
-
+            var existingUser = await _context.Users.FindAsync(model.Id);
             if (existingUser == null) return NotFound();
 
-            if (!string.IsNullOrEmpty(NewPassword))
+            ModelState.Remove("PasswordHash");
+
+            if (ModelState.IsValid)
             {
-                var hasher = new PasswordHasher<User>();
-                model.PasswordHash = hasher.HashPassword(model, NewPassword);
-            }
-            else
-            {
-                model.PasswordHash = existingUser.PasswordHash;
+                existingUser.UserName = model.UserName;
+                existingUser.FullName = model.FullName;
+                existingUser.Email = model.Email;
+                existingUser.Role = model.Role;
+
+                if (!string.IsNullOrEmpty(NewPassword))
+                {
+                    var hasher = new PasswordHasher<User>();
+                    existingUser.PasswordHash = hasher.HashPassword(existingUser, NewPassword);
+                }
+
+                _context.Users.Update(existingUser);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
 
-            _context.Users.Update(model);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            ViewBag.Error = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+            return View(model);
         }
 
-        // 6. POST: Xóa thành viên (Bắt buộc dùng POST để bảo mật)
+        // 6. POST: Xóa thành viên (CHỈ ADMIN MỚI ĐƯỢC PHÉP)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")] // 3. PHÂN QUYỀN: Chỉ Admin mới xóa được thành viên
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var user = await _context.Users.FindAsync(id);
