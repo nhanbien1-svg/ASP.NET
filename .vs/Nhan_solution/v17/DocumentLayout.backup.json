@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "D:\\asp\\ASP.NET\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|d:\\asp\\asp.net\\cms.backend\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|d:\\asp\\asp.net\\cms.backend\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|d:\\asp\\asp.net\\cms.backend\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|solutionrelative:cms.backend\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8FB22ADE-DB9B-41F4-9F02-D6A9DE9BD794}|CMS.Backend\\CMS.Backend.csproj|d:\\asp\\asp.net\\cms.backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -98,7 +98,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -106,13 +106,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "AccountController.cs",
               "DocumentMoniker": "D:\\asp\\ASP.NET\\CMS.Backend\\Controllers\\AccountController.cs",
               "RelativeDocumentMoniker": "CMS.Backend\\Controllers\\AccountController.cs",
-              "ToolTip": "D:\\asp\\ASP.NET\\CMS.Backend\\Controllers\\AccountController.cs*",
-              "RelativeToolTip": "CMS.Backend\\Controllers\\AccountController.cs*",
-              "ViewState": "AgIAACcAAAAAAAAAAAAwwGYAAAABAAAAAAAAAA==",
+              "ToolTip": "D:\\asp\\ASP.NET\\CMS.Backend\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "CMS.Backend\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-06-05T05:43:12.355Z",
               "EditorCaption": ""
@@ -131,12 +131,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "HomeController.cs",
               "DocumentMoniker": "D:\\asp\\ASP.NET\\CMS.Backend\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "CMS.Backend\\Controllers\\HomeController.cs",
-              "ToolTip": "D:\\asp\\ASP.NET\\CMS.Backend\\Controllers\\HomeController.cs*",
-              "RelativeToolTip": "CMS.Backend\\Controllers\\HomeController.cs*",
+              "ToolTip": "D:\\asp\\ASP.NET\\CMS.Backend\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "CMS.Backend\\Controllers\\HomeController.cs",
               "ViewState": "AgIAAAwAAAAAAAAAAAAAAEcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-15T06:47:17.401Z",
