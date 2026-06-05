@@ -18,7 +18,6 @@ public class AccountController : Controller
         _context = context;
     }
 
-    // 1. Giao diện Đăng nhập
     [HttpGet]
     public IActionResult Login(string returnUrl = null)
     {
@@ -26,7 +25,6 @@ public class AccountController : Controller
         return View();
     }
 
-    // 2. Xử lý Logic Đăng nhập
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(string username, string password, string returnUrl = null)
@@ -34,22 +32,42 @@ public class AccountController : Controller
         returnUrl ??= Request.Query["ReturnUrl"];
         ViewData["ReturnUrl"] = returnUrl;
 
+        // =================================================================
+        // ĐOẠN CODE TEST NHANH (BYPASS DATABASE) - DÙNG ĐỂ TÌM LỖI
+        // =================================================================
+        if (username == "admin" && password == "123456")
+        {
+            var testClaims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, "admin"),
+                new Claim(ClaimTypes.NameIdentifier, "999"),
+                new Claim(ClaimTypes.Role, "Admin"),
+                new Claim("FullName", "Quản Trị Viên (Test)")
+            };
+            var testIdentity = new ClaimsIdentity(testClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(testIdentity), new AuthenticationProperties { IsPersistent = true });
+
+            return RedirectToAction("Index", "Home");
+        }
+        // =================================================================
+
+        // 1. Tìm kiếm user trong cơ sở dữ liệu
         var user = _context.Users.FirstOrDefault(u => u.UserName == username);
 
         if (user != null)
         {
+            // 2. Kiểm tra mật khẩu
             var passwordHasher = new PasswordHasher<User>();
             var result = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
 
             if (result == PasswordVerificationResult.Success)
             {
-                // THÊM ĐẦY ĐỦ CLAIMS ĐỂ DÙNG TRÊN LAYOUT
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Role, user.Role ?? "Thành viên"),
-                    new Claim("FullName", user.FullName ?? user.UserName) // Đã thêm FullName
+                    new Claim("FullName", user.FullName ?? user.UserName)
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -72,14 +90,12 @@ public class AccountController : Controller
         return View();
     }
 
-    // 3. Xử lý Đăng xuất
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToAction("Login", "Account");
     }
 
-    // 4. Xử lý trang từ chối quyền (Access Denied)
     [HttpGet]
     public IActionResult AccessDenied()
     {
