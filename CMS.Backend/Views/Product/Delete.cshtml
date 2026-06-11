@@ -1,0 +1,53 @@
+﻿@model CMS.Data.Entities.Product
+
+@{
+    ViewData["Title"] = "Xóa sản phẩm";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-danger">
+        <div class="card-header bg-danger text-white">
+            <h4 class="mb-0"><i class="bi bi-trash"></i> Xóa sản phẩm</h4>
+        </div>
+        <div class="card-body">
+            <h5 class="text-danger">Bạn có chắc chắn muốn xóa sản phẩm này vĩnh viễn?</h5>
+            <hr />
+
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="@Model.ImageUrl" class="img-fluid rounded border p-2" style="max-height: 200px;" alt="Product Image" />
+                    }
+                    else
+                    {
+                        <div class="bg-light p-5 border rounded text-muted">Không có ảnh</div>
+                    }
+                </div>
+                <div class="col-md-8">
+                    <dl class="row">
+                        <dt class="col-sm-4">Tên sản phẩm</dt>
+                        <dd class="col-sm-8"><strong>@Model.Name</strong></dd>
+
+                        <dt class="col-sm-4">Danh mục</dt>
+                        <dd class="col-sm-8">@(Model.CategoryProduct?.Name ?? "Chưa phân loại")</dd>
+
+                        <dt class="col-sm-4">Giá</dt>
+                        <dd class="col-sm-8">@Model.Price.ToString("N0") VNĐ</dd>
+
+                        <dt class="col-sm-4">Số lượng</dt>
+                        <dd class="col-sm-8">@Model.StockQuantity</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <form asp-action="Delete" class="mt-4">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger px-4">
+                    <i class="bi bi-trash-fill"></i> Xác nhận xóa
+                </button>
+                <a asp-action="Index" class="btn btn-secondary px-4">Quay lại</a>
+            </form>
+        </div>
+    </div>
+</div>

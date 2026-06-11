@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ThaiCMS Admin Panel</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background-color: #1e2229;
+            color: #eceff2;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+            .sidebar a {
+                color: #abb4be;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 12px 20px;
+                transition: all 0.2s ease-in-out;
+                border-left: 4px solid transparent;
+            }
+
+                .sidebar a:hover {
+                    background-color: #282e38;
+                    color: #ffffff;
+                    border-left-color: #0d6efd;
+                }
+
+                .sidebar a.active {
+                    background-color: #0d6efd;
+                    color: white;
+                    border-left-color: #fff;
+                    font-weight: 500;
+                }
+
+        .menu-header {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #6c757d;
+            padding: 15px 20px 5px 20px;
+            font-weight: bold;
+        }
+
+        .main-content {
+            background-color: #ffffff;
+            min-height: 85vh;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.02);
+        }
+    </style>
+</head>
+<body>
+    @{
+        var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    }
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-3 col-lg-2 sidebar p-0 position-sticky top-0 start-0">
+                <div class="p-3 text-center border-bottom border-secondary bg-dark">
+                    <h5 class="text-white mb-0 fw-bold"><i class="bi bi-cpu-fill text-info"></i> ThaiCMS Admin</h5>
+                </div>
+                <div class="mt-2">
+                    <a asp-controller="Home" asp-action="Index" class="@(currentController == "Home" ? "active" : "")">
+                        <i class="bi bi-speedometer2 text-warning"></i> Bảng điều khiển
+                    </a>
+                    <div class="menu-header">Nội dung (CMS)</div>
+                    <a asp-controller="Category" asp-action="Index" class="@(currentController == "Category" ? "active" : "")">
+                        <i class="bi bi-grid-1x2 text-success"></i> Danh mục tin tức
+                    </a>
+                    <a asp-controller="Post" asp-action="Index" class="@(currentController == "Post" ? "active" : "")">
+                        <i class="bi bi-file-earmark-post text-info"></i> Bài viết tin tức
+                    </a>
+                    <div class="menu-header">Kinh doanh (E-Com)</div>
+                    <a asp-controller="ProductCategory" asp-action="Index" class="@(currentController == "ProductCategory" ? "active" : "")">
+                        <i class="bi bi-tags text-primary"></i> Danh mục sản phẩm
+                    </a>
+                    <a asp-controller="Product" asp-action="Index" class="@(currentController == "Product" ? "active" : "")">
+                        <i class="bi bi-box-seam text-danger"></i> Quản lý Sản phẩm
+                    </a>
+                    <a asp-controller="Customer" asp-action="Index" class="@(currentController == "Customer" ? "active" : "")">
+                        <i class="bi bi-person-bounding-box text-warning"></i> Khách hàng
+                    </a>
+                    <a asp-controller="Order" asp-action="Index" class="@(currentController == "Order" ? "active" : "")">
+                        <i class="bi bi-receipt text-success"></i> Đơn đặt hàng
+                    </a>
+                    <a asp-controller="OrderDetail" asp-action="Index" class="@(currentController == "OrderDetail" ? "active" : "")">
+                        <i class="bi bi-list-check text-secondary"></i> Chi tiết đơn hàng
+                    </a>
+                    <div class="menu-header">Hệ thống</div>
+                    <a asp-controller="User" asp-action="Index" class="@(currentController == "User" ? "active" : "")">
+                        <i class="bi bi-people-fill text-light"></i> Quản lý Thành viên
+                    </a>
+                </div>
+            </nav>
+
+            <main class="col-md-9 col-lg-10 ms-sm-auto px-md-4 py-4">
+                <header class="d-flex justify-content-end align-items-center mb-4 bg-white p-3 shadow-sm rounded">
+                    <ul class="navbar-nav d-flex flex-row gap-3">
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link text-dark">
+                                    Chào, <strong>@User.FindFirst("FullName")?.Value</strong>
+                                    <span class="badge bg-secondary">@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</span>
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-outline-danger btn-sm mt-1" asp-controller="Account" asp-action="Logout">Đăng xuất</a>
+                            </li>
+                        }
+                    </ul>
+                </header>
+
+                <div class="p-4 main-content">
+                    @RenderBody()
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
