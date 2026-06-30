@@ -1,7 +1,6 @@
 ﻿using CMS.Backend.Models;
 using CMS.Data;
 using CMS.Data.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -20,38 +19,49 @@ namespace CMS.Backend.Controllers
             _context = context;
         }
 
-        // 1. Giao diện cho người dùng (View)
-        public IActionResult Index()
+        // ==========================================
+        // 1. Giao diện cho người dùng (View của Backend)
+        // ==========================================
+        public async Task<IActionResult> Index()
         {
-            var latestPosts = _context.Posts
-                .Include(p => p.Category)
+            // ĐÃ SỬA: Dùng CategoryPost và thêm AsNoTracking để tối ưu tốc độ đọc
+            var latestPosts = await _context.Posts
+                .Include(p => p.CategoryPost)
+                .Where(p => p.IsPublished) // MỚI: Bắt buộc chỉ hiện bài đã xuất bản
                 .OrderByDescending(p => p.CreatedDate)
                 .Take(3)
-                .ToList();
+                .AsNoTracking()
+                .ToListAsync();
 
             return View(latestPosts);
         }
 
+        // ==========================================
         // 2. API cho Frontend (React) gọi dữ liệu
-        // Bạn có thể gọi đường dẫn này từ React: https://localhost:7222/Home/GetLatestPostsApi
+        // Endpoint: https://localhost:7222/Home/GetLatestPostsApi
+        // ==========================================
         [HttpGet]
-        public IActionResult GetLatestPostsApi()
+        public async Task<IActionResult> GetLatestPostsApi()
         {
-            var latestPosts = _context.Posts
-                .Include(p => p.Category)
+            var latestPosts = await _context.Posts
+                .Include(p => p.CategoryPost)
+                .Where(p => p.IsPublished) // Tránh việc React kéo nhầm bản nháp
                 .OrderByDescending(p => p.CreatedDate)
                 .Take(3)
                 .Select(p => new {
                     p.Id,
                     p.Title,
-                    p.Content,
+                    p.Slug, // MỚI: Trả về Slug để React tạo Link tĩnh chuẩn SEO
+                    p.Summary, // MỚI: Trả về Sapo thay vì Content HTML nặng nề
                     p.ImageUrl,
                     p.CreatedDate,
-                    CategoryName = p.Category != null ? p.Category.Name : "Chưa phân loại"
+                    p.ViewCount, // Trả thêm bộ đếm lượt xem
+                    CategoryName = p.CategoryPost != null ? p.CategoryPost.Name : "Chưa phân loại"
                 })
-                .ToList();
+                .ToListAsync();
 
-            return Json(latestPosts); // Trả về định dạng JSON cho React
+            // Dùng Ok() thay vì Json() để trả về HTTP Status 200 chuẩn RESTful API
+            return Ok(latestPosts);
         }
 
         public IActionResult Privacy() => View();

@@ -1,49 +1,94 @@
-﻿@model IEnumerable<CMS.DATA.Entities.User>
+﻿@model CMS.Data.Entities.User
 
 @{
     Layout = "_LayoutAdmin";
-    ViewData["Title"] = "Quản lý thành viên";
+    ViewData["Title"] = "Cập nhật thành viên";
 }
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3>DANH SÁCH THÀNH VIÊN</h3>
-        <a asp-action="Create" class="btn btn-success">
-            <i class="fas fa-plus"></i> Thêm thành viên mới
-        </a>
-    </div>
+<div class="container-fluid mt-4 mb-5">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-warning text-dark p-3 rounded-top-4">
+            <h5 class="mb-0 fw-bold"><i class="bi bi-pencil-square me-2"></i> CẬP NHẬT THÔNG TIN THÀNH VIÊN</h5>
+        </div>
+        <div class="card-body p-4 p-md-5">
 
-    <div class="card shadow">
-        <div class="card-body">
-            <table class="table table-hover table-striped">
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Tên đăng nhập</th>
-                        <th>Họ và Tên</th>
-                        <th>Email</th>
-                        <th>Vai trò</th>
-                        <th class="text-center">Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var user in Model)
-                    {
-                        <tr>
-                            <td>@user.Id</td>
-                            <td>@user.UserName</td>
-                            <td>@user.FullName</td>
-                            <td>@user.Email</td>
-                            <td><span class="badge bg-info text-dark">@user.Role</span></td>
-                            <td class="text-center">
-                                <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-outline-warning">Sửa</a>
-                                <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-sm btn-outline-danger"
-                                   onclick="return confirm('Bạn có chắc chắn muốn xóa thành viên này?')">Xóa</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> @ViewBag.Error
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <form asp-action="Edit" method="post" autocomplete="off">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="Id" />
+
+                <input type="hidden" asp-for="CreatedDate" />
+
+                <div asp-validation-summary="ModelOnly" class="text-danger small mb-3 fw-bold"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Tên đăng nhập (Username)</label>
+                        <input asp-for="UserName" class="form-control rounded-pill px-4" required />
+                        <span asp-validation-for="UserName" class="text-danger small ms-2 fw-semibold"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Đổi mật khẩu mới</label>
+                        <input type="password" name="NewPassword" class="form-control rounded-pill px-4" placeholder="Bỏ trống nếu không muốn đổi" minlength="6" />
+                        <div class="form-text small text-info ms-3 fw-semibold"><i class="bi bi-info-circle"></i> Bỏ trống ô này nếu bạn muốn giữ nguyên mật khẩu cũ.</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Họ và Tên</label>
+                        <input asp-for="FullName" class="form-control rounded-pill px-4" required />
+                        <span asp-validation-for="FullName" class="text-danger small ms-2 fw-semibold"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Địa chỉ Email</label>
+                        <input asp-for="Email" type="email" class="form-control rounded-pill px-4" required />
+                        <span asp-validation-for="Email" class="text-danger small ms-2 fw-semibold"></span>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Vai trò (Role)</label>
+                        <select asp-for="Role" class="form-select rounded-pill px-4" required>
+                            <option value="SuperAdmin">Super Admin (Toàn quyền)</option>
+                            <option value="Admin">Admin (Quản trị)</option>
+                            <option value="Editor">Biên tập viên (Chỉ đăng bài)</option>
+                        </select>
+                        <span asp-validation-for="Role" class="text-danger small ms-2 fw-semibold"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-4 mt-md-3">
+                        <div class="form-check form-switch ms-2">
+                            <input asp-for="IsActive" class="form-check-input border-secondary" type="checkbox" role="switch" id="IsActiveSwitch" style="transform: scale(1.3);">
+                            <label class="form-check-label fw-bold text-dark ms-2 pt-1" for="IsActiveSwitch">Tài khoản đang hoạt động</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-top d-flex gap-2">
+                    <button type="submit" class="btn btn-warning px-4 rounded-pill shadow-sm fw-bold">
+                        <i class="bi bi-check2-circle me-1"></i> Cập nhật thông tin
+                    </button>
+                    <a asp-action="Index" class="btn btn-light border px-4 rounded-pill fw-bold text-secondary hover-bg-secondary">
+                        Hủy & Quay lại
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

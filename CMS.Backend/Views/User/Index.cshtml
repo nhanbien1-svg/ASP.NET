@@ -1,4 +1,4 @@
-﻿@using CMS.DATA.Entities
+﻿@using CMS.Data.Entities
 @model IEnumerable<User>
 
 @{
@@ -6,86 +6,135 @@
     ViewData["Title"] = "Quản lý thành viên";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="text-dark fw-bold m-0 text-uppercase">
-        <i class="bi bi-people-fill text-primary me-2"></i>Quản lý thành viên
-    </h3>
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-dark text-uppercase m-0">
+            <i class="bi bi-people-fill text-primary me-2"></i>Quản lý thành viên
+        </h3>
+        <a asp-action="Create" class="btn btn-primary rounded-pill px-4 shadow-sm fw-semibold">
+            <i class="bi bi-person-plus-fill me-1"></i> Thêm thành viên mới
+        </a>
+    </div>
 
-    <a asp-action="Create" class="btn btn-success d-flex align-items-center gap-2 shadow-sm fw-semibold">
-        <i class="bi bi-person-plus-fill"></i> Thêm thành viên
-    </a>
-</div>
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
 
-<div class="table-responsive">
-    <table class="table table-hover align-middle border-0">
-        <thead class="table-light border-bottom">
-            <tr class="text-secondary text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">
-                <th style="width: 10%;" class="text-center">ID</th>
-                <th style="width: 30%;">Tài khoản / Họ tên</th>
-                <th style="width: 30%;">Email</th>
-                <th style="width: 15%;" class="text-center">Vai trò</th>
-                <th style="width: 15%;" class="text-center">Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model != null && Model.Any())
-            {
-                foreach (var item in Model)
-                {
-                    <tr>
-                        <td class="text-center fw-bold text-secondary">#@item.Id</td>
-
-                        <td>
-                            <div class="fw-semibold text-dark">@item.UserName</div>
-                            <small class="text-muted">@item.FullName</small>
-                        </td>
-
-                        <td>
-                            <span class="text-dark">@item.Email</span>
-                        </td>
-
-                        <td class="text-center">
-                            @* ĐÃ SỬA LỖI: So sánh khớp với value "Admin" và "Editor" từ CSDL *@
-                            @if (!string.IsNullOrEmpty(item.Role) && item.Role == "Admin")
+    <div class="card border-0 shadow-sm rounded-4 mb-5">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light text-uppercase small text-muted border-0">
+                        <tr style="letter-spacing: 0.5px;">
+                            <th class="ps-4 py-3">ID</th>
+                            <th class="py-3">Tài khoản / Họ tên</th>
+                            <th class="py-3">Liên hệ / Ngày tham gia</th>
+                            <th class="py-3 text-center">Trạng thái</th>
+                            <th class="py-3 text-center">Vai trò</th>
+                            <th class="py-3 text-center">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var user in Model)
                             {
-                                <span class="badge bg-danger text-white px-2 py-1 rounded">Quản trị viên</span>
-                            }
-                            else if (!string.IsNullOrEmpty(item.Role) && item.Role == "Editor")
-                            {
-                                <span class="badge bg-warning text-dark px-2 py-1 rounded">Biên tập viên</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary text-white px-2 py-1 rounded">@item.Role</span>
-                            }
-                        </td>
+                                // Kiểm tra xem dòng này có phải là tài khoản đang đăng nhập không
+                                bool isCurrentUser = User.Identity?.Name == user.UserName;
 
-                        <td class="text-center">
-                            <div class="d-flex justify-content-center gap-2">
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm d-flex align-items-center gap-1" title="Sửa thông tin">
-                                    <i class="bi bi-pencil-square"></i> Sửa
-                                </a>
+                                <tr>
+                                    <td class="ps-4 fw-bold text-muted">#@user.Id</td>
+                                    <td>
+                                        <div class="fw-bold text-dark">
+                                            @user.UserName
+                                            @if (isCurrentUser)
+                                            {
+                                                <span class="badge bg-success ms-1" style="font-size: 0.6rem;">Bạn</span>
+                                            }
+                                        </div>
+                                        <div class="small text-muted">@user.FullName</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-dark">@user.Email</div>
+                                        <div class="small text-muted"><i class="bi bi-clock me-1"></i> @user.CreatedDate.ToString("dd/MM/yyyy")</div>
+                                    </td>
+                                    <td class="text-center">
+                                        @if (user.IsActive)
+                                        {
+                                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1">Hoạt động</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 rounded-pill px-3 py-1">Đã khóa</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        @switch (user.Role)
+                                        {
+                                            case "SuperAdmin":
+                                                <span class="badge bg-danger rounded-pill px-3">Super Admin</span>
+                                                break;
+                                            case "Admin":
+                                                <span class="badge bg-primary rounded-pill px-3">Admin</span>
+                                                break;
+                                            case "Editor":
+                                                <span class="badge bg-warning text-dark rounded-pill px-3">Biên tập viên</span>
+                                                break;
+                                            default:
+                                                <span class="badge bg-secondary rounded-pill px-3">@user.Role</span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-outline-warning rounded-pill px-3">
+                                                <i class="bi bi-pencil-square"></i> Sửa
+                                            </a>
 
-                                <form asp-action="Delete" asp-route-id="@item.Id" method="post"
-                                      onsubmit="return confirm('Bạn có chắc chắn muốn xóa thành viên &quot;@item.UserName&quot; không?');">
-                                    <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1" title="Xóa thành viên">
-                                        <i class="bi bi-trash"></i> Xóa
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="5" class="text-center py-5 text-muted">
-                        <i class="bi bi-people fs-2 d-block mb-2 text-secondary"></i>
-                        <span>Không tìm thấy thành viên nào trong hệ thống.</span>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                                            @if (isCurrentUser)
+                                            {
+                                                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" disabled title="Không thể tự xóa chính mình">
+                                                    <i class="bi bi-trash"></i> Xóa
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <form asp-action="Delete" asp-route-id="@user.Id" method="post"
+                                                      onsubmit="return confirm('⚠️ CẢNH BÁO: Bạn chắc chắn muốn xóa thành viên &quot;@user.UserName&quot; không?');">
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                                                        <i class="bi bi-trash"></i> Xóa
+                                                    </button>
+                                                </form>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <i class="bi bi-people display-1 opacity-25 mb-3 d-block"></i>
+                                    <span>Chưa có thành viên nào trong hệ thống.</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>

@@ -6,20 +6,25 @@
 
 <div class="container-fluid mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Danh mục sản phẩm</h2>
-        <a asp-action="Create" class="btn btn-primary">
+        <div>
+            <h2 class="fw-bold mb-0">📦 Quản lý danh mục sản phẩm</h2>
+            <p class="text-muted small mt-1">Sắp xếp, phân cấp và quản lý biểu tượng của các thiết bị trong hệ thống.</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary px-4 fw-bold shadow-sm d-flex align-items-center gap-2">
             <i class="bi bi-plus-lg"></i> Thêm mới
         </a>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <table class="table table-hover align-middle">
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th>ID</th>
-                        <th>Tên danh mục</th>
-                        <th class="text-end">Thao tác</th>
+                        <th class="ps-4" style="width: 80px;">Logo</th>
+                        <th style="width: 30%;">Tên danh mục</th>
+                        <th style="width: 25%;">Cấp độ / Trực thuộc</th>
+                        <th style="width: 20%;">Mô tả</th>
+                        <th class="text-end pe-4" style="width: 15%;">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,15 +33,61 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>@item.Id</td>
-                                <td><strong>@item.Name</strong></td>
-                                <td class="text-end">
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
-                                        <i class="bi bi-pencil"></i> Sửa
-                                    </a>
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
-                                        <i class="bi bi-trash"></i> Xóa
-                                    </a>
+                                <td class="ps-4">
+                                    <div class="border bg-white rounded p-1 shadow-sm d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                        {
+                                            <img src="@item.ImageUrl" class="img-fluid" style="max-height: 100%; object-fit: contain;" alt="@item.Name" />
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small fs-6">📦</span>
+                                        }
+                                    </div>
+                                </td>
+
+                                <td>
+                                    @if (item.ParentId == null)
+                                    {
+                                        <strong class="fs-6">@item.Name</strong>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted ms-3 me-2">↳</span>
+                                        <span>@item.Name</span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (item.ParentId == null)
+                                    {
+                                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1">
+                                            Danh mục gốc
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-light text-dark border px-2 py-1">
+                                            Thuộc: @(item.ParentCategory?.Name ?? "Không rõ")
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    <span class="text-muted small text-truncate d-inline-block" style="max-width: 200px;">
+                                        @(string.IsNullOrEmpty(item.Description) ? "---" : item.Description)
+                                    </span>
+                                </td>
+
+                                <td class="text-end pe-4">
+                                    <div class="btn-group shadow-sm">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm" title="Chỉnh sửa">
+                                            <i class="bi bi-pencil"></i> Sửa
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" title="Xóa">
+                                            <i class="bi bi-trash"></i> Xóa
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         }
@@ -44,7 +95,11 @@
                     else
                     {
                         <tr>
-                            <td colspan="3" class="text-center text-muted">Chưa có danh mục nào được tạo.</td>
+                            <td colspan="5" class="text-center text-muted py-5">
+                                <div class="mb-3"><i class="bi bi-folder-x fs-1 text-secondary opacity-50"></i></div>
+                                <h5>Hệ thống chưa có danh mục nào</h5>
+                                <p class="small">Hãy bấm nút "Thêm mới" ở góc trên để tạo cây danh mục đầu tiên.</p>
+                            </td>
                         </tr>
                     }
                 </tbody>

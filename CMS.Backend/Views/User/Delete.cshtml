@@ -1,0 +1,80 @@
+﻿@model CMS.Data.Entities.User
+
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Xác nhận xóa thành viên";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-header bg-danger text-white p-4 text-center rounded-top-4">
+                    <i class="bi bi-exclamation-triangle-fill display-4 d-block mb-2"></i>
+                    <h4 class="mb-0 fw-bold text-uppercase">Xác nhận xóa thành viên</h4>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <p class="text-muted fs-5">
+                            Bạn có chắc chắn muốn xóa vĩnh viễn thành viên này không?
+                            <br><strong class="text-danger">Hành động này không thể hoàn tác!</strong>
+                        </p>
+                    </div>
+
+                    <div class="bg-light p-3 rounded-3 mb-4 border">
+                        <div class="row mb-2">
+                            <div class="col-5 text-secondary fw-bold small text-uppercase">Tên đăng nhập:</div>
+                            <div class="col-7 text-dark fw-bold">@Model.UserName</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-5 text-secondary fw-bold small text-uppercase">Họ và Tên:</div>
+                            <div class="col-7 text-dark">@Model.FullName</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-5 text-secondary fw-bold small text-uppercase">Địa chỉ Email:</div>
+                            <div class="col-7 text-dark text-break">@Model.Email</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-5 text-secondary fw-bold small text-uppercase">Quyền hạn:</div>
+                            <div class="col-7">
+                                @switch (Model.Role)
+                                {
+                                    case "SuperAdmin":
+                                        <span class="badge bg-danger rounded-pill px-3">Super Admin</span>
+                                        break;
+                                    case "Admin":
+
+                                        <span class="badge bg-primary rounded-pill px-3">Admin</span>
+                                        break;
+                                    default:
+
+                                        <span class="badge bg-secondary rounded-pill px-3">@Model.Role</span>
+                                        break;
+                                }
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 text-secondary fw-bold small text-uppercase">Ngày tham gia:</div>
+                            <div class="col-7 text-muted">@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</div>
+                        </div>
+                    </div>
+
+                    <form asp-action="Delete" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger btn-lg rounded-pill fw-bold shadow-sm">
+                                <i class="bi bi-trash3-fill me-1"></i> Xác nhận xóa vĩnh viễn
+                            </button>
+                            <a asp-action="Index" class="btn btn-light btn-lg border rounded-pill fw-bold text-secondary mt-2">
+                                Hủy bỏ & Quay lại
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

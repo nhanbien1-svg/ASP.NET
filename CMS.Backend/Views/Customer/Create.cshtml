@@ -1,0 +1,51 @@
+﻿@model CMS.Data.Entities.Customer
+@{
+    Layout = "_LayoutAdmin"; ViewData["Title"] = "Thêm Khách Hàng";
+}
+
+<div class="container-fluid mt-4 mb-5">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-primary text-white p-3 rounded-top-4">
+            <h5 class="mb-0 fw-bold"><i class="bi bi-person-plus-fill me-2"></i> THÊM KHÁCH HÀNG MỚI</h5>
+        </div>
+        <div class="card-body p-4 p-md-5">
+            <form asp-action="Create" method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Họ và Tên <span class="text-danger">*</span></label>
+                        <input asp-for="FullName" class="form-control rounded-pill px-4" required />
+                        <span asp-validation-for="FullName" class="text-danger small ms-2"></span>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Địa chỉ Email <span class="text-danger">*</span></label>
+                        <input asp-for="Email" type="email" class="form-control rounded-pill px-4" required />
+                        <span asp-validation-for="Email" class="text-danger small ms-2"></span>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Mật khẩu đăng nhập <span class="text-danger">*</span></label>
+                        <input type="password" name="RawPassword" class="form-control rounded-pill px-4" required />
+                        @Html.ValidationMessage("RawPassword", new { @class = "text-danger small ms-2" })
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Số điện thoại</label>
+                        <input asp-for="Phone" class="form-control rounded-pill px-4" />
+                    </div>
+                    <div class="col-12 mb-4">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Địa chỉ liên hệ</label>
+                        <input asp-for="Address" class="form-control rounded-pill px-4" />
+                    </div>
+                    <div class="col-12 mb-4">
+                        <div class="form-check form-switch ms-2">
+                            <input asp-for="IsActive" class="form-check-input border-secondary" type="checkbox" role="switch" checked style="transform: scale(1.3);">
+                            <label class="form-check-label fw-bold ms-2 pt-1">Kích hoạt tài khoản</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-top gap-2 d-flex">
+                    <button type="submit" class="btn btn-primary px-4 rounded-pill fw-bold shadow-sm">Lưu dữ liệu</button>
+                    <a asp-action="Index" class="btn btn-light px-4 border rounded-pill fw-bold text-secondary">Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

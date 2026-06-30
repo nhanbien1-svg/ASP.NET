@@ -5,11 +5,78 @@
 }
 
 <div class="container mt-4">
-    <h3 class="text-danger">Bạn có chắc muốn xóa danh mục "@Model.Name"?</h3>
-    <hr />
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
-        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
-    </form>
+    <div class="card shadow-sm border-danger rounded-3">
+        <div class="card-header bg-danger text-white py-3">
+            <h4 class="mb-0 fw-bold">⚠️ Cảnh báo xóa danh mục</h4>
+        </div>
+        <div class="card-body p-4">
+            <h5 class="text-danger mb-4">Bạn có chắc chắn muốn xóa danh mục <strong class="fs-4">"@Model.Name"</strong> vĩnh viễn không?</h5>
+
+            <div asp-validation-summary="All" class="text-danger fw-bold mb-3 fs-5"></div>
+
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            <tr>
+                                <th class="bg-light" style="width: 30%">Tên danh mục</th>
+                                <td class="fw-bold">@Model.Name</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Thuộc danh mục (Cha)</th>
+                                <td>
+                                    @if (Model.ParentCategory != null)
+                                    {
+                                        <span class="badge bg-info text-dark">@Model.ParentCategory.Name</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted fst-italic">Đây là danh mục gốc</span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Mô tả chi tiết</th>
+                                <td>@(string.IsNullOrEmpty(Model.Description) ? "Không có mô tả" : Model.Description)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-4 text-center d-flex flex-column align-items-center justify-content-center">
+                    <span class="fw-bold d-block mb-2">Ảnh Logo / Biểu tượng:</span>
+                    <div class="border bg-light rounded p-2 shadow-sm d-flex align-items-center justify-content-center" style="width: 140px; height: 140px;">
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <img src="@Model.ImageUrl" class="img-fluid" style="max-height: 100%; object-fit: contain;" alt="@Model.Name" />
+                        }
+                        else
+                        {
+                            <span class="text-muted small">Không có logo</span>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-warning border-warning shadow-sm">
+                <h6 class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill text-warning"></i> Lưu ý quan trọng:</h6>
+                <ul class="mb-0 small">
+                    <li>Hành động này không thể hoàn tác. File ảnh Logo vật lý trong thư mục cũng sẽ bị xóa vĩnh viễn.</li>
+                    <li>Vui lòng kiểm tra kỹ xem có sản phẩm nào đang được gắn với danh mục này không trước khi xóa để tránh lỗi mất dữ liệu sản phẩm.</li>
+                </ul>
+            </div>
+
+            <hr class="my-4 text-secondary" />
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger px-5 fw-bold py-2 shadow-sm">
+                        <i class="bi bi-trash"></i> Xác nhận xóa
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2">Hủy & Quay lại danh sách</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

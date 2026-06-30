@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace CMS.Data.Entities
 {
-
     public class CategoryProduct
     {
         [Key]
@@ -13,7 +14,15 @@ namespace CMS.Data.Entities
 
         public string? Description { get; set; }
 
-        // Quan hệ: Một danh mục có nhiều sản phẩm
+        // MỚI THÊM: Đường dẫn ảnh logo/thương hiệu của danh mục
+        public string? ImageUrl { get; set; }
+
+        // Cấu trúc cây danh mục cha - con
+        public int? ParentId { get; set; }
+
+        [ForeignKey("ParentId")]
+        public virtual CategoryProduct? ParentCategory { get; set; }
+        public virtual ICollection<CategoryProduct>? SubCategories { get; set; }
         public virtual ICollection<Product>? Products { get; set; }
     }
 }

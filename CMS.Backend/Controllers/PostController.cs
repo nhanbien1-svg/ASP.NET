@@ -1,70 +1,102 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization; // 1. THƯ VIỆN BẢO MẬT
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text.RegularExpressions;
 using CMS.Data;
 using CMS.Data.Entities;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CMS.Controllers
 {
-    [Authorize] // 2. KHÓA TOÀN BỘ CONTROLLER: Bắt buộc đăng nhập mới truy cập được
+    [Authorize(Roles = "Admin")] // Bắt buộc đăng nhập quyền Admin
     public class PostController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public PostController(ApplicationDbContext context)
+        public PostController(ApplicationDbContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
-        // 1. DANH SÁCH
+        // ==========================================
+        // 1. DANH SÁCH BÀI VIẾT
+        // ==========================================
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Posts.AsNoTracking().Include(p => p.Category).OrderByDescending(p => p.CreatedDate).ToListAsync());
+            // ĐÃ SỬA: Include CategoryPost thay vì Category
+            var posts = await _context.Posts
+                .AsNoTracking()
+                .Include(p => p.CategoryPost)
+                .OrderByDescending(p => p.CreatedDate)
+                .ToListAsync();
+            return View(posts);
         }
 
-        // 2. CHI TIẾT
-        public async Task<IActionResult> Details(int id)
+        // ==========================================
+        // 2. CHI TIẾT BÀI VIẾT (Dành cho Admin xem trước)
+        // ==========================================
+        public async Task<IActionResult> Details(int? id)
         {
-            var post = await _context.Posts.AsNoTracking().Include(p => p.Category).FirstOrDefaultAsync(p => p.Id == id);
+            if (id == null) return NotFound();
+            var post = await _context.Posts
+                .AsNoTracking()
+                .Include(p => p.CategoryPost)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
             return post == null ? NotFound() : View(post);
         }
 
-        // 3. THÊM MỚI
+        // ==========================================
+        // 3. THÊM MỚI BÀI VIẾT
+        // ==========================================
         [HttpGet]
         public IActionResult Create()
         {
-            ViewBag.CategoryList = new SelectList(_context.Categories, "Id", "Name");
+            PrepareCategoryDropdown(); // Dùng hàm tự viết để hiển thị Dropdown đẹp hơn
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken] // 3. CHỐNG TẤN CÔNG GIẢ MẠO
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Post model, IFormFile? uploadImage)
         {
-            ModelState.Remove("ImageUrl");
+            ModelState.Remove("ImageUrl"); // Bỏ qua validate vì tự xử lý logic file
+            ModelState.Remove("Slug");     // Bỏ qua validate vì hệ thống sẽ tự tạo
 
             if (ModelState.IsValid)
             {
-                if (uploadImage != null && uploadImage.Length > 0)
+                // Tự động tạo Link chuẩn SEO từ Tiêu đề
+                if (string.IsNullOrWhiteSpace(model.Slug))
+                {
+                    model.Slug = GenerateSlug(model.Title);
+                }
+
+                if (uploadImage != null)
                     model.ImageUrl = await SaveFileAsync(uploadImage);
 
+                model.CreatedDate = DateTime.Now;
                 _context.Posts.Add(model);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.CategoryList = new SelectList(_context.Categories, "Id", "Name", model.CategoryId);
+
+            PrepareCategoryDropdown(model.CategoryPostId);
             return View(model);
         }
 
-        // 4. CHỈNH SỬA
+        // ==========================================
+        // 4. CHỈNH SỬA BÀI VIẾT
+        // ==========================================
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            var post = await _context.Posts.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+            if (id == null) return NotFound();
+            var post = await _context.Posts.FindAsync(id);
             if (post == null) return NotFound();
 
-            ViewBag.CategoryList = new SelectList(_context.Categories, "Id", "Name", post.CategoryId);
+            PrepareCategoryDropdown(post.CategoryPostId);
             return View(post);
         }
 
@@ -73,73 +105,112 @@ namespace CMS.Controllers
         public async Task<IActionResult> Edit(Post model, IFormFile? uploadImage)
         {
             ModelState.Remove("ImageUrl");
+            ModelState.Remove("Slug");
 
             if (!ModelState.IsValid)
             {
-                ViewBag.CategoryList = new SelectList(_context.Categories, "Id", "Name", model.CategoryId);
+                PrepareCategoryDropdown(model.CategoryPostId);
                 return View(model);
             }
 
-            var existingPost = await _context.Posts.FirstOrDefaultAsync(p => p.Id == model.Id);
+            var existingPost = await _context.Posts.FindAsync(model.Id);
             if (existingPost == null) return NotFound();
 
+            // Cập nhật thông tin cơ bản & SEO
             existingPost.Title = model.Title;
+            existingPost.Summary = model.Summary;
             existingPost.Content = model.Content;
-            existingPost.CategoryId = model.CategoryId;
+            existingPost.IsPublished = model.IsPublished;
+            existingPost.CategoryPostId = model.CategoryPostId;
 
-            if (uploadImage != null && uploadImage.Length > 0)
+            // Cập nhật Slug nếu rỗng
+            existingPost.Slug = string.IsNullOrWhiteSpace(model.Slug) ? GenerateSlug(model.Title) : model.Slug;
+
+            // Xử lý ảnh mới đè ảnh cũ
+            if (uploadImage != null)
             {
                 DeleteFile(existingPost.ImageUrl);
                 existingPost.ImageUrl = await SaveFileAsync(uploadImage);
             }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                ModelState.AddModelError("", "Không thể lưu thay đổi vào cơ sở dữ liệu.");
-                ViewBag.CategoryList = new SelectList(_context.Categories, "Id", "Name", model.CategoryId);
-                return View(model);
-            }
-
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        // 5. XÓA (PHÂN QUYỀN ADMIN)
+        // ==========================================
+        // 5. XÓA BÀI VIẾT (Phân quyền Admin)
+        // ==========================================
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")] // 4. PHÂN QUYỀN: Chỉ Admin mới có quyền xóa
         public async Task<IActionResult> Delete(int id)
         {
             var post = await _context.Posts.FindAsync(id);
             if (post != null)
             {
-                DeleteFile(post.ImageUrl);
+                DeleteFile(post.ImageUrl); // Xóa luôn ảnh trên server cho nhẹ ổ cứng
                 _context.Posts.Remove(post);
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
         }
 
-        // --- HÀM HỖ TRỢ ---
+        // ==========================================
+        // CÁC HÀM HỖ TRỢ (HELPERS)
+        // ==========================================
+
+        // Hiển thị danh mục theo dạng: "Danh mục cha > Danh mục con"
+        private void PrepareCategoryDropdown(int? selectedId = null)
+        {
+            var categories = _context.CategoryPosts
+                .Include(c => c.ParentCategory)
+                .Select(c => new {
+                    c.Id,
+                    FullName = c.ParentId != null ? c.ParentCategory.Name + " > " + c.Name : c.Name
+                })
+                .OrderBy(c => c.FullName)
+                .ToList();
+
+            ViewBag.CategoryList = new SelectList(categories, "Id", "FullName", selectedId);
+        }
+
+        // Tự động tạo link tĩnh SEO từ Tiêu đề
+        private string GenerateSlug(string phrase)
+        {
+            string str = phrase.ToLower().Trim();
+            str = Regex.Replace(str, @"[áàảãạăắằẳẵặâấầẩẫậ]", "a");
+            str = Regex.Replace(str, @"[éèẻẽẹêếềểễệ]", "e");
+            str = Regex.Replace(str, @"[íìỉĩị]", "i");
+            str = Regex.Replace(str, @"[óòỏõọôốồổỗộơớờởỡợ]", "o");
+            str = Regex.Replace(str, @"[úùủũụưứừửữự]", "u");
+            str = Regex.Replace(str, @"[ýỳỷỹỵ]", "y");
+            str = Regex.Replace(str, @"[đ]", "d");
+            str = Regex.Replace(str, @"[^a-z0-9\s-]", "");
+            str = Regex.Replace(str, @"\s+", " ").Trim();
+            str = str.Substring(0, str.Length <= 100 ? str.Length : 100).Trim(); // Link bài viết có thể dài hơn link danh mục
+            str = Regex.Replace(str, @"\s", "-");
+            return str;
+        }
+
+        // --- CÁC HÀM HỖ TRỢ XỬ LÝ FILE (Đã đổi thư mục sang images/posts cho chuẩn) ---
         private async Task<string> SaveFileAsync(IFormFile file)
         {
-            string folder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
-            if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
-            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            using (var stream = new FileStream(Path.Combine(folder, fileName), FileMode.Create))
+            string uploadsFolder = Path.Combine(_env.WebRootPath, "images", "posts");
+            if (!Directory.Exists(uploadsFolder)) Directory.CreateDirectory(uploadsFolder);
+
+            string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
+            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
             }
-            return "/uploads/" + fileName;
+            return "/images/posts/" + uniqueFileName;
         }
 
         private void DeleteFile(string? imageUrl)
         {
             if (string.IsNullOrEmpty(imageUrl)) return;
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", imageUrl.TrimStart('/'));
+            string path = Path.Combine(_env.WebRootPath, imageUrl.TrimStart('/'));
             if (System.IO.File.Exists(path)) System.IO.File.Delete(path);
         }
     }

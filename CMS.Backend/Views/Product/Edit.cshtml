@@ -1,76 +1,109 @@
-Ôªø@model CMS.Data.Entities.Product
+@model CMS.Data.Entities.Product
 
 @{
-    ViewData["Title"] = "Ch·ªânh s·ª≠a s·∫£n ph·∫©m";
+    ViewData["Title"] = "Ch?nh s?a s?n ph?m";
 }
 
-<div class="container mt-4">
-    <div class="card shadow-sm">
-        <div class="card-header bg-warning text-dark">
-            <h4 class="mb-0">Ch·ªânh s·ª≠a s·∫£n ph·∫©m: @Model.Name</h4>
+<div class="container mt-4 mb-5">
+    <div class="card shadow-sm border-warning border-2 rounded-4">
+        <div class="card-header bg-warning text-dark py-3 rounded-top-4">
+            <h4 class="mb-0 fw-bold"><i class="bi bi-pencil-square"></i> C?p nh?t s?n ph?m: @Model.Name</h4>
         </div>
-        <div class="card-body">
+        <div class="card-body p-4 p-md-5">
+
             <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger shadow-sm rounded-3"></div>
+
                 <input type="hidden" asp-for="Id" />
                 <input type="hidden" asp-for="ImageUrl" />
+                <input type="hidden" asp-for="CreatedDate" /> <div class="row g-5">
+                    <div class="col-lg-7">
+                        <h5 class="fw-bold text-warning border-bottom pb-2 mb-4 text-dark">ThÙng tin co b?n</h5>
 
-                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        <div class="mb-4">
+                            <label asp-for="Name" class="form-label fw-bold">TÍn thi?t b?/s?n ph?m <span class="text-danger">*</span></label>
+                            <input asp-for="Name" class="form-control form-control-lg" required />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label asp-for="Name" class="control-label">T√™n s·∫£n ph·∫©m</label>
-                            <input asp-for="Name" class="form-control" />
-                            <span asp-validation-for="Name" class="text-danger"></span>
+                        <div class="mb-4">
+                            <label asp-for="CategoryProductId" class="form-label fw-bold">Thu?c danh m?c <span class="text-danger">*</span></label>
+                            <select asp-for="CategoryProductId" class="form-select form-select-lg" asp-items="ViewBag.CategoryProductId" required>
+                                <option value="">-- L?a ch?n ph‚n lo?i danh m?c --</option>
+                            </select>
+                            <span asp-validation-for="CategoryProductId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Description" class="form-label fw-bold">MÙ t? thÙng s? chi ti?t</label>
+                            <textarea asp-for="Description" class="form-control" rows="6"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3 p-3 bg-light rounded-3 border">
+                            <div class="form-check form-switch fs-5">
+                                <input class="form-check-input" type="checkbox" role="switch" asp-for="IsActive">
+                                <label class="form-check-label ms-2 fw-bold text-dark" asp-for="IsActive">
+                                    Cho phÈp hi?n th? ngay trÍn Website
+                                </label>
+                            </div>
+                            <small class="text-muted d-block mt-1 ms-5">T?t cÙng t?c n‡y d? dua s?n ph?m v‡o ch? d? t?m ?n (Ng?ng kinh doanh).</small>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label class="control-label">·∫¢nh s·∫£n ph·∫©m</label>
-                            @if (!string.IsNullOrEmpty(Model.ImageUrl))
-                            {
-                                <div class="mb-2">
-                                    <img src="@Model.ImageUrl" alt="Product Image" style="width: 100px; height: 100px; object-fit: cover; border: 1px solid #ddd; padding: 3px; border-radius: 5px;" />
+
+                    <div class="col-lg-5">
+                        <h5 class="fw-bold text-warning border-bottom pb-2 mb-4 text-dark">B·n h‡ng & HÏnh ?nh</h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-sm-6">
+                                <label asp-for="Price" class="form-label fw-bold">Gi· b·n (VN–) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input asp-for="Price" class="form-control fw-bold text-success" type="number" step="1000" min="0" value="@Convert.ToInt32(Model.Price)" required />
+                                    <span class="input-group-text fw-bold">?</span>
                                 </div>
-                            }
-                            <input type="file" name="imageFile" class="form-control" accept="image/*" />
-                            <small class="text-muted">Ch·ªçn file ƒë·ªÉ thay ƒë·ªïi ·∫£nh hi·ªán t·∫°i.</small>
+                                <span asp-validation-for="Price" class="text-danger small"></span>
+                            </div>
+                            <div class="col-sm-6">
+                                <label asp-for="StockQuantity" class="form-label fw-bold">S? lu?ng kho <span class="text-danger">*</span></label>
+                                <input asp-for="StockQuantity" class="form-control" type="number" min="0" required />
+                                <span asp-validation-for="StockQuantity" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-4 p-4 border rounded-4 bg-light text-center h-100">
+                            <label class="control-label fw-bold mb-3 d-block fs-5">?nh d?i di?n s?n ph?m</label>
+
+                            <div class="mb-3 d-flex justify-content-center">
+                                <div class="border bg-white rounded-3 p-2 shadow-sm d-flex align-items-center justify-content-center position-relative overflow-hidden" style="width: 250px; height: 250px;">
+                                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                                    {
+                                        <img id="imagePreview" src="@Model.ImageUrl" class="img-fluid" style="max-height: 100%; object-fit: contain;" alt="Current Image" />
+                                    }
+                                    else
+                                    {
+                                        <img id="imagePreview" src="https://via.placeholder.com/250?text=Chua+cÛ+?nh" class="img-fluid opacity-50" style="max-height: 100%; object-fit: contain;" alt="No Image" />
+                                    }
+                                </div>
+                            </div>
+
+                            <input type="file" name="imageFile" class="form-control" accept="image/*" id="imageInput" />
+                            <small class="text-muted mt-3 d-block text-start">
+                                ?? M?o: B? tr?ng n?u mu?n gi? l?i ?nh cu. Ch?n ?nh m?i s? t? d?ng thay th? v‡ xÛa ?nh cu trÍn server.
+                            </small>
                         </div>
                     </div>
                 </div>
 
-                <div class="form-group mb-3">
-                    <label asp-for="CategoryProductId" class="control-label">Danh m·ª•c</label>
-                    <select asp-for="CategoryProductId" class="form-control" asp-items="ViewBag.CategoryProductId">
-                        <option value="">-- Ch·ªçn danh m·ª•c --</option>
-                    </select>
-                    <span asp-validation-for="CategoryProductId" class="text-danger"></span>
-                </div>
+                <hr class="my-5 text-secondary" />
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label asp-for="Price" class="control-label">Gi√° (VNƒê)</label>
-                            <input asp-for="Price" class="form-control" type="number" step="0.01" />
-                            <span asp-validation-for="Price" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label asp-for="StockQuantity" class="control-label">S·ªë l∆∞·ª£ng</label>
-                            <input asp-for="StockQuantity" class="form-control" type="number" />
-                            <span asp-validation-for="StockQuantity" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-3">
-                    <button type="submit" class="btn btn-warning px-4">
-                        <i class="bi bi-save"></i> C·∫≠p nh·∫≠t
+                <div class="d-flex justify-content-end gap-3">
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2 fw-bold rounded-3">H?y b?</a>
+                    <button type="submit" class="btn btn-warning text-dark px-5 py-2 fw-bold rounded-3 shadow-sm d-flex align-items-center gap-2">
+                        <i class="bi bi-check-circle"></i> C?p nh?t thay d?i
                     </button>
-                    <a asp-action="Index" class="btn btn-secondary px-4">Quay l·∫°i</a>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
@@ -79,4 +112,18 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        document.getElementById('imageInput').onchange = function(evt) {
+            const [file] = this.files;
+            if (file) {
+                const preview = document.getElementById('imagePreview');
+                preview.src = URL.createObjectURL(file);
+                // Gi?i phÛng b? nh? sau khi ?nh d„ load xong
+                preview.onload = function() {
+                    URL.revokeObjectURL(preview.src);
+                }
+            }
+        };
+    </script>
 }

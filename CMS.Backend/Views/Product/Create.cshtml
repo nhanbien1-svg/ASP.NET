@@ -1,70 +1,100 @@
-Ôªø@model CMS.Data.Entities.Product
+@model CMS.Data.Entities.Product
 
 @{
-    ViewData["Title"] = "Th√™m s·∫£n ph·∫©m m·ªõi";
+    ViewData["Title"] = "ThÍm s?n ph?m m?i";
 }
 
-<div class="container mt-4">
-    <div class="card shadow-lg border-0">
-        <div class="card-header bg-primary text-white py-3">
-            <h4 class="mb-0"><i class="bi bi-plus-circle"></i> Th√™m s·∫£n ph·∫©m m·ªõi</h4>
+<div class="container mt-4 mb-5">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-primary text-white py-3 rounded-top-4">
+            <h4 class="mb-0 fw-bold"><i class="bi bi-box-seam"></i> ThÍm s?n ph?m m?i</h4>
         </div>
-        <div class="card-body p-4">
-            <form asp-action="Create" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        <div class="card-body p-4 p-md-5">
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label asp-for="Name" class="form-label fw-bold">T√™n s·∫£n ph·∫©m</label>
-                            <input asp-for="Name" class="form-control" placeholder="Nh·∫≠p t√™n s·∫£n ph·∫©m..." />
-                            <span asp-validation-for="Name" class="text-danger"></span>
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger shadow-sm rounded-3"></div>
+
+                <div class="row g-5">
+                    <div class="col-lg-7">
+                        <h5 class="fw-bold text-primary border-bottom pb-2 mb-4">ThÙng tin co b?n</h5>
+
+                        <div class="mb-4">
+                            <label asp-for="Name" class="form-label fw-bold">TÍn thi?t b?/s?n ph?m <span class="text-danger">*</span></label>
+                            <input asp-for="Name" class="form-control form-control-lg" placeholder="VÌ d?: Laptop ASUS ROG Strix G15..." required />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="CategoryProductId" class="form-label fw-bold">Thu?c danh m?c <span class="text-danger">*</span></label>
+                            <select asp-for="CategoryProductId" class="form-select form-select-lg" asp-items="ViewBag.CategoryProductId" required>
+                                <option value="">-- L?a ch?n ph‚n lo?i danh m?c --</option>
+                            </select>
+                            <span asp-validation-for="CategoryProductId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Description" class="form-label fw-bold">MÙ t? thÙng s? chi ti?t</label>
+                            <textarea asp-for="Description" class="form-control" rows="6" placeholder="Nh?p c?u hÏnh, tÌnh nang n?i b?t c?a s?n ph?m..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3 p-3 bg-light rounded-3 border">
+                            <div class="form-check form-switch fs-5">
+                                <input class="form-check-input" type="checkbox" role="switch" asp-for="IsActive" checked>
+                                <label class="form-check-label ms-2 fw-bold text-dark" asp-for="IsActive">
+                                    Cho phÈp hi?n th? ngay trÍn Website
+                                </label>
+                            </div>
+                            <small class="text-muted d-block mt-1 ms-5">T?t cÙng t?c n‡y n?u b?n ch? mu?n luu nh·p, chua mu?n kh·ch h‡ng nhÏn th?y.</small>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">·∫¢nh s·∫£n ph·∫©m</label>
-                            <input type="file" name="imageFile" class="form-control" accept="image/*" id="imageInput" />
-                            <small class="text-muted">Ch·ªçn file h√¨nh ·∫£nh (.jpg, .png...)</small>
-                            <div class="mt-2">
-                                <img id="imagePreview" src="#" alt="Xem tr∆∞·ªõc ·∫£nh" class="img-thumbnail" style="display:none; max-height: 150px;" />
+
+                    <div class="col-lg-5">
+                        <h5 class="fw-bold text-primary border-bottom pb-2 mb-4">B·n h‡ng & HÏnh ?nh</h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-sm-6">
+                                <label asp-for="Price" class="form-label fw-bold">Gi· b·n (VN–) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input asp-for="Price" class="form-control" type="number" step="1000" min="0" placeholder="0" required />
+                                    <span class="input-group-text fw-bold">?</span>
+                                </div>
+                                <span asp-validation-for="Price" class="text-danger small"></span>
+                            </div>
+                            <div class="col-sm-6">
+                                <label asp-for="StockQuantity" class="form-label fw-bold">S? lu?ng kho <span class="text-danger">*</span></label>
+                                <input asp-for="StockQuantity" class="form-control" type="number" min="0" placeholder="0" required />
+                                <span asp-validation-for="StockQuantity" class="text-danger small"></span>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="mb-3">
-                    <label asp-for="CategoryProductId" class="form-label fw-bold">Danh m·ª•c</label>
-                    <select asp-for="CategoryProductId" class="form-control" asp-items="ViewBag.CategoryProductId">
-                        <option value="">-- Ch·ªçn danh m·ª•c --</option>
-                    </select>
-                    <span asp-validation-for="CategoryProductId" class="text-danger"></span>
-                </div>
+                        <div class="form-group mb-4 p-4 border rounded-4 bg-light text-center">
+                            <label class="control-label fw-bold mb-3 d-block fs-5">?nh d?i di?n s?n ph?m</label>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label asp-for="Price" class="form-label fw-bold">Gi√° (VNƒê)</label>
-                            <input asp-for="Price" class="form-control" type="number" step="0.01" />
-                            <span asp-validation-for="Price" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label asp-for="StockQuantity" class="form-label fw-bold">S·ªë l∆∞·ª£ng</label>
-                            <input asp-for="StockQuantity" class="form-control" type="number" />
-                            <span asp-validation-for="StockQuantity" class="text-danger"></span>
+                            <div class="mb-3 d-flex justify-content-center">
+                                <div class="border bg-white rounded-3 p-2 shadow-sm d-flex align-items-center justify-content-center position-relative overflow-hidden" style="width: 250px; height: 250px;">
+                                    <img id="imagePreview" src="https://via.placeholder.com/250?text=Chua+cÛ+?nh" class="img-fluid" style="max-height: 100%; object-fit: contain;" alt="Xem tru?c" />
+                                </div>
+                            </div>
+
+                            <input type="file" name="imageFile" class="form-control" accept="image/*" id="imageInput" />
+                            <small class="text-muted mt-3 d-block text-start">
+                                ?? KÌch thu?c khuy?n ngh?: 800x800px. –?nh d?ng: JPG, PNG, WEBP.
+                            </small>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-4 text-end">
-                    <a asp-action="Index" class="btn btn-secondary px-4 me-2">Quay l·∫°i</a>
-                    <button type="submit" class="btn btn-success px-4">
-                        <i class="bi bi-save"></i> L∆∞u s·∫£n ph·∫©m
+                <hr class="my-5 text-secondary" />
+
+                <div class="d-flex justify-content-end gap-3">
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2 fw-bold rounded-3">H?y b?</a>
+                    <button type="submit" class="btn btn-primary px-5 py-2 fw-bold rounded-3 shadow-sm d-flex align-items-center gap-2">
+                        <i class="bi bi-save"></i> –ang s?n ph?m
                     </button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
@@ -75,13 +105,15 @@
     }
 
     <script>
-        // Script ƒë·ªÉ hi·ªÉn th·ªã ·∫£nh xem tr∆∞·ªõc khi upload
         document.getElementById('imageInput').onchange = function(evt) {
             const [file] = this.files;
             if (file) {
                 const preview = document.getElementById('imagePreview');
                 preview.src = URL.createObjectURL(file);
-                preview.style.display = 'block';
+                // Gi?i phÛng b? nh? sau khi ?nh d„ load xong
+                preview.onload = function() {
+                    URL.revokeObjectURL(preview.src);
+                }
             }
         };
     </script>

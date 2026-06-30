@@ -1,0 +1,79 @@
+﻿@model CMS.Data.Entities.CategoryPost
+
+@{
+    ViewData["Title"] = "Chỉnh Sửa Danh Mục Tin Tức";
+}
+
+<div class="container mt-4 mb-5" style="max-width: 800px;">
+    <div class="card shadow-sm border-warning border-2 rounded-4">
+        <div class="card-header bg-warning text-dark py-3 rounded-top-4">
+            <h4 class="card-title mb-0 fw-bold"><i class="bi bi-pencil-square"></i> CẬP NHẬT DANH MỤC TIN TỨC</h4>
+        </div>
+        <div class="card-body p-4 p-md-5 bg-light rounded-bottom-4">
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 shadow-sm"></div>
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label asp-for="Name" class="form-label fw-bold">Tên danh mục <span class="text-danger">*</span></label>
+                        <input asp-for="Name" class="form-control form-control-lg" placeholder="Ví dụ: Công nghệ..." required />
+                        <span asp-validation-for="Name" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Slug" class="form-label fw-bold">Đường dẫn SEO (Slug)</label>
+                        <input asp-for="Slug" class="form-control form-control-lg" />
+                        <small class="text-muted d-block mt-1">💡 Mẹo: Bỏ trống nếu muốn hệ thống tự động làm lại link mới.</small>
+                        <span asp-validation-for="Slug" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label asp-for="ParentId" class="form-label fw-bold">Thuộc danh mục cha (Phân cấp)</label>
+                        <select asp-for="ParentId" class="form-select form-select-lg" asp-items="ViewBag.ParentId">
+                            <option value="">-- Đây là Danh mục Gốc (Không có cha) --</option>
+                        </select>
+                        <span asp-validation-for="ParentId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label asp-for="Description" class="form-label fw-bold">Mô tả chi tiết</label>
+                        <textarea asp-for="Description" class="form-control" rows="4" placeholder="Nhập mô tả..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="p-3 bg-white border border-warning rounded-3 shadow-sm">
+                            <div class="form-check form-switch fs-5">
+                                <input class="form-check-input" type="checkbox" role="switch" asp-for="IsActive">
+                                <label class="form-check-label ms-2 fw-bold text-dark" asp-for="IsActive">
+                                    Hiển thị danh mục này trên Website
+                                </label>
+                            </div>
+                            <small class="text-muted d-block mt-1 ms-5">Tắt công tắc này để tạm ẩn danh mục khỏi trang tin tức.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-5 text-secondary opacity-25" />
+
+                <div class="d-flex justify-content-end gap-3">
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2 fw-bold rounded-3">
+                        <i class="bi bi-arrow-left"></i> Hủy & Quay lại
+                    </a>
+                    <button type="submit" class="btn btn-warning text-dark px-5 py-2 fw-bold rounded-3 shadow-sm d-flex align-items-center gap-2">
+                        <i class="bi bi-check-circle"></i> Cập nhật thay đổi
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

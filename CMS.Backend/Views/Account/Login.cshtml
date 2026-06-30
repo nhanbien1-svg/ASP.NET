@@ -6,40 +6,98 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Đăng nhập hệ thống - CMS</title>
+    <title>Đăng nhập hệ thống - ThaiCMS Admin</title>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            /* Nền Gradient xanh biển hiện đại */
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-card {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        .input-group-text {
+            background-color: transparent;
+            border-right: none;
+        }
+
+        .form-control {
+            border-left: none;
+        }
+
+            .form-control:focus {
+                box-shadow: none;
+                border-color: #dee2e6;
+            }
+
+        .input-group:focus-within {
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+            border-radius: 50rem;
+        }
+    </style>
 </head>
-<body class="bg-light d-flex align-items-center" style="min-height: 100vh;">
+<body class="d-flex align-items-center" style="min-height: 100vh;">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-5 col-lg-4">
-                <div class="card shadow-lg border-0 rounded-3">
-                    <div class="card-header bg-primary text-white text-center py-3">
-                        <h5 class="mb-0 fw-bold">HỆ THỐNG QUẢN TRỊ</h5>
-                    </div>
-                    <div class="card-body p-4">
+            <div class="col-md-6 col-lg-4">
+
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold text-primary mb-0"><i class="bi bi-cpu-fill me-2"></i>ThaiCMS</h2>
+                    <p class="text-muted small text-uppercase letter-spacing-1">Hệ thống quản trị nội dung</p>
+                </div>
+
+                <div class="card login-card shadow border-0 rounded-4">
+                    <div class="card-body p-4 p-sm-5">
+                        <h5 class="mb-4 fw-bold text-center text-dark">ĐĂNG NHẬP</h5>
+
                         <form asp-controller="Account" asp-action="Login" method="post">
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Tên đăng nhập</label>
-                                <input type="text" name="username" class="form-control" placeholder="Nhập tài khoản..." required autofocus />
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold small text-muted text-uppercase">Tên đăng nhập</label>
+                                <div class="input-group rounded-pill overflow-hidden border">
+                                    <span class="input-group-text text-primary"><i class="bi bi-person-fill"></i></span>
+                                    <input type="text" name="username" class="form-control" placeholder="Nhập tài khoản..." required autofocus autocomplete="off" />
+                                </div>
                             </div>
 
                             <div class="mb-4">
-                                <label class="form-label fw-semibold">Mật khẩu</label>
-                                <input type="password" name="password" class="form-control" placeholder="Nhập mật khẩu..." required />
+                                <label class="form-label fw-semibold small text-muted text-uppercase">Mật khẩu</label>
+                                <div class="input-group rounded-pill overflow-hidden border">
+                                    <span class="input-group-text text-primary"><i class="bi bi-shield-lock-fill"></i></span>
+                                    <input type="password" name="password" class="form-control" placeholder="Nhập mật khẩu..." required />
+                                </div>
                             </div>
 
                             @if (ViewBag.Error != null)
                             {
-                                <div class="alert alert-danger py-2 text-center text-sm">
-                                    @ViewBag.Error
+                                <div class="alert alert-danger py-2 text-center small rounded-3 shadow-sm d-flex align-items-center justify-content-center gap-2">
+                                    <i class="bi bi-exclamation-circle-fill"></i> @ViewBag.Error
                                 </div>
                             }
 
-                            <button type="submit" class="btn btn-primary w-100 fw-bold py-2">ĐĂNG NHẬP</button>
+                            <div class="mt-4 pt-2">
+                                <button type="submit" class="btn btn-primary w-100 rounded-pill fw-bold py-2 shadow-sm">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>ĐĂNG NHẬP
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
+
+                <div class="text-center mt-4">
+                    <p class="text-muted small mb-0">&copy; 2026 - Thiết kế bởi <strong>Biện Văn Nhân</strong></p>
+                </div>
+
             </div>
         </div>
     </div>
