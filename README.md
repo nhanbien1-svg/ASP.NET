@@ -1,49 +1,36 @@
-# Dự Án E-Commerce TechZone (ASP.NET Core + React)
+# Tiêu Chí Đánh Giá & Xây Dựng Trang Web Thương Mại Điện Tử (TechZone)
 
-Chào mừng bạn đến với TechZone - Hệ thống cửa hàng điện tử đa nền tảng hiện đại được xây dựng dựa trên công nghệ ASP.NET Core (Backend) và ReactJS (Frontend). Dự án tập trung vào việc đem lại trải nghiệm mua sắm mượt mà, chuyên nghiệp với giao diện người dùng (UI) và trải nghiệm người dùng (UX) đỉnh cao.
+Dự án TechZone (ASP.NET Core + ReactJS) được phát triển không chỉ để đáp ứng các tính năng cơ bản của một hệ thống bán hàng, mà còn tuân thủ nghiêm ngặt các tiêu chuẩn và tiêu chí khắt khe của một trang web chuyên nghiệp trong ngành công nghiệp phần mềm hiện đại.
 
-## 🚀 Tính năng nổi bật & Giao diện (UI/UX) chi tiết
+Dưới đây là tổng quát các tiêu chí cốt lõi được áp dụng trong quá trình làm trang web:
 
-Dự án TechZone được thiết kế không chỉ để chạy đúng logic mà còn chú trọng vào tính thẩm mỹ. Giao diện được tối ưu hóa theo phong cách "Dark Mode" (Nền tối kết hợp ánh sáng Neon) tương tự các hãng gaming/công nghệ lớn, tạo cảm giác sang trọng, cao cấp.
+## 1. Tiêu chí về Giao diện & Trải nghiệm Người dùng (UI/UX)
+- **Tính Thẩm mỹ (Aesthetics):** Sử dụng ngôn ngữ thiết kế hiện đại, phối màu Dark Theme (Nền tối - chữ sáng) sang trọng, mang phong cách công nghệ cao (High-tech) thu hút người dùng.
+- **Tính Nhất quán (Consistency):** Đồng bộ màu sắc, typography (font chữ), icon và khoảng cách (padding/margin) xuyên suốt toàn bộ ứng dụng thông qua bộ Design System định sẵn.
+- **Tính Phản hồi tương tác (Micro-interactions):** Mọi thao tác click, hover, thêm vào giỏ hàng đều có hiệu ứng mượt mà (animation/transition), giúp người dùng nhận thức rõ ràng hành động của mình.
+- **Đơn giản hóa quy trình (Simplicity):** Tối ưu hóa số bước thanh toán (Checkout) và đăng ký/đăng nhập. Sử dụng Floating labels và Toast notifications thay cho Popup rườm rà.
 
-### 1. Trang Chủ (Home Page)
-- **Banner Hero Động:** Băng chuyền hình ảnh (Carousel) nổi bật, tích hợp hiệu ứng gradient overlay và text bay lượn bắt mắt.
-- **Danh sách sản phẩm:** Bố cục dạng lưới (Grid) hiện đại. Mỗi sản phẩm được bọc trong một "Card" sang trọng với:
-  - Hiệu ứng *Hover* trượt nổi (Lift up) mượt mà khi người dùng di chuột vào.
-  - Hình ảnh sản phẩm bo góc tinh tế.
-  - Hiển thị đầy đủ thông tin: Tên sản phẩm, Giá bán (màu xanh Neon), số lượng tồn kho và Đánh giá sao trung bình.
-- **Micro-interactions:** Nút "Thêm vào giỏ hàng" tích hợp hiệu ứng sáng lấp lánh (glow effect) kích thích tương tác.
+## 2. Tiêu chí về Hiệu năng (Performance & Scalability)
+- **Tốc độ tải trang:** Sử dụng ReactJS để thiết kế theo kiến trúc Single Page Application (SPA), giúp trang web chỉ tải 1 lần đầu tiên và sau đó chuyển trang mượt mà không cần load lại toàn bộ trình duyệt.
+- **Xử lý Bất đồng bộ (Asynchronous):** Toàn bộ các tương tác với cơ sở dữ liệu qua ASP.NET Core API đều sử dụng `async/await` để không làm nghẽn luồng xử lý (non-blocking).
+- **Thiết kế CSDL Tối ưu (Database Design):** Sử dụng Entity Framework Core với kiến trúc bảng hợp lý, đánh Index đầy đủ, có khóa ngoại (Foreign Keys) chặt chẽ giữa Customer, Product, Order, Review.
 
-### 2. Trang Chi tiết Sản phẩm & Đánh Giá (Reviews)
-- **Hiển thị thông tin:** Chia layout thông minh với hình ảnh kích thước lớn bên trái và thông số kỹ thuật bên phải. 
-- **Tính năng Đánh Giá (Review System):**
-  - **Bảng điểm sao trung bình:** Tính toán điểm trung bình động từ cơ sở dữ liệu và hiển thị lớn nổi bật.
-  - **Giao diện bình luận:** Các nhận xét của khách hàng được phân tách rõ ràng. Mỗi người dùng có một Avatar mặc định hoặc avatar cá nhân, thời gian đánh giá và nội dung chi tiết.
-  - **Form gửi đánh giá:** Thiết kế theo dạng chọn sao tương tác trực quan. Đặc biệt, có kiểm tra trạng thái Đăng nhập. Nếu khách chưa đăng nhập, khung đánh giá sẽ ẩn đi và thay bằng nút Mời đăng nhập, giúp ngăn chặn Spam và đảm bảo dữ liệu thật.
+## 3. Tiêu chí về Bảo mật (Security)
+- **Xác thực & Phân quyền (Authentication & Authorization):** Sử dụng công nghệ JWT (JSON Web Token) tân tiến kết hợp Cookie an toàn (HttpOnly) để bảo mật phiên đăng nhập, chống lại các cuộc tấn công CSRF, XSS.
+- **Bảo mật Dữ liệu nhạy cảm:** Mật khẩu người dùng được băm (Hash) một chiều trước khi lưu vào cơ sở dữ liệu. API Keys (Ví dụ: Gemini AI, Mail) được đưa ra khỏi mã nguồn để ngăn rò rỉ.
+- **Xác thực Đầu vào (Input Validation):** Kiểm tra chặt chẽ dữ liệu người dùng nhập từ cả 2 phía: Frontend (React Hook Form/Yup) và Backend (Data Annotations trong C#) nhằm ngăn chặn SQL Injection.
 
-### 3. Quy trình Thanh toán (Checkout & Payment)
-- **Chọn Phương thức thanh toán:** Giao diện được thiết kế dạng các "Thẻ" (Cards) có hình ảnh icon sinh động thay vì các nút radio button nhàm chán truyền thống.
-  - Người dùng có thể trực quan click chọn: Thanh toán khi nhận hàng (COD), Chuyển khoản (Momo), Thẻ tín dụng...
-  - Thẻ được chọn sẽ có viền sáng Neon rực rỡ và dấu check xác nhận.
-- **Trải nghiệm Mượt mà:** Toàn bộ form điền thông tin sử dụng phong cách *Floating Labels* của Bootstrap 5, trông cực kỳ gọn gàng và tinh tế.
-- **Thông báo Toast:** Thay vì dùng popup Alert giật cục của trình duyệt, hệ thống sử dụng thư viện `react-toastify` để hiển thị các thông báo (thành công, lỗi) bay ra mượt mà từ góc màn hình.
+## 4. Tiêu chí về Tính Tương thích & Tối ưu (Responsive & SEO)
+- **Mobile First / Responsive Design:** Hệ thống được xây dựng tương thích hoàn hảo trên mọi kích thước màn hình (Điện thoại, Tablet, Desktop) nhờ vào hệ thống Grid của Bootstrap 5 và CSS Flexbox/Grid.
+- **Tối ưu Hóa Tìm Kiếm (SEO):** Đảm bảo cấu trúc thẻ HTML (H1, H2, H3), meta description đầy đủ để thân thiện với các công cụ tìm kiếm của Google.
 
-### 4. Smart Chatbot (Trợ lý ảo Tự động)
-- **Cửa sổ Chat Lơ Lửng (Floating Widget):** Một nút chat màu xanh lơ lửng ở góc dưới phải màn hình, đồng hành cùng khách hàng trên mọi trang.
-- **Giao diện trò chuyện:** Khi bấm vào sẽ mở ra khung chat có thiết kế gần giống Messenger của Facebook. 
-  - Khung chat bao gồm: Header thông tin Bot, vùng hiển thị tin nhắn (có phân biệt màu sắc giữa Bot và User), và ô nhập liệu.
-  - **Hiệu ứng Typing:** Khi Bot đang xử lý, hệ thống sẽ hiện ra hiệu ứng 3 dấu chấm nhấp nháy, tạo cảm giác vô cùng chân thực.
-- **Bộ não NLP (Keyword Matching) & AI Fallback:**
-  - Chatbot có thể phân tích từ khóa của người dùng để trả lời ngay lập tức các vấn đề như: *Phí ship, bảo hành, giờ làm việc, thanh toán...*
-  - Nếu câu hỏi quá phức tạp, Chatbot sẽ trả lời khéo léo và hướng dẫn khách hàng gọi Hotline.
+## 5. Tiêu chí về Công nghệ Mới & Đột phá (Innovation)
+- **Tích hợp Trí Tuệ Nhân Tạo (AI Chatbot):** Trang bị trợ lý ảo thông minh tự động (Sử dụng Google Gemini API) có khả năng hiểu ngữ cảnh và trả lời tự nhiên 24/7.
+- **Hệ thống Dự phòng (Fallback System):** Khi API bên thứ 3 gặp sự cố, hệ thống có khả năng tự động chuyển đổi (Switch) về chế độ Keyword NLP cục bộ, đảm bảo tính liên tục của dịch vụ.
 
-### 5. Quản trị viên (Admin Dashboard - Backend)
-- Giao diện Admin quản lý được thiết kế bằng MVC ASP.NET Core, tối ưu hóa bảng biểu để Admin dễ dàng xem, thêm, sửa, xóa sản phẩm, theo dõi đơn hàng và người dùng.
-
-## 🛠 Công nghệ sử dụng
-- **Backend:** C# ASP.NET Core Web API, Entity Framework Core, SQL Server.
-- **Frontend:** ReactJS, Axios, Bootstrap 5, React-Toastify.
-- **Khác:** JWT Authentication, RESTful API.
+## 6. Tiêu chí về Bảo trì & Mở rộng (Maintainability)
+- **Kiến trúc Phân tầng (Layered Architecture):** Code Backend được chia tách rõ ràng thành Controllers (Xử lý Request), Services (Xử lý nghiệp vụ logic), Data/Entities (Tương tác CSDL).
+- **Clean Code:** Viết code tuân thủ nguyên tắc SOLID, mã nguồn sạch sẽ, dễ đọc, có chú thích (Comments) đầy đủ ở những hàm phức tạp, giúp các lập trình viên khác dễ dàng tiếp quản và phát triển tính năng mới.
 
 ---
-*(Nhánh BUOI07+08 - Hoàn thiện trải nghiệm mua sắm, Chatbot và Giao diện UI/UX)*
+*(Nhánh BUOI09+10 - Định chuẩn và Tiêu chí Đánh giá Dự án Phần mềm)*
