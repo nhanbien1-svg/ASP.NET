@@ -11,10 +11,12 @@ namespace CMS.Backend.Controllers.Api
     public class ReviewsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ReviewsController(ApplicationDbContext context)
+        public ReviewsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: api/reviews/product/{productId}
@@ -23,7 +25,7 @@ namespace CMS.Backend.Controllers.Api
         {
             var reviews = await _context.Reviews
                 .Include(r => r.Customer)
-                .Where(r => r.ProductId == productId)
+                .Where(r => r.ProductId == productId && r.IsApproved)
                 .OrderByDescending(r => r.CreatedDate)
                 .Select(r => new ReviewDto
                 {
@@ -34,7 +36,9 @@ namespace CMS.Backend.Controllers.Api
                     CustomerAvatar = r.Customer.AvatarUrl,
                     Rating = r.Rating,
                     Comment = r.Comment,
-                    CreatedDate = r.CreatedDate
+                    CreatedDate = r.CreatedDate,
+                    ImageUrl = r.ImageUrl,
+                    HasBought = _context.Orders.Any(o => o.CustomerId == r.CustomerId && o.OrderDetails!.Any(od => od.ProductId == r.ProductId))
                 })
                 .ToListAsync();
 
@@ -43,14 +47,28 @@ namespace CMS.Backend.Controllers.Api
 
         // POST: api/reviews
         [HttpPost]
-        public async Task<ActionResult<ReviewDto>> CreateReview([FromBody] CreateReviewDto createDto)
+        public async Task<ActionResult<ReviewDto>> CreateReview([FromForm] CreateReviewDto createDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            // Có thể bổ sung kiểm tra xem user đã mua hàng chưa ở đây (Tương lai)
+            string? imageUrl = null;
+            if (createDto.ImageFile != null && createDto.ImageFile.Length > 0)
+            {
+                string folderPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "reviews");
+                if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
+
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(createDto.ImageFile.FileName);
+                string filePath = Path.Combine(folderPath, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await createDto.ImageFile.CopyToAsync(stream);
+                }
+                imageUrl = "/images/reviews/" + fileName;
+            }
 
             var review = new Review
             {
@@ -58,6 +76,8 @@ namespace CMS.Backend.Controllers.Api
                 CustomerId = createDto.CustomerId,
                 Rating = createDto.Rating,
                 Comment = createDto.Comment,
+                ImageUrl = imageUrl,
+                IsApproved = true, // Mặc định duyệt luôn
                 CreatedDate = DateTime.Now
             };
 
@@ -75,7 +95,9 @@ namespace CMS.Backend.Controllers.Api
                 CustomerAvatar = customer?.AvatarUrl,
                 Rating = review.Rating,
                 Comment = review.Comment,
-                CreatedDate = review.CreatedDate
+                CreatedDate = review.CreatedDate,
+                ImageUrl = review.ImageUrl,
+                HasBought = await _context.Orders.AnyAsync(o => o.CustomerId == review.CustomerId && o.OrderDetails!.Any(od => od.ProductId == review.ProductId))
             };
 
             return CreatedAtAction(nameof(GetProductReviews), new { productId = review.ProductId }, resultDto);

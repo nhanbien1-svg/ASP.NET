@@ -157,7 +157,46 @@ namespace CMS.Backend.Controllers
         }
 
         // ==========================================
-        // 3. API: HỦY ĐƠN HÀNG VÀ HOÀN TRẢ KHO
+        // 3. API: LẤY CHI TIẾT 1 ĐƠN HÀNG
+        // ==========================================
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOrderById(int id)
+        {
+            var order = await _context.Orders
+                .AsNoTracking()
+                .Include(o => o.OrderDetails!)
+                    .ThenInclude(od => od.Product)
+                .FirstOrDefaultAsync(o => o.Id == id);
+
+            if (order == null)
+            {
+                return NotFound(new { message = "Không tìm thấy đơn hàng." });
+            }
+
+            var result = new {
+                order.Id,
+                order.OrderDate,
+                order.TotalAmount,
+                order.Status,
+                order.PaymentMethod,
+                order.ShippingName,
+                order.ShippingPhone,
+                order.ShippingAddress,
+                order.Notes,
+                Products = order.OrderDetails!.Select(od => new {
+                    ProductId = od.ProductId,
+                    Name = od.Product != null ? od.Product.Name : "Sản phẩm đã bị xóa",
+                    ImageUrl = od.Product != null ? od.Product.ImageUrl : null,
+                    Quantity = od.Quantity,
+                    UnitPrice = od.UnitPrice
+                })
+            };
+
+            return Ok(result);
+        }
+
+        // ==========================================
+        // 4. API: HỦY ĐƠN HÀNG VÀ HOÀN TRẢ KHO
         // ==========================================
         [HttpPut("{id}/cancel")]
         public async Task<IActionResult> CancelOrder(int id)

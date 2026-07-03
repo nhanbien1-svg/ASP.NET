@@ -10,6 +10,8 @@ namespace CMS.Backend.DTOs
         public int Rating { get; set; }
         public string? Comment { get; set; }
         public DateTime CreatedDate { get; set; }
+        public bool HasBought { get; set; }
+        public string? ImageUrl { get; set; }
     }
 
     public class CreateReviewDto
@@ -18,5 +20,6 @@ namespace CMS.Backend.DTOs
         public int CustomerId { get; set; }
         public int Rating { get; set; }
         public string? Comment { get; set; }
+        public Microsoft.AspNetCore.Http.IFormFile? ImageFile { get; set; }
     }
 }

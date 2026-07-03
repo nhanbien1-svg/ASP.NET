@@ -8,12 +8,14 @@ namespace CMS.Backend.Services
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
         private readonly ILogger<AIChatService> _logger;
+        private readonly IServiceScopeFactory _scopeFactory;
 
-        public AIChatService(HttpClient httpClient, IConfiguration configuration, ILogger<AIChatService> logger)
+        public AIChatService(HttpClient httpClient, IConfiguration configuration, ILogger<AIChatService> logger, IServiceScopeFactory scopeFactory)
         {
             _httpClient = httpClient;
             _configuration = configuration;
             _logger = logger;
+            _scopeFactory = scopeFactory;
         }
 
         public async Task<string> AskGeminiAsync(string userMessage)
@@ -25,16 +27,34 @@ namespace CMS.Backend.Services
                 return "Hệ thống AI chưa được cấu hình API Key. Vui lòng cập nhật appsettings.json.";
             }
 
-            string url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={apiKey}";
+            string url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={apiKey}";
 
             // Định nghĩa prompt bối cảnh cho Chatbot
             string systemPrompt = @"Bạn là trợ lý ảo tư vấn khách hàng của cửa hàng điện tử TechZone (chuyên bán Laptop, Điện thoại).
 Nhiệm vụ của bạn:
 - Luôn thân thiện, lịch sự và xưng hô là 'mình' - 'bạn' hoặc 'dạ em' - 'anh/chị'.
 - Trả lời ngắn gọn, đúng trọng tâm câu hỏi, không dài dòng.
-- Nếu không biết, hãy nói xin lỗi và khuyên khách hàng gọi Hotline 1900 1234.
 - Sử dụng tiếng Việt một cách tự nhiên.
-Câu hỏi của khách: ";
+- Dưới đây là danh sách CÁC SẢN PHẨM HIỆN CÓ TẠI CỬA HÀNG. Dựa vào danh sách này để báo giá, kiểm tra tồn kho và gợi ý cho khách:
+";
+            try 
+            {
+                using (var scope = _scopeFactory.CreateScope())
+                {
+                    var db = scope.ServiceProvider.GetRequiredService<CMS.Data.ApplicationDbContext>();
+                    var products = db.Products.Where(p => p.IsActive).Select(p => new { p.Name, p.Price, p.StockQuantity }).ToList();
+                    foreach (var p in products)
+                    {
+                        systemPrompt += $"- {p.Name}: Giá {p.Price:N0}đ (Tồn kho: {p.StockQuantity})\n";
+                    }
+                }
+            } 
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Không thể lấy danh sách sản phẩm từ DB.");
+            }
+
+            systemPrompt += "\nCâu hỏi của khách: ";
 
             var requestBody = new
             {

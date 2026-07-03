@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using CMS.Data;
@@ -11,8 +11,13 @@ namespace CMS.Backend.Controllers
     public class OrderController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly CMS.Backend.Services.IEmailService _emailService;
 
-        public OrderController(ApplicationDbContext context) => _context = context;
+        public OrderController(ApplicationDbContext context, CMS.Backend.Services.IEmailService emailService)
+        {
+            _context = context;
+            _emailService = emailService;
+        }
 
         // ==========================================
         // 1. DANH SÁCH ĐƠN HÀNG
@@ -54,8 +59,45 @@ namespace CMS.Backend.Controllers
         public async Task<IActionResult> UpdateStatus(int id, int status)
         {
             // Bỏ AsNoTracking ở đây vì chúng ta CẦN chỉnh sửa dữ liệu và lưu lại
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders
+                .Include(o => o.OrderDetails) // Thêm Include OrderDetails
+                .Include(o => o.Customer)     // Thêm Include Customer để lấy Email
+                .FirstOrDefaultAsync(o => o.Id == id);
+                
             if (order == null) return NotFound();
+
+            // Nếu trạng thái đổi thành "Đã Hủy" (3), thực hiện hoàn kho và gửi email
+            if (status == 3 && order.Status != 3)
+            {
+                // 1. Hoàn kho
+                foreach (var item in order.OrderDetails)
+                {
+                    var product = await _context.Products.FindAsync(item.ProductId);
+                    if (product != null)
+                    {
+                        product.StockQuantity += item.Quantity;
+                    }
+                }
+                
+                // 2. Gửi email thông báo hủy do hết hàng
+                if (order.Customer != null && !string.IsNullOrEmpty(order.Customer.Email))
+                {
+                    string subject = $"TechZone - Đơn hàng #{order.Id} đã bị hủy do hết hàng";
+                    string htmlMessage = $@"
+                        <h3>Thông báo Hủy Đơn Hàng</h3>
+                        <p>Xin chào <strong>{order.Customer.FullName}</strong>,</p>
+                        <p>Thành thật xin lỗi quý khách, đơn hàng <strong>#{order.Id}</strong> của bạn đã bị hủy do một số sản phẩm trong đơn đã <strong>hết hàng</strong> tại kho.</p>
+                        <p>Chúng tôi vô cùng xin lỗi vì sự bất tiện này và hy vọng sẽ được phục vụ quý khách ở những đơn hàng sau.</p>
+                        <br/>
+                        <p>Trân trọng,<br/>Đội ngũ TechZone</p>
+                    ";
+                    _ = _emailService.SendEmailAsync(order.Customer.Email, subject, htmlMessage).ContinueWith(t => {
+                        if (t.IsFaulted) {
+                            Console.WriteLine("Lỗi gửi email: " + t.Exception?.Message);
+                        }
+                    });
+                }
+            }
 
             // Cập nhật trạng thái mới
             order.Status = status;

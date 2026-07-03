@@ -1,13 +1,13 @@
 @model CMS.Data.Entities.Product
 
 @{
-    ViewData["Title"] = "Th�m s?n ph?m m?i";
+    ViewData["Title"] = "Thêm sản phẩm mới";
 }
 
 <div class="container mt-4 mb-5">
     <div class="card shadow-sm border-0 rounded-4">
         <div class="card-header bg-primary text-white py-3 rounded-top-4">
-            <h4 class="mb-0 fw-bold"><i class="bi bi-box-seam"></i> Th�m s?n ph?m m?i</h4>
+            <h4 class="mb-0 fw-bold"><i class="bi bi-box-seam"></i> Thêm sản phẩm mới</h4>
         </div>
         <div class="card-body p-4 p-md-5">
 
@@ -16,25 +16,25 @@
 
                 <div class="row g-5">
                     <div class="col-lg-7">
-                        <h5 class="fw-bold text-primary border-bottom pb-2 mb-4">Th�ng tin co b?n</h5>
+                        <h5 class="fw-bold text-primary border-bottom pb-2 mb-4">Thông tin cơ bản</h5>
 
                         <div class="mb-4">
-                            <label asp-for="Name" class="form-label fw-bold">T�n thi?t b?/s?n ph?m <span class="text-danger">*</span></label>
-                            <input asp-for="Name" class="form-control form-control-lg" placeholder="V� d?: Laptop ASUS ROG Strix G15..." required />
+                            <label asp-for="Name" class="form-label fw-bold">Tên thiết bị/sản phẩm <span class="text-danger">*</span></label>
+                            <input asp-for="Name" class="form-control form-control-lg" placeholder="Ví dụ: Laptop ASUS ROG Strix G15..." required />
                             <span asp-validation-for="Name" class="text-danger small"></span>
                         </div>
 
                         <div class="mb-4">
-                            <label asp-for="CategoryProductId" class="form-label fw-bold">Thu?c danh m?c <span class="text-danger">*</span></label>
+                            <label asp-for="CategoryProductId" class="form-label fw-bold">Thuộc danh mục <span class="text-danger">*</span></label>
                             <select asp-for="CategoryProductId" class="form-select form-select-lg" asp-items="ViewBag.CategoryProductId" required>
-                                <option value="">-- L?a ch?n ph�n lo?i danh m?c --</option>
+                                <option value="">-- Lựa chọn phân loại danh mục --</option>
                             </select>
                             <span asp-validation-for="CategoryProductId" class="text-danger small"></span>
                         </div>
 
                         <div class="mb-4">
-                            <label asp-for="Description" class="form-label fw-bold">M� t? th�ng s? chi ti?t</label>
-                            <textarea asp-for="Description" class="form-control" rows="6" placeholder="Nh?p c?u h�nh, t�nh nang n?i b?t c?a s?n ph?m..."></textarea>
+                            <label asp-for="Description" class="form-label fw-bold">Mô tả thông số chi tiết</label>
+                            <textarea asp-for="Description" class="form-control" rows="6" placeholder="Nhập cấu hình, tính năng nổi bật của sản phẩm..."></textarea>
                             <span asp-validation-for="Description" class="text-danger small"></span>
                         </div>
 
@@ -42,44 +42,44 @@
                             <div class="form-check form-switch fs-5">
                                 <input class="form-check-input" type="checkbox" role="switch" asp-for="IsActive" checked>
                                 <label class="form-check-label ms-2 fw-bold text-dark" asp-for="IsActive">
-                                    Cho ph�p hi?n th? ngay tr�n Website
+                                    Cho phép hiển thị ngay trên Website
                                 </label>
                             </div>
-                            <small class="text-muted d-block mt-1 ms-5">T?t c�ng t?c n�y n?u b?n ch? mu?n luu nh�p, chua mu?n kh�ch h�ng nh�n th?y.</small>
+                            <small class="text-muted d-block mt-1 ms-5">Tắt công tắc này nếu bạn chỉ muốn lưu nháp, chưa muốn khách hàng nhìn thấy.</small>
                         </div>
                     </div>
 
                     <div class="col-lg-5">
-                        <h5 class="fw-bold text-primary border-bottom pb-2 mb-4">B�n h�ng & H�nh ?nh</h5>
+                        <h5 class="fw-bold text-primary border-bottom pb-2 mb-4">Bán hàng & Hình ảnh</h5>
 
                         <div class="row g-3 mb-4">
                             <div class="col-sm-6">
-                                <label asp-for="Price" class="form-label fw-bold">Gi� b�n (VN�) <span class="text-danger">*</span></label>
+                                <label asp-for="Price" class="form-label fw-bold">Giá bán (VNĐ) <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input asp-for="Price" class="form-control" type="number" step="1000" min="0" placeholder="0" required />
-                                    <span class="input-group-text fw-bold">?</span>
+                                    <span class="input-group-text fw-bold">₫</span>
                                 </div>
                                 <span asp-validation-for="Price" class="text-danger small"></span>
                             </div>
                             <div class="col-sm-6">
-                                <label asp-for="StockQuantity" class="form-label fw-bold">S? lu?ng kho <span class="text-danger">*</span></label>
+                                <label asp-for="StockQuantity" class="form-label fw-bold">Số lượng kho <span class="text-danger">*</span></label>
                                 <input asp-for="StockQuantity" class="form-control" type="number" min="0" placeholder="0" required />
                                 <span asp-validation-for="StockQuantity" class="text-danger small"></span>
                             </div>
                         </div>
 
                         <div class="form-group mb-4 p-4 border rounded-4 bg-light text-center">
-                            <label class="control-label fw-bold mb-3 d-block fs-5">?nh d?i di?n s?n ph?m</label>
+                            <label class="control-label fw-bold mb-3 d-block fs-5">Ảnh đại diện sản phẩm</label>
 
                             <div class="mb-3 d-flex justify-content-center">
                                 <div class="border bg-white rounded-3 p-2 shadow-sm d-flex align-items-center justify-content-center position-relative overflow-hidden" style="width: 250px; height: 250px;">
-                                    <img id="imagePreview" src="https://via.placeholder.com/250?text=Chua+c�+?nh" class="img-fluid" style="max-height: 100%; object-fit: contain;" alt="Xem tru?c" />
+                                    <img id="imagePreview" src="https://via.placeholder.com/250?text=Chưa+có+ảnh" class="img-fluid" style="max-height: 100%; object-fit: contain;" alt="Xem trước" />
                                 </div>
                             </div>
 
                             <input type="file" name="imageFile" class="form-control" accept="image/*" id="imageInput" />
                             <small class="text-muted mt-3 d-block text-start">
-                                ?? K�ch thu?c khuy?n ngh?: 800x800px. �?nh d?ng: JPG, PNG, WEBP.
+                                💡 Kích thước khuyến nghị: 800x800px. Định dạng: JPG, PNG, WEBP.
                             </small>
                         </div>
                     </div>
@@ -88,9 +88,9 @@
                 <hr class="my-5 text-secondary" />
 
                 <div class="d-flex justify-content-end gap-3">
-                    <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2 fw-bold rounded-3">H?y b?</a>
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2 fw-bold rounded-3">Hủy bỏ</a>
                     <button type="submit" class="btn btn-primary px-5 py-2 fw-bold rounded-3 shadow-sm d-flex align-items-center gap-2">
-                        <i class="bi bi-save"></i> �ang s?n ph?m
+                        <i class="bi bi-save"></i> Đăng sản phẩm
                     </button>
                 </div>
             </form>
@@ -110,7 +110,7 @@
             if (file) {
                 const preview = document.getElementById('imagePreview');
                 preview.src = URL.createObjectURL(file);
-                // Gi?i ph�ng b? nh? sau khi ?nh d� load xong
+                // Giải phóng bộ nhớ sau khi ảnh đã load xong
                 preview.onload = function() {
                     URL.revokeObjectURL(preview.src);
                 }
@@ -118,3 +118,4 @@
         };
     </script>
 }
+

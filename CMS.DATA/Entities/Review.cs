@@ -28,5 +28,10 @@ namespace CMS.Data.Entities
 
         [ForeignKey("CustomerId")]
         public virtual Customer? Customer { get; set; }
+
+        public bool IsApproved { get; set; } = true;
+        
+        [MaxLength(255)]
+        public string? ImageUrl { get; set; }
     }
 }
