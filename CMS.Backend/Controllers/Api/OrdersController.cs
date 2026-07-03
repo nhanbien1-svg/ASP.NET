@@ -99,14 +99,67 @@ namespace CMS.Backend.Controllers
                 var customer = await _context.Customers.FindAsync(request.CustomerId);
                 if (customer != null && !string.IsNullOrEmpty(customer.Email))
                 {
+                    // Tạo HTML chi tiết sản phẩm
+                    var productRows = "";
+                    foreach (var item in orderDetails)
+                    {
+                        var prod = await _context.Products.FindAsync(item.ProductId);
+                        var productName = prod?.Name ?? "Sản phẩm không xác định";
+                        // Lấy domain hiện tại (VD: https://localhost:7222 hoặc https://techzone.vn khi deploy)
+                        var baseUrl = $"{Request.Scheme}://{Request.Host}";
+                        var prodImage = prod?.ImageUrl != null ? $"{baseUrl}{prod.ImageUrl}" : "https://via.placeholder.com/50";
+                        
+                        productRows += $@"
+                            <tr>
+                                <td style='padding: 10px; border-bottom: 1px solid #ddd;'>
+                                    <img src='{prodImage}' alt='{productName}' style='width: 50px; height: 50px; object-fit: cover; border-radius: 5px;' />
+                                </td>
+                                <td style='padding: 10px; border-bottom: 1px solid #ddd;'>{productName}</td>
+                                <td style='padding: 10px; border-bottom: 1px solid #ddd; text-align: center;'>{item.Quantity}</td>
+                                <td style='padding: 10px; border-bottom: 1px solid #ddd; text-align: right; color: #e53e3e; font-weight: bold;'>{item.UnitPrice:N0} đ</td>
+                            </tr>
+                        ";
+                    }
+
                     string subject = $"TechZone - Đặt hàng thành công! Mã đơn hàng: #{newOrder.Id}";
                     string htmlMessage = $@"
-                        <h3>Cảm ơn bạn đã đặt hàng tại TechZone!</h3>
-                        <p>Xin chào <strong>{customer.FullName}</strong>,</p>
-                        <p>Đơn hàng <strong>#{newOrder.Id}</strong> của bạn đã được đặt thành công. Chúng tôi sẽ sớm liên hệ để giao hàng.</p>
-                        <p><strong>Tổng tiền:</strong> {newOrder.TotalAmount:N0} đ</p>
-                        <br/>
-                        <p>Trân trọng,<br/>Đội ngũ TechZone</p>
+                        <div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
+                            <h3 style='color: #0284c7;'>Cảm ơn bạn đã đặt hàng tại TechZone!</h3>
+                            <p>Xin chào <strong>{customer.FullName}</strong>,</p>
+                            <p>Đơn hàng <strong>#{newOrder.Id}</strong> của bạn đã được đặt thành công. Chúng tôi sẽ sớm liên hệ để giao hàng.</p>
+                            
+                            <div style='background-color: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px;'>
+                                <p style='margin: 5px 0;'><strong>Mã đơn hàng:</strong> #{newOrder.Id}</p>
+                                <p style='margin: 5px 0;'><strong>Ngày đặt hàng:</strong> {newOrder.OrderDate.ToString("dd/MM/yyyy HH:mm")}</p>
+                                <p style='margin: 5px 0;'><strong>Địa chỉ nhận:</strong> {newOrder.ShippingAddress}</p>
+                                <p style='margin: 5px 0;'><strong>Số điện thoại:</strong> {newOrder.ShippingPhone}</p>
+                                <p style='margin: 5px 0;'><strong>Phương thức thanh toán:</strong> {newOrder.PaymentMethod}</p>
+                            </div>
+
+                            <h4 style='border-bottom: 2px solid #0284c7; padding-bottom: 5px; display: inline-block;'>Chi tiết đơn hàng</h4>
+                            <table style='width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #ddd;'>
+                                <thead>
+                                    <tr style='background-color: #f1f5f9; text-align: left;'>
+                                        <th style='padding: 10px; border-bottom: 2px solid #cbd5e1;'>Hình ảnh</th>
+                                        <th style='padding: 10px; border-bottom: 2px solid #cbd5e1;'>Sản phẩm</th>
+                                        <th style='padding: 10px; border-bottom: 2px solid #cbd5e1; text-align: center;'>SL</th>
+                                        <th style='padding: 10px; border-bottom: 2px solid #cbd5e1; text-align: right;'>Đơn giá</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {productRows}
+                                </tbody>
+                                <tfoot>
+                                    <tr style='background-color: #f8fafc;'>
+                                        <td colspan='3' style='padding: 15px 10px; text-align: right; font-weight: bold;'>TỔNG CỘNG:</td>
+                                        <td style='padding: 15px 10px; text-align: right; font-weight: bold; color: #e53e3e; font-size: 1.1em;'>{newOrder.TotalAmount:N0} đ</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                            <br/>
+                            <p>Trân trọng,<br/><strong>Đội ngũ TechZone</strong></p>
+                        </div>
                     ";
                     // Gửi email bất đồng bộ, bỏ qua lỗi nếu cấu hình sai để không làm gián đoạn việc đặt hàng
                     _ = _emailService.SendEmailAsync(customer.Email, subject, htmlMessage).ContinueWith(t => {
@@ -144,6 +197,7 @@ namespace CMS.Backend.Controllers
                     o.TotalAmount,
                     o.Status,
                     o.PaymentMethod,
+                    o.CancelReason,
                     // Bóc tách danh sách sản phẩm để React dễ hiển thị
                     Products = o.OrderDetails!.Select(od => new {
                         Name = od.Product != null ? od.Product.Name : "Sản phẩm đã bị xóa",
@@ -183,6 +237,7 @@ namespace CMS.Backend.Controllers
                 order.ShippingPhone,
                 order.ShippingAddress,
                 order.Notes,
+                order.CancelReason,
                 Products = order.OrderDetails!.Select(od => new {
                     ProductId = od.ProductId,
                     Name = od.Product != null ? od.Product.Name : "Sản phẩm đã bị xóa",
@@ -199,7 +254,7 @@ namespace CMS.Backend.Controllers
         // 4. API: HỦY ĐƠN HÀNG VÀ HOÀN TRẢ KHO
         // ==========================================
         [HttpPut("{id}/cancel")]
-        public async Task<IActionResult> CancelOrder(int id)
+        public async Task<IActionResult> CancelOrder(int id, [FromBody] CancelOrderRequest cancelRequest = null)
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
@@ -220,8 +275,9 @@ namespace CMS.Backend.Controllers
                     return BadRequest(new { message = "Đơn hàng này đã bị hủy từ trước." });
                 }
 
-                // Chuyển trạng thái thành Hủy
+                // Chuyển trạng thái thành Hủy và lưu lý do
                 order.Status = 3;
+                order.CancelReason = cancelRequest?.Reason;
 
                 // Hoàn trả lại số lượng vào kho
                 foreach (var item in order.OrderDetails)
@@ -284,5 +340,10 @@ namespace CMS.Backend.Controllers
         public int ProductId { get; set; }
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
+    }
+
+    public class CancelOrderRequest
+    {
+        public string? Reason { get; set; }
     }
 }

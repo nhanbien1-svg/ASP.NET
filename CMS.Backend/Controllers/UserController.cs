@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -106,12 +106,12 @@ namespace CMS.Backend.Controllers
                 existingUser.UserName = model.UserName;
                 existingUser.FullName = model.FullName;
                 existingUser.Email = model.Email;
-                existingUser.Role = model.Role;
-
-                // ĐÃ MỞ KHÓA: Cập nhật trạng thái hoạt động từ công tắc (switch)
-                existingUser.IsActive = model.IsActive;
-
-                // Nếu nhập mật khẩu mới thì tiến hành băm và cập nhật, không nhập thì giữ nguyên
+                // Tránh trường hợp tự hạ quyền hoặc tự khóa tài khoản của chính mình
+                if (existingUser.UserName != User.Identity?.Name)
+                {
+                    existingUser.Role = model.Role;
+                    existingUser.IsActive = model.IsActive;
+                }
                 if (!string.IsNullOrWhiteSpace(NewPassword))
                 {
                     existingUser.PasswordHash = _hasher.HashPassword(existingUser, NewPassword);

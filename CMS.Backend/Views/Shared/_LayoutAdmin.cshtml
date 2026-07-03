@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="utf-8" />
@@ -128,25 +128,31 @@
                     <a asp-controller="Post" asp-action="Index" class="@(currentController == "Post" ? "active" : "")">
                         <i class="bi bi-file-earmark-post text-info"></i> Bài viết tin tức
                     </a>
-
-                    <div class="menu-header">KINH DOANH (E-COM)</div>
-                    <a asp-controller="ProductCategory" asp-action="Index" class="@(currentController == "ProductCategory" ? "active" : "")">
-                        <i class="bi bi-tags text-primary"></i> Danh mục sản phẩm
-                    </a>
-                    <a asp-controller="Product" asp-action="Index" class="@(currentController == "Product" ? "active" : "")">
-                        <i class="bi bi-box-seam text-danger"></i> Quản lý Sản phẩm
-                    </a>
-                    <a asp-controller="Customer" asp-action="Index" class="@(currentController == "Customer" ? "active" : "")">
-                        <i class="bi bi-person-bounding-box text-warning"></i> Khách hàng
-                    </a>
-                    <a asp-controller="Order" asp-action="Index" class="@(currentController == "Order" ? "active" : "")">
-                        <i class="bi bi-receipt text-success"></i> Đơn đặt hàng
+                    <a asp-controller="Banner" asp-action="Index" class="@(currentController == "Banner" ? "active" : "")">
+                        <i class="bi bi-images text-warning"></i> Quản lý Banner
                     </a>
 
-                    <div class="menu-header">HỆ THỐNG</div>
-                    <a asp-controller="User" asp-action="Index" class="@(currentController == "User" ? "active" : "")">
-                        <i class="bi bi-people-fill text-light"></i> Quản lý Thành viên
-                    </a>
+                    @if(User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
+                    {
+                        <div class="menu-header">KINH DOANH (E-COM)</div>
+                        <a asp-controller="ProductCategory" asp-action="Index" class="@(currentController == "ProductCategory" ? "active" : "")">
+                            <i class="bi bi-tags text-primary"></i> Danh mục sản phẩm
+                        </a>
+                        <a asp-controller="Product" asp-action="Index" class="@(currentController == "Product" ? "active" : "")">
+                            <i class="bi bi-box-seam text-danger"></i> Quản lý Sản phẩm
+                        </a>
+                        <a asp-controller="Customer" asp-action="Index" class="@(currentController == "Customer" ? "active" : "")">
+                            <i class="bi bi-person-bounding-box text-warning"></i> Khách hàng
+                        </a>
+                        <a asp-controller="Order" asp-action="Index" class="@(currentController == "Order" ? "active" : "")">
+                            <i class="bi bi-receipt text-success"></i> Đơn đặt hàng
+                        </a>
+
+                        <div class="menu-header">HỆ THỐNG</div>
+                        <a asp-controller="User" asp-action="Index" class="@(currentController == "User" ? "active" : "")">
+                            <i class="bi bi-people-fill text-light"></i> Quản lý Thành viên
+                        </a>
+                    }
 
                     <div style="height: 50px;"></div>
                 </div>

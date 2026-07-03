@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +9,7 @@ using CMS.Data.Entities;
 
 namespace CMS.Controllers // Hoặc CMS.Backend.Controllers tùy cấu trúc thư mục của bạn
 {
-    [Authorize(Roles = "Admin")] // 1. BẢO MẬT TỐI ĐA: Chỉ Admin mới được vào khu vực này
+    [Authorize(Roles = "SuperAdmin,Admin,Editor")] // 1. BẢO MẬT: Cho phép SuperAdmin, Admin và Editor
     public class CategoryPostController : Controller
     {
         private readonly ApplicationDbContext _context;

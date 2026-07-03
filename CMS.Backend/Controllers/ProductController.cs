@@ -7,7 +7,7 @@ using CMS.Data.Entities;
 
 namespace CMS.Backend.Controllers
 {
-    [Authorize(Roles = "Admin")] // Bắt buộc đăng nhập quyền Admin cho các thao tác quản lý
+    [Authorize(Roles = "SuperAdmin,Admin")] // Cấm Editor truy cập Products
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -112,6 +112,38 @@ namespace CMS.Backend.Controllers
                 product.IsActive = false; // Xóa mềm (Soft Delete)
                 _context.Products.Update(product);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "Đã ẩn sản phẩm thành công.";
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        // Xóa cứng (Hard Delete) - Xóa vĩnh viễn khỏi Database
+        public async Task<IActionResult> HardDelete(int? id)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if (product != null)
+            {
+                // Kiểm tra xem sản phẩm đã có trong đơn hàng nào chưa
+                bool hasOrders = await _context.OrderDetails.AnyAsync(od => od.ProductId == id);
+                if (hasOrders)
+                {
+                    TempData["Error"] = "Không thể xóa sản phẩm này vì đã phát sinh đơn hàng. Vui lòng sử dụng tính năng 'Ngừng kinh doanh' (Ẩn sản phẩm) để bảo toàn dữ liệu thống kê.";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                // Xóa ảnh cũ
+                DeleteOldImage(product.ImageUrl);
+
+                // Xóa các dữ liệu liên quan khác nếu cấu hình DB chưa cascade (Review, CartItem)
+                var reviews = _context.Reviews.Where(r => r.ProductId == id);
+                _context.Reviews.RemoveRange(reviews);
+
+                var cartItems = _context.CartItems.Where(c => c.ProductId == id);
+                _context.CartItems.RemoveRange(cartItems);
+
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = "Đã xóa vĩnh viễn sản phẩm thành công.";
             }
             return RedirectToAction(nameof(Index));
         }

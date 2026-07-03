@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,7 +8,7 @@ using CMS.Data.Entities;
 namespace CMS.Backend.Controllers
 {
     // Yêu cầu quyền Admin để truy cập khu vực này
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public class ProductCategoryController : Controller
     {
         private readonly ApplicationDbContext _context;

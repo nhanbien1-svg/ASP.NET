@@ -1,4 +1,4 @@
-﻿@model CMS.Data.Entities.Order
+@model CMS.Data.Entities.Order
 
 @{
     ViewData["Title"] = "Chi tiết Đơn hàng #" + Model.Id;
@@ -45,6 +45,13 @@
                 {
                     <div class="alert alert-light border mt-3 mb-0 small">
                         <strong>Ghi chú:</strong> @Model.Notes
+                    </div>
+                }
+                
+                @if (Model.Status == 3 && !string.IsNullOrEmpty(Model.CancelReason))
+                {
+                    <div class="alert alert-danger border border-danger mt-3 mb-0 small">
+                        <strong><i class="bi bi-exclamation-triangle-fill me-1"></i> Lý do hủy:</strong> @Model.CancelReason
                     </div>
                 }
             </div>

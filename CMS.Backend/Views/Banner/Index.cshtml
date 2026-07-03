@@ -1,0 +1,109 @@
+@model IEnumerable<CMS.Data.Entities.Banner>
+
+@{
+    ViewData["Title"] = "Quản lý Banner";
+    Layout = "_LayoutAdmin";
+}
+
+<div class="container-fluid mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-dark fw-bold m-0 text-uppercase">
+            <i class="bi bi-images text-warning me-2"></i>QUẢN LÝ BANNER
+        </h3>
+        <a asp-action="Create" class="btn btn-warning fw-bold px-4 py-2 rounded-3 shadow-sm">
+            <i class="bi bi-plus-lg me-1"></i> THÊM MỚI BANNER
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" style="width: 100px;">Hình ảnh</th>
+                            <th scope="col">Tiêu đề</th>
+                            <th scope="col">Nhãn (Badge)</th>
+                            <th scope="col">Thứ tự</th>
+                            <th scope="col">Trạng thái</th>
+                            <th scope="col" class="text-center" style="width: 150px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="rounded-3 overflow-hidden bg-light d-flex align-items-center justify-content-center shadow-sm" style="width: 80px; height: 50px;">
+                                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                            {
+                                                <img src="@item.ImageUrl" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;" alt="@item.Title" />
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted small">No Image</span>
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold text-dark">@item.Title</div>
+                                        @if (!string.IsNullOrEmpty(item.ThemeColor))
+                                        {
+                                            <span class="badge text-dark" style="background-color: @item.ThemeColor; opacity: 0.8;">Màu: @item.ThemeColor</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.Badge))
+                                        {
+                                            <span class="badge bg-secondary">@item.Badge</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info text-dark fs-6">@item.DisplayOrder</span>
+                                    </td>
+                                    <td>
+                                        @if (item.IsActive)
+                                        {
+                                            <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-bold border border-success">
+                                                <i class="bi bi-check-circle-fill me-1"></i> Hiển thị
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger-subtle text-danger px-3 py-2 rounded-pill fw-bold border border-danger">
+                                                <i class="bi bi-x-circle-fill me-1"></i> Tạm ẩn
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm rounded-3">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                            <form asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa banner này?');">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm rounded-3">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+                                    Chưa có banner nào. Hãy thêm banner mới!
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

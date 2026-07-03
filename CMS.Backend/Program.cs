@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using CMS.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Text.Json.Serialization; // Xử lý JSON
+using System.Text.Json.Serialization;
 using System.Reflection;
 using System.IO;
 using CMS.Backend.Services;
+using Microsoft.OpenApi.Models; // THÊM DÒNG NÀY
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,9 +40,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 // --- 4. FIX LỖI VÒNG LẶP JSON & ĐĂNG KÝ CONTROLLER ---
 builder.Services.AddControllersWithViews()
+    .AddRazorRuntimeCompilation()
     .AddJsonOptions(options =>
     {
-        // Ngắt vòng lặp vô tận giữa các thực thể (VD: Post gọi Category, Category lại gọi Post)
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
 
@@ -49,7 +50,46 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    // Bật tính năng đọc chú thích XML để hiển thị trên UI Swagger
+    // 5.1 Cấu hình thông tin cơ bản cho Swagger
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "TechZone API",
+        Version = "v1",
+        Description = "Tài liệu API cho hệ thống Cửa hàng công nghệ TechZone.",
+        Contact = new OpenApiContact
+        {
+            Name = "Biện Văn Nhân",
+            Email = "nhanbien1@gmail.com"
+        }
+    });
+
+    // 5.2 Cấu hình tính năng gửi Token JWT trực tiếp trên UI Swagger
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Nhập Token JWT mà bạn nhận được khi đăng nhập vào ô bên dưới."
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+
+    // 5.3 Bật tính năng đọc chú thích XML để hiển thị trên UI Swagger
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });

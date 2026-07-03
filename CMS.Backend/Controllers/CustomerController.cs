@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,7 +7,7 @@ using CMS.Data.Entities;
 
 namespace CMS.Backend.Controllers
 {
-    [Authorize] // Yêu cầu đăng nhập Admin
+    [Authorize(Roles = "SuperAdmin,Admin")] // Khách hàng là dữ liệu nhạy cảm
     public class CustomerController : Controller
     {
         private readonly ApplicationDbContext _context;

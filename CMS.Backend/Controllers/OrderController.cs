@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CMS.Backend.Controllers
 {
-    [Authorize] // Bảo mật: Bắt buộc Admin phải đăng nhập mới được xem
+    [Authorize(Roles = "SuperAdmin,Admin")] // Chỉ Admin được xem đơn hàng
     public class OrderController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -1,14 +1,15 @@
-﻿@model CMS.Data.Entities.Post
+@model CMS.Data.Entities.Post
 
 @{
     Layout = "_LayoutAdmin";
-    ViewData["Title"] = "Ch?nh s?a b�i vi?t";
+    ViewData["Title"] = "Chỉnh sửa bài viết";
 }
 
 <div class="container-fluid mt-4 mb-5">
+    <h1>HELLO WORLD</h1>
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="text-dark fw-bold m-0 text-uppercase">
-            <i class="bi bi-pencil-square text-warning me-2"></i>C?P NH?T B�I VI?T
+            <i class="bi bi-pencil-square text-warning me-2"></i>CẬP NHẬT BÀI VIẾT
         </h3>
     </div>
 
@@ -27,24 +28,24 @@
                     <div class="card-body p-4">
 
                         <div class="mb-4">
-                            <label asp-for="Title" class="form-label fw-bold fs-5">Ti�u d? b�i vi?t <span class="text-danger">*</span></label>
-                            <input asp-for="Title" class="form-control form-control-lg border-warning border-opacity-50" placeholder="Nh?p ti�u d?..." required />
+                            <label asp-for="Title" class="form-label fw-bold fs-5">Tiêu đề bài viết <span class="text-danger">*</span></label>
+                            <input asp-for="Title" class="form-control form-control-lg border-warning border-opacity-50" placeholder="Nhập tiêu đề..." required />
                             <span asp-validation-for="Title" class="text-danger small"></span>
                         </div>
 
                         <div class="mb-4 bg-light p-3 rounded-3 border">
-                            <label asp-for="Slug" class="form-label fw-bold text-muted"><i class="bi bi-link-45deg"></i> �Đường dẫn tĩnh (SEO Link)</label>
+                            <label asp-for="Slug" class="form-label fw-bold text-muted"><i class="bi bi-link-45deg"></i> Đường dẫn tĩnh (SEO Link)</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-white text-muted">ten-mien.com/</span>
                                 <input asp-for="Slug" class="form-control text-primary font-monospace" />
                             </div>
-                            <small class="text-muted mt-1 d-block">�? tr?ng h? th?ng s? t? d?ng l�m m?i link chu?n SEO t? Ti�u d?.</small>
+                            <small class="text-muted mt-1 d-block">Để trống hệ thống sẽ tự động làm mới link chuẩn SEO từ Tiêu đề.</small>
                             <span asp-validation-for="Slug" class="text-danger small"></span>
                         </div>
 
                         <div class="mb-4">
-                            <label asp-for="Summary" class="form-label fw-bold">�o?n m� t? ng?n (Sapo)</label>
-                            <textarea asp-for="Summary" class="form-control" rows="3" placeholder="�o?n van ng?n xu?t hi?n du?i ti�u d? ? trang ch?..."></textarea>
+                            <label asp-for="Summary" class="form-label fw-bold">Đoạn mô tả ngắn (Sapo)</label>
+                            <textarea asp-for="Summary" class="form-control" rows="3" placeholder="Đoạn văn ngắn xuất hiện dưới tiêu đề ở trang chủ..."></textarea>
                             <span asp-validation-for="Summary" class="text-danger small"></span>
                         </div>
 
@@ -68,7 +69,7 @@
                         <div class="form-check form-switch fs-5 mb-4 border p-3 rounded-3 bg-light">
                             <input class="form-check-input" type="checkbox" role="switch" asp-for="IsPublished">
                             <label class="form-check-label ms-2 fw-bold text-success" asp-for="IsPublished">
-                                Xuất bản (C�ng khai)
+                                Xuất bản (Công khai)
                             </label>
                         </div>
 
@@ -85,12 +86,12 @@
 
                 <div class="card shadow-sm border-0 rounded-4 mb-4">
                     <div class="card-header bg-white border-bottom py-3">
-                        <h5 class="card-title mb-0 fw-bold"><i class="bi bi-tags"></i> Ph�n lo?i</h5>
+                        <h5 class="card-title mb-0 fw-bold"><i class="bi bi-tags"></i> Phân loại</h5>
                     </div>
                     <div class="card-body p-4">
-                        <label asp-for="CategoryPostId" class="form-label fw-bold">Chuy�n m?c tin t?c <span class="text-danger">*</span></label>
+                        <label asp-for="CategoryPostId" class="form-label fw-bold">Chuyên mục tin tức <span class="text-danger">*</span></label>
                         <select asp-for="CategoryPostId" class="form-select form-select-lg" asp-items="ViewBag.CategoryList" required>
-                            <option value="">-- L?a ch?n chuy�n m?c --</option>
+                            <option value="">-- Lựa chọn chuyên mục --</option>
                         </select>
                         <span asp-validation-for="CategoryPostId" class="text-danger small"></span>
                     </div>
@@ -109,12 +110,12 @@
                                 }
                                 else
                                 {
-                                    <img id="imagePreview" src="https://via.placeholder.com/400x250?text=Chua+c�+?nh" class="img-fluid rounded opacity-50" style="width: 100%; height: 100%; object-fit: cover;" alt="No Image" />
+                                    <img id="imagePreview" src="https://via.placeholder.com/400x250?text=Chưa+có+ảnh" class="img-fluid rounded opacity-50" style="width: 100%; height: 100%; object-fit: cover;" alt="No Image" />
                                 }
                             </div>
                         </div>
                         <input type="file" name="uploadImage" class="form-control" accept="image/*" id="imageInput" />
-                        <small class="text-muted mt-2 d-block text-start">?? B? tr?ng n?u mu?n gi? nguy�n ?nh cu.</small>
+                        <small class="text-muted mt-2 d-block text-start">Bỏ trống nếu muốn giữ nguyên ảnh cũ.</small>
                     </div>
                 </div>
 

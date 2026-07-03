@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,7 +8,7 @@ using CMS.Data.Entities;
 
 namespace CMS.Controllers
 {
-    [Authorize(Roles = "Admin")] // Bắt buộc đăng nhập quyền Admin
+    [Authorize(Roles = "SuperAdmin,Admin,Editor")] // Đã sửa: Cho phép cả 3 role truy cập
     public class PostController : Controller
     {
         private readonly ApplicationDbContext _context;

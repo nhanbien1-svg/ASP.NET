@@ -40,6 +40,11 @@ namespace CMS.Data
         public DbSet<User> Users { get; set; }
 
         // ==========================================
+        // 6. PHÂN HỆ BANNER TRANG CHỦ
+        // ==========================================
+        public DbSet<Banner> Banners { get; set; }
+
+        // ==========================================
         // TỐI ƯU HÓA RÀNG BUỘC DATABASE (MỚI THÊM)
         // ==========================================
         protected override void OnModelCreating(ModelBuilder modelBuilder)

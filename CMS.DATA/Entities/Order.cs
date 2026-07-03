@@ -42,6 +42,10 @@ namespace CMS.Data.Entities
         [MaxLength(500, ErrorMessage = "Ghi chú không được vượt quá 500 ký tự")]
         public string? Notes { get; set; }
 
+        [MaxLength(500)]
+        [Display(Name = "Lý do hủy đơn")]
+        public string? CancelReason { get; set; }
+
         // --- QUAN HỆ CƠ SỞ DỮ LIỆU ---
 
         [ForeignKey("CustomerId")]
