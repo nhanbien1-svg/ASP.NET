@@ -26,6 +26,35 @@
                             <span asp-validation-for="Name" class="text-danger small"></span>
                         </div>
 
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="AvailableColors" class="form-label fw-bold">Tùy chọn Màu sắc</label>
+                                <input asp-for="AvailableColors" id="AvailableColors" class="form-control" placeholder="Đen, Trắng, Tím" />
+                                <div class="mt-2 d-flex flex-wrap gap-1">
+                                    <small class="text-muted mt-1 me-1">Gợi ý:</small>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableColors">Đen</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableColors">Trắng</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableColors">Đỏ</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableColors">Xanh dương</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableColors">Vàng</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableColors">Titan</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="AvailableStorages" class="form-label fw-bold">Tùy chọn Dung lượng</label>
+                                <input asp-for="AvailableStorages" id="AvailableStorages" class="form-control" placeholder="128GB, 256GB" />
+                                <div class="mt-2 d-flex flex-wrap gap-1">
+                                    <small class="text-muted mt-1 me-1">Gợi ý:</small>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableStorages">64GB</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableStorages">128GB</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableStorages">256GB</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableStorages">512GB</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableStorages">1TB</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableStorages">2TB</span>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="mb-4">
                             <label asp-for="CategoryProductId" class="form-label fw-bold">Thuộc danh mục <span class="text-danger">*</span></label>
                             <select asp-for="CategoryProductId" class="form-select form-select-lg" asp-items="ViewBag.CategoryProductId" required>
@@ -36,8 +65,14 @@
 
                         <div class="mb-4">
                             <label asp-for="Description" class="form-label fw-bold">Mô tả thông số chi tiết</label>
-                            <textarea asp-for="Description" class="form-control" rows="6"></textarea>
+                            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
                             <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Specifications" class="form-label fw-bold">Thông số kỹ thuật (Bảng)</label>
+                            <textarea asp-for="Specifications" class="form-control" rows="4" placeholder='Dạng JSON: {"Màn hình":"OLED", "Chip":"A18"}'></textarea>
+                            <span asp-validation-for="Specifications" class="text-danger small"></span>
                         </div>
 
                         <div class="mb-3 p-3 bg-light rounded-3 border">
@@ -86,9 +121,13 @@
                                 </div>
                             </div>
 
-                            <input type="file" name="imageFile" class="form-control" accept="image/*" id="imageInput" />
+                            <input type="file" name="imageFile" class="form-control mb-3" accept="image/*" id="imageInput" />
+                            
+                            <label class="control-label fw-bold mb-2 mt-2 d-block">Thêm ảnh phụ (Gallery)</label>
+                            <input type="file" name="additionalImages" class="form-control" accept="image/*" multiple />
+
                             <small class="text-muted mt-3 d-block text-start">
-                                💡 Mẹo: Bỏ trống nếu muốn giữ lại ảnh cũ. Chọn ảnh mới sẽ tự động thay thế và xóa ảnh cũ trên server.
+                                💡 Mẹo: Bỏ trống nếu muốn giữ lại ảnh đại diện cũ. Chọn ảnh mới sẽ tự động thay thế. Các ảnh phụ mới tải lên sẽ được thêm vào danh sách ảnh phụ.
                             </small>
                         </div>
                     </div>
@@ -113,6 +152,11 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
+    <style>
+        .cursor-pointer { cursor: pointer; }
+        .suggestion-pill:hover { background-color: #e9ecef !important; }
+    </style>
+
     <script>
         document.getElementById('imageInput').onchange = function(evt) {
             const [file] = this.files;
@@ -125,6 +169,27 @@
                 }
             }
         };
+
+        // Xử lý khi click vào các gợi ý (pill)
+        document.querySelectorAll('.suggestion-pill').forEach(pill => {
+            pill.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const inputElement = document.getElementById(targetId);
+                const valueToAdd = this.innerText;
+
+                let currentValue = inputElement.value.trim();
+                
+                // Nếu đã có giá trị, kiểm tra xem đã có từ này chưa
+                if (currentValue) {
+                    const valuesArray = currentValue.split(',').map(v => v.trim());
+                    if (!valuesArray.includes(valueToAdd)) {
+                        inputElement.value = currentValue + ', ' + valueToAdd;
+                    }
+                } else {
+                    inputElement.value = valueToAdd;
+                }
+            });
+        });
     </script>
 }
 

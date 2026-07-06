@@ -23,13 +23,33 @@ namespace CMS.Backend.Controllers
         // 1. CÁC PHƯƠNG THỨC GIAO DIỆN (ADMIN - MVC)
         // ==================================================
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? keyword, int page = 1)
         {
-            // Lấy danh sách sản phẩm, sắp xếp sản phẩm mới nhất lên đầu
-            var products = await _context.Products
-                .Include(p => p.CategoryProduct)
+            int pageSize = 10;
+            var query = _context.Products.Include(p => p.CategoryProduct).AsQueryable();
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                query = query.Where(p => p.Name.Contains(keyword) || p.Description.Contains(keyword));
+            }
+
+            var totalItems = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
+            if (page < 1) page = 1;
+            if (page > totalPages && totalPages > 0) page = totalPages;
+
+            var products = await query
                 .OrderByDescending(p => p.CreatedDate)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.Keyword = keyword;
+            ViewBag.TotalItems = totalItems;
+
             return View(products);
         }
 
@@ -41,14 +61,29 @@ namespace CMS.Backend.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Product product, IFormFile? imageFile)
+        public async Task<IActionResult> Create(Product product, IFormFile? imageFile, List<IFormFile> additionalImages)
         {
             ModelState.Remove("ImageUrl"); // Bỏ qua kiểm tra lỗi cột ảnh
+            ModelState.Remove("ProductImages");
 
             if (ModelState.IsValid)
             {
                 product.ImageUrl = await UploadImage(imageFile);
                 product.CreatedDate = DateTime.Now; // Tự động gán ngày tạo
+
+                if (additionalImages != null && additionalImages.Count > 0)
+                {
+                    product.ProductImages = new List<ProductImage>();
+                    int sort = 1;
+                    foreach (var file in additionalImages)
+                    {
+                        var url = await UploadImage(file);
+                        if (url != null)
+                        {
+                            product.ProductImages.Add(new ProductImage { ImageUrl = url, SortOrder = sort++ });
+                        }
+                    }
+                }
 
                 _context.Add(product);
                 await _context.SaveChangesAsync();
@@ -87,6 +122,11 @@ namespace CMS.Backend.Controllers
                 existingProduct.StockQuantity = product.StockQuantity;
                 existingProduct.IsActive = product.IsActive;
                 existingProduct.CategoryProductId = product.CategoryProductId;
+                
+                // Oneway fields
+                existingProduct.Specifications = product.Specifications;
+                existingProduct.AvailableColors = product.AvailableColors;
+                existingProduct.AvailableStorages = product.AvailableStorages;
 
                 // Cập nhật ảnh nếu có file mới
                 if (imageFile != null)
@@ -297,6 +337,7 @@ namespace CMS.Backend.Controllers
             // Khách hàng chỉ xem được chi tiết nếu sản phẩm đó IsActive = true
             var product = await _context.Products
                 .Include(p => p.CategoryProduct) // Include thêm để lấy được ImageUrl của Danh mục
+                .Include(p => p.ProductImages)
                 .Where(p => p.Id == id && p.IsActive)
                 .Select(p => new {
                     p.Id,
@@ -305,6 +346,10 @@ namespace CMS.Backend.Controllers
                     p.Price,
                     p.ImageUrl,
                     p.StockQuantity,
+                    p.Specifications,
+                    p.AvailableColors,
+                    p.AvailableStorages,
+                    Gallery = p.ProductImages.OrderBy(i => i.SortOrder).Select(i => i.ImageUrl).ToList(),
                     CategoryId = p.CategoryProductId,
                     CategoryName = p.CategoryProduct != null ? p.CategoryProduct.Name : "Chưa phân loại",
                     CategoryImageUrl = p.CategoryProduct != null ? p.CategoryProduct.ImageUrl : null, // Thêm ở Detail luôn cho đồng bộ

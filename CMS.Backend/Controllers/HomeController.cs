@@ -1,4 +1,4 @@
-﻿using CMS.Backend.Models;
+using CMS.Backend.Models;
 using CMS.Data;
 using CMS.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -24,16 +24,28 @@ namespace CMS.Backend.Controllers
         // ==========================================
         public async Task<IActionResult> Index()
         {
-            // ĐÃ SỬA: Dùng CategoryPost và thêm AsNoTracking để tối ưu tốc độ đọc
-            var latestPosts = await _context.Posts
+            var viewModel = new DashboardViewModel();
+
+            viewModel.TotalPosts = await _context.Posts.CountAsync();
+            viewModel.TotalProducts = await _context.Products.CountAsync();
+            viewModel.TotalOrders = await _context.Orders.CountAsync();
+            viewModel.TotalRevenue = await _context.Orders.SumAsync(o => o.TotalAmount);
+            viewModel.TotalCustomers = await _context.Customers.CountAsync();
+
+            viewModel.RecentOrders = await _context.Orders
+                .OrderByDescending(o => o.OrderDate)
+                .Take(5)
+                .AsNoTracking()
+                .ToListAsync();
+
+            viewModel.RecentPosts = await _context.Posts
                 .Include(p => p.CategoryPost)
-                .Where(p => p.IsPublished) // MỚI: Bắt buộc chỉ hiện bài đã xuất bản
                 .OrderByDescending(p => p.CreatedDate)
                 .Take(3)
                 .AsNoTracking()
                 .ToListAsync();
 
-            return View(latestPosts);
+            return View(viewModel);
         }
 
         // ==========================================

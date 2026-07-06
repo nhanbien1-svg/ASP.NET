@@ -61,21 +61,38 @@
     <div class="col-lg-8 mb-4">
 
         <div class="card border-0 shadow-sm rounded-3 mb-4">
-            <div class="card-header bg-white border-bottom py-3">
+            <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
                 <h6 class="fw-bold m-0">SẢN PHẨM ĐÃ ĐẶT</h6>
+                @if (Model.Status == 0 || Model.Status == 4)
+                {
+                    <button type="button" class="btn btn-sm btn-outline-warning fw-bold" id="btnEditOrderDetails">
+                        <i class="bi bi-pencil me-1"></i> Chỉnh sửa
+                    </button>
+                }
             </div>
             <div class="card-body p-0">
+                <!-- KHU VỰC TÌM KIẾM SẢN PHẨM (Ẩn khi không edit) -->
+                <div id="addProductSection" class="p-3 bg-light border-bottom" style="display: none;">
+                    <label class="form-label fw-bold text-primary small">Tìm & Thêm sản phẩm mới:</label>
+                    <div class="position-relative">
+                        <input type="text" id="searchProductInput" class="form-control shadow-none" placeholder="Nhập tên sản phẩm để tìm kiếm...">
+                        <div id="searchProductResults" class="position-absolute w-100 bg-white border rounded shadow-sm z-3 mt-1" style="max-height: 250px; overflow-y: auto; display: none;"></div>
+                    </div>
+                </div>
+
                 <div class="table-responsive">
-                    <table class="table table-borderless align-middle mb-0">
+                    <table class="table table-borderless align-middle mb-0" id="orderProductsTable">
                         <thead class="table-light border-bottom">
                             <tr>
                                 <th class="py-3 px-4 text-muted">SẢN PHẨM</th>
-                                <th class="py-3 text-center text-muted">SL</th>
+                                <th class="py-3 text-center text-muted" style="width: 120px;">SL</th>
                                 <th class="py-3 text-end text-muted">ĐƠN GIÁ</th>
                                 <th class="py-3 px-4 text-end text-muted">THÀNH TIỀN</th>
+                                <th class="py-3 text-center text-muted edit-column" style="display: none; width: 60px;">XÓA</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="orderDetailsBody">
+                            <!-- JS Sẽ render lại tbody này -->
                             @if (Model.OrderDetails != null && Model.OrderDetails.Any())
                             {
                                 foreach (var item in Model.OrderDetails)
@@ -85,7 +102,6 @@
                                             <span class="fw-semibold">@(item.Product != null ? item.Product.Name : "Sản phẩm đã bị xóa")</span>
                                         </td>
                                         <td class="text-center">@item.Quantity</td>
-
                                         <td class="text-end">@item.UnitPrice.ToString("N0") đ</td>
                                         <td class="px-4 text-end fw-bold">@item.SubTotal.ToString("N0") đ</td>
                                     </tr>
@@ -93,16 +109,25 @@
                             }
                             else
                             {
-                                <tr><td colspan="4" class="text-center py-4">Không có dữ liệu sản phẩm.</td></tr>
+                                <tr id="emptyRow"><td colspan="5" class="text-center py-4">Không có dữ liệu sản phẩm.</td></tr>
                             }
                         </tbody>
                         <tfoot class="bg-light">
                             <tr>
                                 <td colspan="3" class="px-4 py-3 text-end fw-bold">TỔNG CỘNG:</td>
-                                <td class="px-4 py-3 text-end fw-bold text-danger fs-5">@Model.TotalAmount.ToString("N0") đ</td>
+                                <td class="px-4 py-3 text-end fw-bold text-danger fs-5" id="orderTotalAmount">@Model.TotalAmount.ToString("N0") đ</td>
+                                <td class="edit-column" style="display:none;"></td>
                             </tr>
                         </tfoot>
                     </table>
+                </div>
+                
+                <!-- NÚT LƯU & HỦY (Ẩn mặc định) -->
+                <div id="editActionButtons" class="p-3 bg-white text-end border-top" style="display: none;">
+                    <button type="button" class="btn btn-secondary px-4 me-2" id="btnCancelEdit">Hủy</button>
+                    <button type="button" class="btn btn-success px-4 fw-bold" id="btnSaveEdit">
+                        <i class="bi bi-save me-1"></i> Lưu thay đổi
+                    </button>
                 </div>
             </div>
         </div>
@@ -129,3 +154,223 @@
 
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        const orderId = @Model.Id;
+        let editableProducts = [
+            @if (Model.OrderDetails != null)
+            {
+                foreach(var item in Model.OrderDetails)
+                {
+                    <text>
+                    {
+                        productId: @item.ProductId,
+                        name: "@Html.Raw(item.Product != null ? item.Product.Name.Replace("\"", "\\\"") : "Sản phẩm")",
+                        unitPrice: @item.UnitPrice,
+                        quantity: @item.Quantity
+                    },
+                    </text>
+                }
+            }
+        ];
+        
+        let originalProducts = JSON.parse(JSON.stringify(editableProducts));
+
+        const btnEdit = document.getElementById('btnEditOrderDetails');
+        const btnCancel = document.getElementById('btnCancelEdit');
+        const btnSave = document.getElementById('btnSaveEdit');
+        
+        const addProductSection = document.getElementById('addProductSection');
+        const editActionButtons = document.getElementById('editActionButtons');
+        const searchProductInput = document.getElementById('searchProductInput');
+        const searchProductResults = document.getElementById('searchProductResults');
+        const orderDetailsBody = document.getElementById('orderDetailsBody');
+        const orderTotalAmount = document.getElementById('orderTotalAmount');
+
+        let searchTimeout;
+
+        function formatCurrency(amount) {
+            return amount.toLocaleString('vi-VN') + ' đ';
+        }
+
+        function renderTable(isEditMode) {
+            orderDetailsBody.innerHTML = '';
+            let total = 0;
+
+            if (editableProducts.length === 0) {
+                orderDetailsBody.innerHTML = `<tr><td colspan="5" class="text-center py-4">Không có sản phẩm nào.</td></tr>`;
+            }
+
+            editableProducts.forEach((p, index) => {
+                total += p.unitPrice * p.quantity;
+                
+                let qtyHtml = isEditMode 
+                    ? `<input type="number" class="form-control form-control-sm text-center mx-auto" style="width: 70px;" value="${p.quantity}" min="1" onchange="updateQty(${index}, this.value)">`
+                    : p.quantity;
+                
+                let delHtml = isEditMode
+                    ? `<td class="text-center"><button class="btn btn-sm btn-outline-danger" onclick="removeProduct(${index})"><i class="bi bi-trash"></i></button></td>`
+                    : '';
+
+                let row = `
+                    <tr class="border-bottom">
+                        <td class="px-4 py-3"><span class="fw-semibold">${p.name}</span></td>
+                        <td class="text-center">${qtyHtml}</td>
+                        <td class="text-end">${formatCurrency(p.unitPrice)}</td>
+                        <td class="px-4 text-end fw-bold">${formatCurrency(p.unitPrice * p.quantity)}</td>
+                        ${delHtml}
+                    </tr>
+                `;
+                orderDetailsBody.innerHTML += row;
+            });
+
+            orderTotalAmount.innerText = formatCurrency(total);
+            
+            // Toggle edit column headers
+            document.querySelectorAll('.edit-column').forEach(el => el.style.display = isEditMode ? 'table-cell' : 'none');
+        }
+
+        window.updateQty = function(index, value) {
+            let val = parseInt(value) || 1;
+            if (val < 1) val = 1;
+            editableProducts[index].quantity = val;
+            renderTable(true);
+        }
+
+        window.removeProduct = function(index) {
+            editableProducts.splice(index, 1);
+            renderTable(true);
+        }
+
+        // Bật Edit Mode
+        if (btnEdit) {
+            btnEdit.addEventListener('click', function() {
+                btnEdit.style.display = 'none';
+                addProductSection.style.display = 'block';
+                editActionButtons.style.display = 'block';
+                renderTable(true);
+            });
+        }
+
+        // Hủy Edit Mode
+        if (btnCancel) {
+            btnCancel.addEventListener('click', function() {
+                editableProducts = JSON.parse(JSON.stringify(originalProducts)); // Reset
+                btnEdit.style.display = 'block';
+                addProductSection.style.display = 'none';
+                editActionButtons.style.display = 'none';
+                searchProductInput.value = '';
+                searchProductResults.style.display = 'none';
+                renderTable(false);
+            });
+        }
+
+        // Tìm kiếm sản phẩm (Gọi thẳng API của React luôn cho tiện vì nó public)
+        searchProductInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const keyword = this.value.trim();
+            if (keyword.length < 2) {
+                searchProductResults.style.display = 'none';
+                return;
+            }
+
+            searchTimeout = setTimeout(() => {
+                fetch(`/api/products?search=${encodeURIComponent(keyword)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        searchProductResults.innerHTML = '';
+                        if (data && data.length > 0) {
+                            data.forEach(prod => {
+                                let item = document.createElement('div');
+                                item.className = 'p-2 border-bottom d-flex justify-content-between align-items-center bg-white list-group-item-action';
+                                item.style.cursor = 'pointer';
+                                
+                                let price = prod.price || 0;
+                                item.innerHTML = `
+                                    <div>
+                                        <div class="fw-bold small">${prod.name}</div>
+                                        <div class="text-danger small">${formatCurrency(price)}</div>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-success"><i class="bi bi-plus"></i></button>
+                                `;
+                                item.onclick = function() {
+                                    // Check exists
+                                    let exists = editableProducts.findIndex(p => p.productId === prod.id);
+                                    if (exists >= 0) {
+                                        editableProducts[exists].quantity++;
+                                    } else {
+                                        editableProducts.push({
+                                            productId: prod.id,
+                                            name: prod.name,
+                                            unitPrice: price,
+                                            quantity: 1
+                                        });
+                                    }
+                                    searchProductInput.value = '';
+                                    searchProductResults.style.display = 'none';
+                                    renderTable(true);
+                                };
+                                searchProductResults.appendChild(item);
+                            });
+                            searchProductResults.style.display = 'block';
+                        } else {
+                            searchProductResults.innerHTML = '<div class="p-2 text-muted small">Không tìm thấy sản phẩm.</div>';
+                            searchProductResults.style.display = 'block';
+                        }
+                    });
+            }, 400);
+        });
+
+        // Click outside to close search
+        document.addEventListener('click', function(e) {
+            if (e.target !== searchProductInput && e.target !== searchProductResults) {
+                searchProductResults.style.display = 'none';
+            }
+        });
+
+        // Lưu thay đổi
+        if (btnSave) {
+            btnSave.addEventListener('click', function() {
+                if (editableProducts.length === 0) {
+                    alert("Đơn hàng phải có ít nhất 1 sản phẩm!");
+                    return;
+                }
+
+                btnSave.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Đang lưu...';
+                btnSave.disabled = true;
+
+                // Gửi PUT tới API của Backend
+                fetch(`/api/orders/${orderId}/details`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(editableProducts)
+                })
+                .then(async res => {
+                    const text = await res.text();
+                    try {
+                        return { status: res.status, body: JSON.parse(text) };
+                    } catch (e) {
+                        return { status: res.status, body: { message: text } };
+                    }
+                })
+                .then(res => {
+                    if (res.status === 200) {
+                        alert("Lưu thay đổi thành công!");
+                        window.location.reload(); // Refresh để thấy thay đổi
+                    } else {
+                        let errorMsg = res.body.message || (res.body.errors ? JSON.stringify(res.body.errors) : JSON.stringify(res.body));
+                        alert("Lỗi: " + errorMsg);
+                        btnSave.innerHTML = '<i class="bi bi-save me-1"></i> Lưu thay đổi';
+                        btnSave.disabled = false;
+                    }
+                })
+                .catch(err => {
+                    alert("Lỗi kết nối máy chủ!");
+                    btnSave.innerHTML = '<i class="bi bi-save me-1"></i> Lưu thay đổi';
+                    btnSave.disabled = false;
+                });
+            });
+        }
+    </script>
+}

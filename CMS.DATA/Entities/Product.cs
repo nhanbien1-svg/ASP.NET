@@ -25,6 +25,21 @@ namespace CMS.Data.Entities
         public string? ImageUrl { get; set; }
 
         // ======================================================
+        // THUỘC TÍNH MỚI (ONEWAY STYLE)
+        // ======================================================
+        
+        [Display(Name = "Thông số kỹ thuật (JSON)")]
+        public string? Specifications { get; set; }
+
+        [Display(Name = "Màu sắc (Cách nhau bằng dấu phẩy)")]
+        public string? AvailableColors { get; set; }
+
+        [Display(Name = "Dung lượng (Cách nhau bằng dấu phẩy)")]
+        public string? AvailableStorages { get; set; }
+
+        public virtual ICollection<ProductImage>? ProductImages { get; set; }
+
+        // ======================================================
         // CÁC TRƯỜNG DỮ LIỆU BỔ SUNG CHO E-COMMERCE CHUYÊN NGHIỆP
         // ======================================================
 

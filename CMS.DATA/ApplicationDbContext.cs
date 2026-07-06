@@ -19,6 +19,7 @@ namespace CMS.Data
         // ==========================================
         public DbSet<CategoryProduct> CategoryProducts { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
 
         // ==========================================
         // 3. PHÂN HỆ KHÁCH HÀNG & ĐƠN HÀNG

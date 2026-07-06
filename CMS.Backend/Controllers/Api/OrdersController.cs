@@ -48,7 +48,7 @@ namespace CMS.Backend.Controllers
                     ShippingPhone = request.ShippingPhone?.Trim(),
                     ShippingAddress = request.ShippingAddress?.Trim(),
                     Notes = request.Notes?.Trim(),
-                    Status = 0, // 0: Chờ duyệt
+                    Status = (request.PaymentMethod != "COD" && !string.IsNullOrEmpty(request.PaymentMethod)) ? 4 : 0, // 4: Chờ thanh toán, 0: Chờ duyệt
                     PaymentMethod = string.IsNullOrEmpty(request.PaymentMethod) ? "COD" : request.PaymentMethod,
                     TotalAmount = request.TotalAmount
                 };
@@ -185,6 +185,8 @@ namespace CMS.Backend.Controllers
         [HttpGet("customer/{customerId}")]
         public async Task<IActionResult> GetCustomerOrders(int customerId)
         {
+            await CheckAndCancelExpiredOrders(customerId: customerId);
+
             var orders = await _context.Orders
                 .AsNoTracking()
                 .Where(o => o.CustomerId == customerId)
@@ -216,6 +218,8 @@ namespace CMS.Backend.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOrderById(int id)
         {
+            await CheckAndCancelExpiredOrders(orderId: id);
+
             var order = await _context.Orders
                 .AsNoTracking()
                 .Include(o => o.OrderDetails!)
@@ -250,6 +254,47 @@ namespace CMS.Backend.Controllers
             return Ok(result);
         }
 
+        private async Task CheckAndCancelExpiredOrders(int? customerId = null, int? orderId = null)
+        {
+            var query = _context.Orders
+                .Include(o => o.OrderDetails)
+                .Where(o => o.Status == 4 && o.OrderDate < DateTime.Now.AddHours(-24));
+            
+            if (customerId.HasValue)
+            {
+                query = query.Where(o => o.CustomerId == customerId.Value);
+            }
+            
+            if (orderId.HasValue)
+            {
+                query = query.Where(o => o.Id == orderId.Value);
+            }
+
+            var expiredOrders = await query.ToListAsync();
+            
+            if (expiredOrders.Any())
+            {
+                foreach (var order in expiredOrders)
+                {
+                    order.Status = 3;
+                    order.CancelReason = "Hết hạn thanh toán (quá 24h)";
+                    
+                    if (order.OrderDetails != null)
+                    {
+                        foreach(var item in order.OrderDetails)
+                        {
+                            var product = await _context.Products.FindAsync(item.ProductId);
+                            if (product != null)
+                            {
+                                product.StockQuantity += item.Quantity;
+                            }
+                        }
+                    }
+                }
+                await _context.SaveChangesAsync();
+            }
+        }
+
         // ==========================================
         // 4. API: HỦY ĐƠN HÀNG VÀ HOÀN TRẢ KHO
         // ==========================================
@@ -269,7 +314,7 @@ namespace CMS.Backend.Controllers
                     return NotFound(new { message = "Không tìm thấy đơn hàng." });
                 }
 
-                // Chỉ cho phép hủy khi đang Chờ duyệt (Status = 0) hoặc một số trạng thái hợp lệ
+                // Chỉ cho phép hủy khi đang Chờ duyệt (Status = 0) hoặc Chờ thanh toán (Status = 4)
                 if (order.Status == 3) // 3 là Đã Hủy
                 {
                     return BadRequest(new { message = "Đơn hàng này đã bị hủy từ trước." });
@@ -318,6 +363,95 @@ namespace CMS.Backend.Controllers
             {
                 await transaction.RollbackAsync();
                 return StatusCode(500, new { message = "Lỗi khi hủy đơn: " + ex.Message });
+            }
+        }
+        // ==========================================
+        // 5. API: ĐÁNH DẤU ĐÃ THANH TOÁN (MÔ PHỎNG)
+        // ==========================================
+        [HttpPut("{id}/mark-paid")]
+        public async Task<IActionResult> MarkOrderAsPaid(int id)
+        {
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
+            if (order == null) return NotFound(new { message = "Không tìm thấy đơn hàng." });
+
+            if (order.Status == 4) // Nếu đang chờ thanh toán
+            {
+                order.Status = 0; // Chuyển về chờ duyệt
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Đã xác nhận thanh toán thành công!" });
+            }
+            return BadRequest(new { message = "Đơn hàng không ở trạng thái chờ thanh toán." });
+        }
+        // ==========================================
+        // 6. API: CẬP NHẬT CHI TIẾT ĐƠN HÀNG
+        // ==========================================
+        [HttpPut("{id}/details")]
+        public async Task<IActionResult> UpdateOrderDetails(int id, [FromBody] List<CartItemDto> newDetails)
+        {
+            if (newDetails == null || !newDetails.Any())
+            {
+                return BadRequest(new { message = "Đơn hàng phải có ít nhất 1 sản phẩm." });
+            }
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try 
+            {
+                var order = await _context.Orders.Include(o => o.OrderDetails).FirstOrDefaultAsync(o => o.Id == id);
+                if (order == null) return NotFound(new { message = "Không tìm thấy đơn hàng." });
+                if (order.Status != 0 && order.Status != 4) return BadRequest(new { message = "Chỉ cho phép sửa đơn hàng ở trạng thái Chờ duyệt hoặc Chờ thanh toán." });
+
+                // Hoàn kho cho các item cũ
+                if (order.OrderDetails != null)
+                {
+                    foreach (var oldItem in order.OrderDetails)
+                    {
+                        var p = await _context.Products.FindAsync(oldItem.ProductId);
+                        if (p != null) p.StockQuantity += oldItem.Quantity;
+                    }
+                    // Xóa OrderDetails cũ
+                    _context.OrderDetails.RemoveRange(order.OrderDetails);
+                    await _context.SaveChangesAsync();
+                }
+
+                decimal newTotal = 0;
+                var newOrderDetails = new List<OrderDetail>();
+
+                // Thêm item mới và trừ kho
+                foreach (var newItem in newDetails)
+                {
+                    var p = await _context.Products.FindAsync(newItem.ProductId);
+                    if (p == null) { 
+                        await transaction.RollbackAsync(); 
+                        return BadRequest(new { message = $"Sản phẩm ID {newItem.ProductId} không tồn tại." }); 
+                    }
+                    if (p.StockQuantity < newItem.Quantity) { 
+                        await transaction.RollbackAsync(); 
+                        return BadRequest(new { message = $"Sản phẩm '{p.Name}' không đủ số lượng (còn lại {p.StockQuantity})." }); 
+                    }
+
+                    p.StockQuantity -= newItem.Quantity;
+                    newTotal += newItem.Quantity * newItem.UnitPrice;
+
+                    newOrderDetails.Add(new OrderDetail {
+                        OrderId = id,
+                        ProductId = newItem.ProductId,
+                        Quantity = newItem.Quantity,
+                        UnitPrice = newItem.UnitPrice
+                    });
+                }
+
+                _context.OrderDetails.AddRange(newOrderDetails);
+                order.TotalAmount = newTotal;
+
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                return Ok(new { message = "Cập nhật chi tiết đơn hàng thành công!", totalAmount = newTotal });
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return StatusCode(500, new { message = "Lỗi khi cập nhật đơn: " + ex.Message });
             }
         }
     }

@@ -1,36 +1,97 @@
-# Tiêu Chí Đánh Giá & Xây Dựng Trang Web Thương Mại Điện Tử (TechZone)
+# 🚀 HỆ THỐNG QUẢN TRỊ NỘI DUNG (CMS) & BÁN HÀNG TỔNG HỢP
 
-Dự án TechZone (ASP.NET Core + ReactJS) được phát triển không chỉ để đáp ứng các tính năng cơ bản của một hệ thống bán hàng, mà còn tuân thủ nghiêm ngặt các tiêu chuẩn và tiêu chí khắt khe của một trang web chuyên nghiệp trong ngành công nghiệp phần mềm hiện đại.
-
-Dưới đây là tổng quát các tiêu chí cốt lõi được áp dụng trong quá trình làm trang web:
-
-## 1. Tiêu chí về Giao diện & Trải nghiệm Người dùng (UI/UX)
-- **Tính Thẩm mỹ (Aesthetics):** Sử dụng ngôn ngữ thiết kế hiện đại, phối màu Dark Theme (Nền tối - chữ sáng) sang trọng, mang phong cách công nghệ cao (High-tech) thu hút người dùng.
-- **Tính Nhất quán (Consistency):** Đồng bộ màu sắc, typography (font chữ), icon và khoảng cách (padding/margin) xuyên suốt toàn bộ ứng dụng thông qua bộ Design System định sẵn.
-- **Tính Phản hồi tương tác (Micro-interactions):** Mọi thao tác click, hover, thêm vào giỏ hàng đều có hiệu ứng mượt mà (animation/transition), giúp người dùng nhận thức rõ ràng hành động của mình.
-- **Đơn giản hóa quy trình (Simplicity):** Tối ưu hóa số bước thanh toán (Checkout) và đăng ký/đăng nhập. Sử dụng Floating labels và Toast notifications thay cho Popup rườm rà.
-
-## 2. Tiêu chí về Hiệu năng (Performance & Scalability)
-- **Tốc độ tải trang:** Sử dụng ReactJS để thiết kế theo kiến trúc Single Page Application (SPA), giúp trang web chỉ tải 1 lần đầu tiên và sau đó chuyển trang mượt mà không cần load lại toàn bộ trình duyệt.
-- **Xử lý Bất đồng bộ (Asynchronous):** Toàn bộ các tương tác với cơ sở dữ liệu qua ASP.NET Core API đều sử dụng `async/await` để không làm nghẽn luồng xử lý (non-blocking).
-- **Thiết kế CSDL Tối ưu (Database Design):** Sử dụng Entity Framework Core với kiến trúc bảng hợp lý, đánh Index đầy đủ, có khóa ngoại (Foreign Keys) chặt chẽ giữa Customer, Product, Order, Review.
-
-## 3. Tiêu chí về Bảo mật (Security)
-- **Xác thực & Phân quyền (Authentication & Authorization):** Sử dụng công nghệ JWT (JSON Web Token) tân tiến kết hợp Cookie an toàn (HttpOnly) để bảo mật phiên đăng nhập, chống lại các cuộc tấn công CSRF, XSS.
-- **Bảo mật Dữ liệu nhạy cảm:** Mật khẩu người dùng được băm (Hash) một chiều trước khi lưu vào cơ sở dữ liệu. API Keys (Ví dụ: Gemini AI, Mail) được đưa ra khỏi mã nguồn để ngăn rò rỉ.
-- **Xác thực Đầu vào (Input Validation):** Kiểm tra chặt chẽ dữ liệu người dùng nhập từ cả 2 phía: Frontend (React Hook Form/Yup) và Backend (Data Annotations trong C#) nhằm ngăn chặn SQL Injection.
-
-## 4. Tiêu chí về Tính Tương thích & Tối ưu (Responsive & SEO)
-- **Mobile First / Responsive Design:** Hệ thống được xây dựng tương thích hoàn hảo trên mọi kích thước màn hình (Điện thoại, Tablet, Desktop) nhờ vào hệ thống Grid của Bootstrap 5 và CSS Flexbox/Grid.
-- **Tối ưu Hóa Tìm Kiếm (SEO):** Đảm bảo cấu trúc thẻ HTML (H1, H2, H3), meta description đầy đủ để thân thiện với các công cụ tìm kiếm của Google.
-
-## 5. Tiêu chí về Công nghệ Mới & Đột phá (Innovation)
-- **Tích hợp Trí Tuệ Nhân Tạo (AI Chatbot):** Trang bị trợ lý ảo thông minh tự động (Sử dụng Google Gemini API) có khả năng hiểu ngữ cảnh và trả lời tự nhiên 24/7.
-- **Hệ thống Dự phòng (Fallback System):** Khi API bên thứ 3 gặp sự cố, hệ thống có khả năng tự động chuyển đổi (Switch) về chế độ Keyword NLP cục bộ, đảm bảo tính liên tục của dịch vụ.
-
-## 6. Tiêu chí về Bảo trì & Mở rộng (Maintainability)
-- **Kiến trúc Phân tầng (Layered Architecture):** Code Backend được chia tách rõ ràng thành Controllers (Xử lý Request), Services (Xử lý nghiệp vụ logic), Data/Entities (Tương tác CSDL).
-- **Clean Code:** Viết code tuân thủ nguyên tắc SOLID, mã nguồn sạch sẽ, dễ đọc, có chú thích (Comments) đầy đủ ở những hàm phức tạp, giúp các lập trình viên khác dễ dàng tiếp quản và phát triển tính năng mới.
+Chào mừng bạn đến với dự án **Hệ thống Quản trị Nội dung (CMS) & E-Commerce** được xây dựng trên nền tảng **ASP.NET Core** kết hợp với **ReactJS**. Dự án này được thiết kế theo kiến trúc chuẩn hiện đại, phân tách rõ ràng giữa Backend (API & Admin Dashboard) và Frontend (Client Application).
 
 ---
-*(Nhánh BUOI09+10 - Định chuẩn và Tiêu chí Đánh giá Dự án Phần mềm)*
+
+## 📌 1. TỔNG QUAN DỰ ÁN (OVERVIEW)
+
+Dự án này là một giải pháp toàn diện hỗ trợ doanh nghiệp vừa và nhỏ trong việc:
+- **Quản lý nội dung (CMS):** Tạo, chỉnh sửa, xuất bản các bài viết tin tức, quản lý danh mục bài viết (Category Post).
+- **Quản lý bán hàng (E-Commerce):** Quản lý sản phẩm, danh mục sản phẩm, theo dõi đơn đặt hàng (Orders) và thông tin khách hàng (Customers).
+- **Trải nghiệm khách hàng:** Cung cấp giao diện người dùng (Frontend) mượt mà với React, hỗ trợ giỏ hàng, thanh toán và xem tin tức.
+
+### Công nghệ sử dụng:
+- **Backend:** ASP.NET Core 8.0 (MVC cho trang Admin & Web API cho Frontend)
+- **Database:** Microsoft SQL Server (sử dụng Entity Framework Core - Code First)
+- **Frontend:** ReactJS (React Router, Axios, Bootstrap 5)
+- **Công cụ khác:** CKEditor (soạn thảo văn bản), Swagger (Document API)
+
+---
+
+## 🏗️ 2. KIẾN TRÚC HỆ THỐNG
+
+Dự án được chia thành 3 lớp (Layers) chính để đảm bảo tính module hóa và dễ bảo trì:
+
+1. **CMS.DATA:** Lớp dữ liệu (Data Access Layer) chứa `ApplicationDbContext` và các thực thể (Entities) như `Post`, `Product`, `Order`, `Customer`, `User`. Chịu trách nhiệm tương tác trực tiếp với cơ sở dữ liệu SQL Server.
+2. **CMS.Backend:** Dự án chính (Presentation Layer cho Admin và API Layer cho Frontend). Bao gồm:
+   - Các `Controllers` trả về View (HTML/CSS) cho trang quản trị Admin.
+   - Các `ApiControllers` trả về dữ liệu JSON để giao tiếp với React Frontend.
+   - Quản lý xác thực (Authentication), phân quyền (Authorization) và xử lý file tĩnh (wwwroot).
+3. **cms.frontend:** Ứng dụng Client được xây dựng bằng ReactJS. Gọi API từ Backend để hiển thị danh sách sản phẩm, tin tức, xử lý giỏ hàng và thanh toán.
+
+---
+
+## 🚀 3. HƯỚNG DẪN CÀI ĐẶT & CHẠY DỰ ÁN TỪ A-Z
+
+Để có thể chạy được dự án này trên máy cá nhân, vui lòng làm theo các bước thật chi tiết dưới đây.
+
+### BƯỚC 1: Chuẩn bị môi trường (Prerequisites)
+- Cài đặt [Visual Studio 2022](https://visualstudio.microsoft.com/) (Hỗ trợ .NET 8.0 SDK).
+- Cài đặt [SQL Server Management Studio (SSMS)](https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms) hoặc SQL Server Express.
+- Cài đặt [Node.js](https://nodejs.org/en/) (phiên bản LTS) để chạy React Frontend.
+
+### BƯỚC 2: Cấu hình Cơ sở dữ liệu (Database Setup)
+1. Mở file `appsettings.json` trong thư mục `CMS.Backend`.
+2. Tìm chuỗi kết nối (Connection String) `DefaultConnection`.
+3. Thay đổi thông tin Server (`Server=...`) thành Tên Server SQL của máy bạn.
+    ```json
+    "ConnectionStrings": {
+      "DefaultConnection": "Server=YOUR_SERVER_NAME;Database=CMS_Db;Trusted_Connection=True;TrustServerCertificate=True"
+    }
+    ```
+4. Mở **Package Manager Console** trong Visual Studio (vào `Tools` > `NuGet Package Manager` > `Package Manager Console`).
+5. Chọn `Default project` là `CMS.DATA`.
+6. Chạy lệnh: `Update-Database` để tự động tạo cơ sở dữ liệu `CMS_Db` và các bảng cần thiết.
+
+### BƯỚC 3: Khởi chạy Backend (Admin & API)
+1. Trong Visual Studio, thiết lập `CMS.Backend` làm dự án khởi chạy mặc định (Set as Startup Project).
+2. Nhấn `F5` hoặc nút Play để chạy Backend.
+3. Trang quản trị Admin sẽ hiển thị tại địa chỉ: `https://localhost:7222/` (port có thể thay đổi tùy cấu hình của bạn).
+4. Bạn có thể truy cập `https://localhost:7222/swagger` để xem tài liệu API.
+
+### BƯỚC 4: Khởi chạy Frontend (ReactJS)
+1. Mở Terminal hoặc Command Prompt, trỏ đường dẫn vào thư mục `cms.frontend`.
+2. Chạy lệnh cài đặt các thư viện phụ thuộc:
+    ```bash
+    npm install
+    ```
+3. Sau khi cài đặt xong, khởi chạy ứng dụng Frontend bằng lệnh:
+    ```bash
+    npm start
+    ```
+4. Trình duyệt sẽ tự động mở trang web giao diện khách hàng tại địa chỉ `http://localhost:3000/`.
+
+---
+
+## 🎯 4. CÁC TÍNH NĂNG NỔI BẬT
+
+### 4.1. Hệ thống Quản trị (Admin Dashboard)
+- **Bảng điều khiển chuyên nghiệp:** Thống kê tổng doanh thu, số lượng đơn hàng, sản phẩm và bài viết mới nhất trực quan.
+- **Quản lý Sản phẩm đa dạng:** Cho phép thêm mới, sửa, xóa sản phẩm. Hỗ trợ upload ảnh sản phẩm, thêm nhiều ảnh chi tiết (Product Images gallery).
+- **Quản lý Bài viết & Danh mục:** Trình soạn thảo văn bản phong phú (Rich-text editor) cho phép nhúng ảnh trực tiếp vào bài viết.
+- **Quản lý Đơn hàng:** Xem chi tiết thông tin đơn hàng, thông tin người nhận và thay đổi trạng thái giao hàng.
+
+### 4.2. Giao diện Người dùng (Frontend React)
+- **Giỏ hàng thông minh:** Thêm sản phẩm vào giỏ hàng, thay đổi số lượng, tự động tính tổng tiền (sử dụng React Context API).
+- **Tính năng Thanh toán (Checkout):** Lưu thông tin người nhận hàng vào LocalStorage để tiện lợi cho các lần mua sau.
+- **Tin tức & Blog:** Đọc tin tức công nghệ, tự động load ảnh động cho dù là ảnh Thumbnail hay ảnh bên trong bài viết (Tương thích đường dẫn URL tuyệt đối).
+
+---
+
+## 🛠️ 5. LƯU Ý KHI SỬ DỤNG
+- **Upload Ảnh:** Khi upload ảnh sản phẩm hay bài viết, ảnh sẽ được lưu vật lý trong thư mục `wwwroot/images/uploads` của `CMS.Backend`. Vui lòng không xóa thư mục này.
+- **Lỗi hiển thị ảnh trên Frontend:** Nếu Frontend không hiện ảnh, hãy chắc chắn rằng Backend đang chạy và tham số `IMAGE_BASE_URL` trong React (file `.env` hoặc cấu hình cố định) trỏ đúng tới địa chỉ cổng của Backend (ví dụ `https://localhost:7222`).
+
+---
+_Chúc bạn có một trải nghiệm tuyệt vời với dự án này! Mọi đóng góp xin vui lòng tạo Pull Request vào nhánh chính._

@@ -24,6 +24,35 @@
                             <span asp-validation-for="Name" class="text-danger small"></span>
                         </div>
 
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="AvailableColors" class="form-label fw-bold">Tùy chọn Màu sắc</label>
+                                <input asp-for="AvailableColors" id="AvailableColors" class="form-control" placeholder="Đen, Trắng, Tím (cách nhau dấu phẩy)" />
+                                <div class="mt-2 d-flex flex-wrap gap-1">
+                                    <small class="text-muted mt-1 me-1">Gợi ý:</small>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableColors">Đen</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableColors">Trắng</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableColors">Đỏ</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableColors">Xanh dương</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableColors">Vàng</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableColors">Titan</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="AvailableStorages" class="form-label fw-bold">Tùy chọn Dung lượng</label>
+                                <input asp-for="AvailableStorages" id="AvailableStorages" class="form-control" placeholder="128GB, 256GB, 512GB" />
+                                <div class="mt-2 d-flex flex-wrap gap-1">
+                                    <small class="text-muted mt-1 me-1">Gợi ý:</small>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableStorages">64GB</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableStorages">128GB</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableStorages">256GB</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableStorages">512GB</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableStorages">1TB</span>
+                                    <span class="badge bg-light text-dark border cursor-pointer suggestion-pill" data-target="AvailableStorages">2TB</span>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="mb-4">
                             <label asp-for="CategoryProductId" class="form-label fw-bold">Thuộc danh mục <span class="text-danger">*</span></label>
                             <select asp-for="CategoryProductId" class="form-select form-select-lg" asp-items="ViewBag.CategoryProductId" required>
@@ -34,8 +63,14 @@
 
                         <div class="mb-4">
                             <label asp-for="Description" class="form-label fw-bold">Mô tả thông số chi tiết</label>
-                            <textarea asp-for="Description" class="form-control" rows="6" placeholder="Nhập cấu hình, tính năng nổi bật của sản phẩm..."></textarea>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Nhập bài viết mô tả sản phẩm..."></textarea>
                             <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Specifications" class="form-label fw-bold">Thông số kỹ thuật (Bảng)</label>
+                            <textarea asp-for="Specifications" class="form-control" rows="4" placeholder='Dạng JSON: {"Màn hình":"OLED", "Chip":"A18"}'></textarea>
+                            <span asp-validation-for="Specifications" class="text-danger small"></span>
                         </div>
 
                         <div class="mb-3 p-3 bg-light rounded-3 border">
@@ -77,7 +112,11 @@
                                 </div>
                             </div>
 
-                            <input type="file" name="imageFile" class="form-control" accept="image/*" id="imageInput" />
+                            <input type="file" name="imageFile" class="form-control mb-3" accept="image/*" id="imageInput" required />
+
+                            <label class="control-label fw-bold mb-2 mt-2 d-block">Ảnh phụ (Gallery)</label>
+                            <input type="file" name="additionalImages" class="form-control" accept="image/*" multiple />
+
                             <small class="text-muted mt-3 d-block text-start">
                                 💡 Kích thước khuyến nghị: 800x800px. Định dạng: JPG, PNG, WEBP.
                             </small>
@@ -104,6 +143,11 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
+    <style>
+        .cursor-pointer { cursor: pointer; }
+        .suggestion-pill:hover { background-color: #e9ecef !important; }
+    </style>
+
     <script>
         document.getElementById('imageInput').onchange = function(evt) {
             const [file] = this.files;
@@ -116,6 +160,27 @@
                 }
             }
         };
+
+        // Xử lý khi click vào các gợi ý (pill)
+        document.querySelectorAll('.suggestion-pill').forEach(pill => {
+            pill.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const inputElement = document.getElementById(targetId);
+                const valueToAdd = this.innerText;
+
+                let currentValue = inputElement.value.trim();
+                
+                // Nếu đã có giá trị, kiểm tra xem đã có từ này chưa
+                if (currentValue) {
+                    const valuesArray = currentValue.split(',').map(v => v.trim());
+                    if (!valuesArray.includes(valueToAdd)) {
+                        inputElement.value = currentValue + ', ' + valueToAdd;
+                    }
+                } else {
+                    inputElement.value = valueToAdd;
+                }
+            });
+        });
     </script>
 }
 
